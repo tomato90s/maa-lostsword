@@ -1,0 +1,163 @@
+{
+    "$__mpe_config_index": {
+        "$__mpe_code": {
+            "prefix": "",
+            "savedViewport": {
+                "x": 613,
+                "y": 2639,
+                "zoom": 1.12
+            },
+            "filename": "home",
+            "version": "v1.4.3"
+        }
+    },
+    "主页": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "next": [
+            "战斗"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -658,
+                "y": -992
+            }
+        }
+    },
+    "关闭弹窗X": {
+        "max_hit": 10,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777204228902.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 500,
+        "next": [
+            "关闭弹窗X",
+            "主页"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1690,
+                "y": -1185
+            }
+        }
+    },
+    "新建节点2": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1235,
+                    34,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 200,
+        "next": [
+            "退场"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1830,
+                "y": -1470
+            }
+        }
+    },
+    "新建节点37": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1233,
+                    40,
+                    1,
+                    1
+                ]
+            }
+        },
+        "repeat": 3,
+        "repeat_delay": 1500,
+        "next": [
+            "主页"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 557,
+                "y": -1006
+            }
+        }
+    },
+    "新建节点39": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777188901592.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "repeat": 5,
+        "repeat_wait_freezes": 1500,
+        "next": [
+            "主页"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -67,
+                "y": -797
+            }
+        }
+    },
+    "退场": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777202072324.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    957,
+                    680,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "主页"
+        ],
+        "on_error": [
+            "新建节点29"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2135,
+                "y": -1415
+            }
+        }
+    }
+}

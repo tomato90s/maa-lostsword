@@ -1,0 +1,173 @@
+{
+    "$__mpe_config_index": {
+        "$__mpe_code": {
+            "prefix": "",
+            "savedViewport": {
+                "x": 613,
+                "y": 2639,
+                "zoom": 1.12
+            },
+            "filename": "arena",
+            "version": "v1.4.3"
+        }
+    },
+    "新建节点16": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "挑战"
+                ]
+            }
+        },
+        "pre_wait_freezes": 1000,
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "新建节点18"
+        ],
+        "on_error": [
+            "竞技场"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -270,
+                "y": -2333
+            }
+        }
+    },
+    "新建节点18": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777212408119.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1101,
+                    665,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 3000,
+        "next": [
+            "新建节点21",
+            "新建节点19"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -148,
+                "y": -2102
+            }
+        }
+    },
+    "新建节点19": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "Skip"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 20000,
+        "next": [
+            "新建节点20"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 378,
+                "y": -2017
+            }
+        }
+    },
+    "新建节点20": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "请点击屏幕"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "新建节点16"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 603,
+                "y": -2032
+            }
+        }
+    },
+    "新建节点21": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "是否消耗 0 个钻石进入"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    767,
+                    499,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "新建节点19"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 112,
+                "y": -2325
+            }
+        }
+    },
+    "竞技场": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "竞技场"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "新建节点16"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -505,
+                "y": -2121
+            }
+        }
+    }
+}

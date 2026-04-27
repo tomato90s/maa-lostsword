@@ -1,0 +1,408 @@
+{
+    "$__mpe_config_index": {
+        "$__mpe_code": {
+            "prefix": "",
+            "savedViewport": {
+                "x": 613,
+                "y": 2639,
+                "zoom": 1.12
+            },
+            "filename": "dungeon",
+            "version": "v1.4.3"
+        }
+    },
+    "副本": {
+        "enabled": false,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "巨石阵",
+            "新建节点33",
+            "新建节点40",
+            "新建节点42"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -216,
+                "y": -1402
+            }
+        }
+    },
+    "巨石阵": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "巨石阵"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "新建节点26"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 451,
+                "y": -1540
+            }
+        }
+    },
+    "战斗": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "副本",
+            "普通"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -942,
+                "y": -1529
+            }
+        }
+    },
+    "扫荡": {
+        "max_hit": 5,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    962,
+                    664,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "新建节点38",
+            "新建节点12"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1063,
+                "y": -1181
+            }
+        }
+    },
+    "新建节点12": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 200,
+        "next": [
+            "扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1240,
+                "y": -929
+            }
+        }
+    },
+    "新建节点26": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "选择"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "新建节点27"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 940,
+                "y": -1652
+            }
+        }
+    },
+    "新建节点27": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "出发"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 3000,
+        "next": [
+            "新建节点28"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1323,
+                "y": -1611
+            }
+        }
+    },
+    "新建节点28": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "剩余时间"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    638,
+                    137,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 5000,
+        "next": [
+            "新建节点29"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1120,
+                "y": -1492
+            }
+        }
+    },
+    "新建节点29": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777201937160.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1235,
+                    34,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "timeout": 20000,
+        "next": [
+            "退场"
+        ],
+        "on_error": [
+            "新建节点2"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1414,
+                "y": -1487
+            }
+        }
+    },
+    "新建节点33": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "黄金猎犬"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 463,
+                "y": -1276
+            }
+        }
+    },
+    "新建节点38": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777205699464.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    908,
+                    118,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "关闭弹窗X"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1241,
+                "y": -1204
+            }
+        }
+    },
+    "新建节点40": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "经验书"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 563,
+                "y": -790
+            }
+        }
+    },
+    "新建节点42": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "属性石"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 624,
+                "y": -1020
+            }
+        }
+    },
+    "普通": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "普通"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "领主突袭",
+            "竞技场"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -791,
+                "y": -1924
+            }
+        }
+    },
+    "领主突袭": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "领主突袭"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -308,
+                "y": -1663
+            }
+        }
+    }
+}
