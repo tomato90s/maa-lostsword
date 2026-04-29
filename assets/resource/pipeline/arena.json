@@ -1,17 +1,17 @@
 {
-    "$__mpe_config_index": {
+    "$__mpe_config_arena": {
         "$__mpe_code": {
             "prefix": "",
             "savedViewport": {
-                "x": 613,
-                "y": 2639,
-                "zoom": 1.12
+                "x": 1390,
+                "y": 1731,
+                "zoom": 0.75
             },
             "filename": "arena",
             "version": "v1.4.3"
         }
     },
-    "新建节点16": {
+    "点击挑战": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -20,108 +20,69 @@
                 ]
             }
         },
-        "pre_wait_freezes": 1000,
         "action": {
             "type": "Click"
         },
-        "post_wait_freezes": 1000,
+        "post_wait_freezes": 500,
         "next": [
-            "新建节点18"
-        ],
-        "on_error": [
-            "竞技场"
+            "挑战准备"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -270,
-                "y": -2333
+                "x": -381,
+                "y": -2189
             }
         }
     },
-    "新建节点18": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "template_1777212408119.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1101,
-                    665,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 3000,
-        "next": [
-            "新建节点21",
-            "新建节点19"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -148,
-                "y": -2102
-            }
-        }
-    },
-    "新建节点19": {
+    "Skip": {
         "recognition": {
             "type": "OCR",
             "param": {
+                "roi": [
+                    1100,
+                    4,
+                    101,
+                    59
+                ],
                 "expected": [
                     "Skip"
                 ]
             }
         },
         "action": {
-            "type": "Click"
-        },
-        "timeout": 20000,
-        "next": [
-            "新建节点20"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 378,
-                "y": -2017
-            }
-        }
-    },
-    "新建节点20": {
-        "recognition": {
-            "type": "OCR",
+            "type": "Click",
             "param": {
-                "expected": [
-                    "请点击屏幕"
+                "target": [
+                    1128,
+                    35,
+                    1,
+                    1
                 ]
             }
         },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 1000,
+        "post_delay": 5000,
         "next": [
-            "新建节点16"
+            "arena_X"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 603,
-                "y": -2032
+                "x": 250,
+                "y": -2218
             }
         }
     },
-    "新建节点21": {
+    "arena_X": {
         "recognition": {
-            "type": "OCR",
+            "type": "TemplateMatch",
             "param": {
-                "expected": [
-                    "是否消耗 0 个钻石进入"
+                "roi": [
+                    1197,
+                    13,
+                    76,
+                    59
+                ],
+                "template": [
+                    "template_1777303649874.png"
                 ]
             }
         },
@@ -129,20 +90,74 @@
             "type": "Click",
             "param": {
                 "target": [
-                    767,
-                    499,
+                    1241,
+                    38,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 1000,
+            "target": [
+                1193,
+                4,
+                78,
+                63
+            ]
+        },
+        "next": [
+            "点击挑战"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 704,
+                "y": -2155
+            }
+        }
+    },
+    "免费钻石挑战": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    532,
+                    342,
+                    190,
+                    38
+                ],
+                "expected": [
+                    "耗0个"
+                ]
+            }
+        },
+        "pre_wait_freezes": {
+            "time": 500,
+            "target": [
+                505,
+                197,
+                312,
+                117
+            ]
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    789,
+                    500,
                     1,
                     1
                 ]
             }
         },
         "next": [
-            "新建节点19"
+            "Skip"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 112,
-                "y": -2325
+                "x": 67,
+                "y": -2579
             }
         }
     },
@@ -157,16 +172,254 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Click",
+            "param": {
+                "target": [
+                    527,
+                    507,
+                    1,
+                    1
+                ]
+            }
         },
-        "post_wait_freezes": 1000,
+        "post_wait_freezes": 500,
         "next": [
-            "新建节点16"
+            "点击挑战"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -505,
-                "y": -2121
+                "x": -677,
+                "y": -2193
+            }
+        }
+    },
+    "竞技场入口": {
+        "next": [
+            "[JumpBack]ReturnMain",
+            "冒险"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -1544,
+                "y": -2486
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_arena": {
+        "$__mpe_code": {
+            "position": {
+                "x": -1308,
+                "y": -1685
+            }
+        }
+    },
+    "冒险": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "准备开始竞技场"
+        },
+        "next": [
+            "FightClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -1266,
+                "y": -2421
+            }
+        }
+    },
+    "FightClick": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    975,
+                    342,
+                    92,
+                    89
+                ],
+                "template": [
+                    "template_1777300718819.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1013,
+                    386,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 500,
+        "next": [
+            "[JumpBack]FightHomeFlag",
+            "[JumpBack]点击普通",
+            "竞技场"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -1003,
+                "y": -2413
+            }
+        }
+    },
+    "FightHomeFlag": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": -653,
+                "y": -2749
+            }
+        }
+    },
+    "挑战准备": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    7,
+                    4,
+                    105,
+                    79
+                ],
+                "template": [
+                    "template_1777303098459.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1090,
+                    665,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2500,
+        "next": [
+            "Skip",
+            "免费钻石挑战",
+            "挑战已到上限"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -122,
+                "y": -2238
+            }
+        }
+    },
+    "点击普通": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "普通"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 500,
+        "$__mpe_code": {
+            "position": {
+                "x": -671,
+                "y": -2453
+            }
+        }
+    },
+    "挑战已到上限": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    517,
+                    339,
+                    230,
+                    75
+                ],
+                "expected": [
+                    "(3/15)",
+                    "耗50个"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    514,
+                    498,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                557,
+                60,
+                178,
+                111
+            ]
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -350,
+                "y": -1735
             }
         }
     }

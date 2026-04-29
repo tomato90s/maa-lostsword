@@ -2,8 +2,10 @@
     "task": [
         {
             "name": "竞技场",
-            "entry": "竞技场",
-            "group": ["daily"]
+            "entry": "竞技场入口",
+            "group": [
+                "daily"
+            ]
         }
     ]
 }
