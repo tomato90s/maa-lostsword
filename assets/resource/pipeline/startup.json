@@ -2,47 +2,20 @@
     "$__mpe_config_startup": {
         "$__mpe_code": {
             "prefix": "",
+            "lastSyncTime": 1777473507516,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/startup.json",
             "savedViewport": {
-                "x": 2934,
-                "y": 1146,
-                "zoom": 1
+                "x": 2473,
+                "y": 893,
+                "zoom": 0.9
             },
             "filename": "startup",
             "version": "v1.4.3"
         }
     },
-    "HomeFlagCloseReturnMain": {
-        "max_hit": 4,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1200,
-                18,
-                68,
-                51
-            ]
-        },
-        "next": [],
-        "focus": {
-            "Node.Recognition.Failed": "识别首页失败！"
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": -1824,
-                "y": -659
-            }
-        }
-    },
     "AppIcon": {
-        "max_hit": 2222,
+        "max_hit": 24,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -90,15 +63,52 @@
             }
         }
     },
-    "startup": {
-        "next": [
-            "AppIcon",
-            "HomeFlagCloseReturnMain"
-        ],
+    "CloseX": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777188837649.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 500,
         "$__mpe_code": {
             "position": {
-                "x": -3563,
-                "y": -520
+                "x": -2191,
+                "y": -1693
+            }
+        }
+    },
+    "HomeFlagCloseReturnMain": {
+        "max_hit": 4,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1200,
+                18,
+                68,
+                51
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Failed": "识别首页失败！"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": -1824,
+                "y": -659
             }
         }
     },
@@ -144,6 +154,82 @@
             "position": {
                 "x": -2924,
                 "y": -1031
+            }
+        }
+    },
+    "ReturnMain": {
+        "max_hit": 1,
+        "next": [
+            "[JumpBack]女仆活动弹窗",
+            "[JumpBack]CardReward",
+            "[JumpBack]新建节点14",
+            "[JumpBack]CloseX",
+            "[JumpBack]右上角X",
+            "HomeFlagCloseReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -2635,
+                "y": -1034
+            }
+        }
+    },
+    "StopTask": {
+        "action": {
+            "type": "StopTask"
+        },
+        "focus": {
+            "Node.Action.Starting": "无法进行下去，脚本结束"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": -2925,
+                "y": -645
+            }
+        }
+    },
+    "startup": {
+        "next": [
+            "AppIcon",
+            "HomeFlagCloseReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -3809,
+                "y": -540
+            }
+        }
+    },
+    "右上角X": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1199,
+                    10,
+                    65,
+                    62
+                ],
+                "template": [
+                    "template_1777310648326.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1232,
+                    38,
+                    1,
+                    1
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": -2188,
+                "y": -1949
             }
         }
     },
@@ -232,8 +318,8 @@
         "post_delay": 3000,
         "$__mpe_code": {
             "position": {
-                "x": 323,
-                "y": -268
+                "x": -1764,
+                "y": -1466
             }
         }
     },
@@ -254,100 +340,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 417,
-                "y": 63
-            }
-        }
-    },
-    "$__mpe_external_主页_startup": {
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 0
-            }
-        }
-    },
-    "ReturnMain": {
-        "max_hit": 1,
-        "next": [
-            "[JumpBack]女仆活动弹窗",
-            "[JumpBack]CardReward",
-            "[JumpBack]新建节点14",
-            "[JumpBack]CloseX",
-            "[JumpBack]右上角X",
-            "HomeFlagCloseReturnMain"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -2635,
-                "y": -1034
-            }
-        }
-    },
-    "StopTask": {
-        "action": {
-            "type": "StopTask"
-        },
-        "focus": {
-            "Node.Action.Starting": "无法进行下去，脚本结束"
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": -2925,
-                "y": -645
-            }
-        }
-    },
-    "CloseX": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "template_1777188837649.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 500,
-        "$__mpe_code": {
-            "position": {
-                "x": -2191,
-                "y": -1693
-            }
-        }
-    },
-    "右上角X": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1199,
-                    10,
-                    65,
-                    62
-                ],
-                "template": [
-                    "template_1777310648326.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1232,
-                    38,
-                    1,
-                    1
-                ]
-            }
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": -2188,
-                "y": -1949
+                "x": -2039,
+                "y": -1332
             }
         }
     }
