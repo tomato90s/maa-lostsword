@@ -5,35 +5,61 @@
 
 <div align="center">
 
-# MaaPracticeBoilerplate
+# MAA-LostSword
+
+基于 [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 的 Lost Sword 自动化脚本
 
 </div>
 
-本仓库为 [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 所提供的项目模板，开发者可基于此模板直接创建自己的 MaaXXX 项目。
+## 功能清单
 
-> **MaaFramework** 是基于图像识别技术、运用 [MAA](https://github.com/MaaAssistantArknights/MaaAssistantArknights) 开发经验去芜存菁、完全重写的新一代自动化黑盒测试框架。
-> 低代码的同时仍拥有高扩展性，旨在打造一款丰富、领先、且实用的开源库，助力开发者轻松编写出更好的黑盒测试程序，并推广普及。
+| 功能 | 状态 | 说明 |
+|------|------|------|
+| 竞技场 | ✅ 可用 | 自动完成竞技场免费次数挑战，次数用尽后自动返回首页 |
+| 副本 | 🚧 开发中 | 尚未支持 |
+| 公会 | 🚧 开发中 | 尚未支持 |
+| 迷宫 | 🚧 开发中 | 尚未支持 |
+| 星辰轮回 | 🚧 开发中 | 尚未支持 |
 
-## 即刻开始
+## 使用方法
 
-请阅读[如何开发](./docs/zh_cn/develop/how_to_develop.md)
+### 1. 下载 Release
 
-## 生态共建
+从 [Releases](https://github.com/andy90s/maa-lostsword/releases) 页面下载对应平台的安装包。
 
-MAA 正计划建设为一类项目，而非舟的单一软件。
+支持平台：
+- Windows (x64 / ARM64)
+- macOS (x64 / ARM64)
+- Linux (x64 / ARM64)
+- Android (x64 / ARM64)
 
-若您的项目依赖于 MaaFramework，我们欢迎您将它命名为 MaaXXX, MXA, MAX 等等。当然，这是许可而不是限制，您也可以自由选择其他与 MAA 无关的名字，完全取决于您自己的想法！
+### 2. 运行
 
-同时，我们也非常欢迎您提出 PR，在 [社区项目列表](https://github.com/MaaXYZ/MaaFramework#%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE) 中添加上您的项目！
+解压后运行对应的可执行文件：
 
-## 常见问题
+- **Windows**: `MaaXXX.exe`
+- **macOS**: `MaaXXX.app`（首次运行可能需要手动签名）
+- **Linux**: `MaaXXX`
+- **Android**: 通过 MAA 安卓端加载
 
-请阅读[常见问题](./docs/zh_cn/develop/faq.md)
+### 3. 连接设备
+
+支持 ADB 连接模拟器或物理设备。推荐使用 BlueStacks、MuMu 等安卓模拟器运行游戏。
+
+## 环境要求
+
+- [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 运行环境
+- ADB 调试连接（模拟器或真机）
+- 游戏分辨率：1280x720（推荐）
+
+## 开发说明
+
+本项目使用 [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 作为底层自动化框架，通过图像识别（OCR + 模板匹配）实现游戏操作的自动化。
+
+Pipeline 配置文件位于 `assets/resource/pipeline/`，使用 JSON 格式定义识别节点和操作逻辑。
+
+更多开发文档请参考 [MaaFramework 文档](https://github.com/MaaXYZ/MaaFramework/tree/main/docs)。
 
 ## 鸣谢
 
 本项目由 **[MaaFramework](https://github.com/MaaXYZ/MaaFramework)** 强力驱动！
-
-感谢以下开发者对本项目作出的贡献（下面链接改成你自己的项目地址）:
-
-[![Contributors](https://contrib.rocks/image?repo=MaaXYZ/MaaFramework&max=1000)](https://github.com/MaaXYZ/MaaFramework/graphs/contributors)
