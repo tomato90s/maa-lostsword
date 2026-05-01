@@ -2,12 +2,12 @@
     "$__mpe_config_instance": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777618058188,
+            "lastSyncTime": 1777623428092,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
             "savedViewport": {
-                "x": -571,
-                "y": -500,
+                "x": -215,
+                "y": 160,
                 "zoom": 0.81
             },
             "filename": "instance",
@@ -17,8 +17,8 @@
     "$__mpe_external_ReturnMain_instance": {
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 114
+                "x": 334,
+                "y": -20
             }
         }
     },
@@ -93,12 +93,12 @@
         },
         "next": [
             "Instance_Label",
-            "Instance_ClickNormal"
+            "Instance_ClickInstanceTab"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 652,
-                "y": 744
+                "x": 18,
+                "y": 738
             }
         }
     },
@@ -126,34 +126,6 @@
             "position": {
                 "x": 1932,
                 "y": 299
-            }
-        }
-    },
-    "Instance_ClickNormal": {
-        "desc": "点击副本",
-        "max_hit": 1,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "副本"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 1000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到副本"
-        },
-        "next": [
-            "Instance_LordRaid"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 972,
-                "y": 744
             }
         }
     },
@@ -320,8 +292,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 254
+                "x": 314,
+                "y": 245
             }
         }
     },
@@ -359,6 +331,12 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
+                "roi": [
+                    6,
+                    4,
+                    89,
+                    70
+                ],
                 "template": [
                     "template_1777301855439.png"
                 ]
@@ -366,8 +344,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 972,
-                "y": 12
+                "x": 924,
+                "y": -496
             }
         }
     },
@@ -423,8 +401,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 972,
-                "y": 412
+                "x": 924,
+                "y": 313
             }
         }
     },
@@ -482,19 +460,19 @@
                 ]
             }
         },
-        "post_wait_freezes": 500,
+        "post_delay": 1500,
         "focus": {
             "Node.Recognition.Failed": "未找到副本菜单图标"
         },
         "next": [
             "[JumpBack]Instance_HomeFlag",
-            "[JumpBack]Instance_ClickNormal",
+            "[JumpBack]Instance_ClickInstanceTab",
             "Instance_Label"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 649,
-                "y": 250
+                "x": 594,
+                "y": 106
             }
         }
     },
@@ -616,6 +594,47 @@
             "position": {
                 "x": 1612,
                 "y": 1061
+            }
+        }
+    },
+    "Instance_ClickInstanceTab": {
+        "desc": "点击副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    305,
+                    21,
+                    252,
+                    127
+                ],
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    414,
+                    94,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到副本"
+        },
+        "next": [
+            "Instance_LordRaid"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 926,
+                "y": -107
             }
         }
     }
