@@ -1,0 +1,349 @@
+{
+    "$__mpe_config_stonehenge": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/stonehenge.json",
+            "filename": "stonehenge",
+            "version": "v1.4.3"
+        }
+    },
+    "Stonehenge_Entry": {
+        "desc": "巨石阵任务入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行巨石阵任务"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "Stonehenge_FromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -1802,
+                "y": -2274
+            }
+        }
+    },
+    "Stonehenge_FromHome": {
+        "desc": "从主页右上角菜单进入",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "准备开始巨石阵"
+        },
+        "next": [
+            "Stonehenge_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -1341,
+                "y": -2416
+            }
+        }
+    },
+    "Stonehenge_HomeFlag": {
+        "desc": "识别到主页则停止循环",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    6,
+                    4,
+                    89,
+                    70
+                ],
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": -686,
+                "y": -2778
+            }
+        }
+    },
+    "Stonehenge_Label": {
+        "desc": "识别副本入口文字",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    414,
+                    96,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                295,
+                56,
+                260,
+                87
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Failed": "未找到'副本'文字"
+        },
+        "next": [
+            "Stonehenge_Stonehenge"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -677,
+                "y": -2193
+            }
+        }
+    },
+    "Stonehenge_MenuClick": {
+        "desc": "点击菜单中的副本图标",
+        "max_hit": 5,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    975,
+                    342,
+                    92,
+                    89
+                ],
+                "template": [
+                    "template_1777300718819.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1013,
+                    386,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 1500,
+        "focus": {
+            "Node.Recognition.Failed": "未找到副本菜单图标"
+        },
+        "next": [
+            "[JumpBack]Stonehenge_HomeFlag",
+            "Stonehenge_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -1045,
+                "y": -2503
+            }
+        }
+    },
+    "Stonehenge_Stonehenge": {
+        "desc": "巨石阵副本",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "巨石阵"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "Stonehenge_SelectTarget"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -350,
+                "y": -1735
+            }
+        }
+    },
+    "Stonehenge_SelectTarget": {
+        "desc": "选择目标",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "选择"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到选择按钮"
+        },
+        "next": [
+            "Stonehenge_ClickDepart"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -122,
+                "y": -2238
+            }
+        }
+    },
+    "Stonehenge_ClickDepart": {
+        "desc": "点击出发",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "出发"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 3000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到出发按钮"
+        },
+        "next": [
+            "Stonehenge_RemainingTime"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -381,
+                "y": -2189
+            }
+        }
+    },
+    "Stonehenge_RemainingTime": {
+        "desc": "剩余时间界面",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "剩余时间"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    638,
+                    137,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 5000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到剩余时间界面"
+        },
+        "next": [
+            "Stonehenge_CloseX"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": -2216
+            }
+        }
+    },
+    "Stonehenge_CloseX": {
+        "desc": "关闭副本窗口X按钮",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777201937160.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1235,
+                    34,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "timeout": 20000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到关闭按钮"
+        },
+        "next": [
+            "退场"
+        ],
+        "on_error": [
+            "新建节点2"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 675,
+                "y": -2396
+            }
+        }
+    },
+    "Stonehenge_Stop": {
+        "$__mpe_code": {
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    }
+}

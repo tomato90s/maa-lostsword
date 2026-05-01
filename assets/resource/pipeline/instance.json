@@ -2,12 +2,12 @@
     "$__mpe_config_instance": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777627788814,
+            "lastSyncTime": 1777628462813,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
             "savedViewport": {
-                "x": -39,
-                "y": 301,
+                "x": -68,
+                "y": 97,
                 "zoom": 0.75
             },
             "filename": "instance",
@@ -92,40 +92,12 @@
             "Node.Recognition.Failed": "未找到挑战按钮"
         },
         "next": [
-            "Instance_Label",
-            "Instance_ClickInstanceTab"
+            "Instance_Label"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 18,
                 "y": 738
-            }
-        }
-    },
-    "Instance_ClickDepart": {
-        "desc": "点击出发",
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "出发"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 3000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到出发按钮"
-        },
-        "next": [
-            "Instance_RemainingTime"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1932,
-                "y": 299
             }
         }
     },
@@ -160,45 +132,6 @@
             "position": {
                 "x": 1932,
                 "y": 1051
-            }
-        }
-    },
-    "Instance_CloseX": {
-        "desc": "关闭副本窗口X按钮",
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "template_1777201937160.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1235,
-                    34,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": 1000,
-        "timeout": 20000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到关闭按钮"
-        },
-        "next": [
-            "退场"
-        ],
-        "on_error": [
-            "新建节点2"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 2572,
-                "y": 241
             }
         }
     },
@@ -387,14 +320,29 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Click",
+            "param": {
+                "target": [
+                    414,
+                    96,
+                    1,
+                    1
+                ]
+            }
         },
-        "post_wait_freezes": 1000,
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                295,
+                56,
+                260,
+                87
+            ]
+        },
         "focus": {
             "Node.Recognition.Failed": "未找到'副本'文字"
         },
         "next": [
-            "Instance_Stonehenge",
             "Instance_GoldenHound",
             "Instance_ExpBook",
             "Instance_AttributeStone"
@@ -472,93 +420,6 @@
             "position": {
                 "x": 594,
                 "y": 106
-            }
-        }
-    },
-    "Instance_RemainingTime": {
-        "desc": "剩余时间界面",
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "剩余时间"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    638,
-                    137,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 5000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到剩余时间界面"
-        },
-        "next": [
-            "Instance_CloseX"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 2252,
-                "y": 283
-            }
-        }
-    },
-    "Instance_SelectTarget": {
-        "desc": "选择目标",
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "选择"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 1000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到选择按钮"
-        },
-        "next": [
-            "Instance_ClickDepart"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1612,
-                "y": 299
-            }
-        }
-    },
-    "Instance_Stonehenge": {
-        "desc": "巨石阵副本",
-        "max_hit": 1,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "巨石阵"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 1000,
-        "next": [
-            "Instance_SelectTarget"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 299
             }
         }
     },
