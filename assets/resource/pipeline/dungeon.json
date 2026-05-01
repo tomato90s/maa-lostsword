@@ -370,8 +370,7 @@
         },
         "post_wait_freezes": 1000,
         "next": [
-            "领主突袭",
-            "竞技场"
+            "领主突袭"
         ],
         "$__mpe_code": {
             "position": {

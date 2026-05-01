@@ -2,45 +2,16 @@
     "$__mpe_config_startup": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777473507516,
+            "lastSyncTime": 1777552045135,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/startup.json",
             "savedViewport": {
-                "x": 2473,
-                "y": 893,
-                "zoom": 0.9
+                "x": 4213,
+                "y": 1158,
+                "zoom": 1.55
             },
             "filename": "startup",
             "version": "v1.4.3"
-        }
-    },
-    "AppIcon": {
-        "max_hit": 24,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "appicon.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 5000,
-        "timeout": 60000,
-        "rate_limit": 3000,
-        "next": [
-            "LinkStart"
-        ],
-        "on_error": [
-            "StopTask"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -3248,
-                "y": -975
-            }
         }
     },
     "CardReward": {
@@ -83,11 +54,34 @@
             }
         }
     },
+    "DisableStartApp": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "DisableNode",
+                "custom_action_param": {
+                    "node_name": "StartApp"
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": -3207,
+                "y": -406
+            }
+        }
+    },
     "HomeFlagCloseReturnMain": {
         "max_hit": 4,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
+                "roi": [
+                    1096,
+                    407,
+                    151,
+                    121
+                ],
                 "template": [
                     "maoxian.png"
                 ]
@@ -107,8 +101,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -1824,
-                "y": -659
+                "x": -2359,
+                "y": -707
             }
         }
     },
@@ -158,7 +152,7 @@
         }
     },
     "ReturnMain": {
-        "max_hit": 1,
+        "max_hit": 2,
         "next": [
             "[JumpBack]女仆活动弹窗",
             "[JumpBack]CardReward",
@@ -174,6 +168,26 @@
             }
         }
     },
+    "StartApp": {
+        "action": {
+            "type": "StartApp",
+            "param": {
+                "package": "com.wemadeconnect.aos.lostdgl"
+            }
+        },
+        "next": [
+            "DisableStartApp"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -3229,
+                "y": -908
+            }
+        }
+    },
     "StopTask": {
         "action": {
             "type": "StopTask"
@@ -183,15 +197,17 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -2925,
-                "y": -645
+                "x": -2914,
+                "y": -484
             }
         }
     },
     "startup": {
+        "timeout": 60000,
         "next": [
-            "AppIcon",
-            "HomeFlagCloseReturnMain"
+            "HomeFlagCloseReturnMain",
+            "LinkStart",
+            "[JumpBack]StartApp"
         ],
         "$__mpe_code": {
             "position": {

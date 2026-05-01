@@ -92,3 +92,71 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 3. **动效即反馈** — 状态变化需要即时、克制的动效反馈，但不过度
 4. **颜色即层级** — 用品牌色的饱和度和明度差异来引导视觉焦点，而不是装饰
 5. **字体即结构** — 清晰的字号层级（大标题/小节/正文/辅助），不用靠颜色来区分
+
+---
+
+## MAA Pipeline 设计原则
+
+### 1. 状态机即循环
+流程控制靠 `next` + `[JumpBack]`，而非线性链条。父节点定义状态列表，子节点执行后 JumpBack 回来形成循环。
+
+### 2. 顺序即优先级
+`next` 数组的**先后顺序就是匹配优先级**。最前面放期望终态，中间放可恢复中间态，最后放兜底终止。框架只执行**第一个匹配成功**的节点。
+
+### 3. 节点即状态
+用 `DisableNode` 和 `NodeOverride` 做动态状态管理：
+- 节点完成使命后自毁（如 ReturnMain 识别到主页后禁用自己）
+- 任务开始前重置被禁用的节点
+这替代了复杂的条件分支语法。
+
+### 4. 识别优先于坐标
+能模板匹配就不盲点点。通用操作（BackButton、HomeButton、CloseX）必须识别到才执行，固定坐标点击只作为最后兜底。复杂场景用 `And`/`Or`/`ColorMatch` 组合识别。
+
+### 5. max_hit 是安全阀
+循环节点必须设 `max_hit`，值宜小（2~20）。它的作用仅是防止死循环，业务终止靠识别条件自然触发。
+
+### 6. 通用复用，专用隔离
+- 通用节点（返回、主页、关闭、跳过）集中维护，全项目引用
+- 专用逻辑（竞技场、副本、活动）各自隔离在独立文件
+- 不重复造轮子
+
+### 7. 等待即策略
+充分考虑游戏动画和转场：
+- 页面切换 → `post_delay: 1500~3000`
+- 加载检测 → `post_wait_freezes` 配合 ROI
+- "点完就跑"会导致识别旧页面状态
+
+### 8. 自我注释
+复杂节点必须写 `desc` 说明设计意图，关键识别失败用 `focus` 输出调试信息。Pipeline 是给人读的设计文档，不只是机器配置。
+
+---
+
+## MAA Pipeline 节点命名规范
+
+参考 M9A 实践，节点命名遵循以下规则：
+
+### 核心原则
+- **全英文 PascalCase**，不用中文节点名
+- **中文意图写在 `desc`**，不靠名字塞语义
+- **循环/自毁/终止不靠命名表达**，靠 `max_hit` / `DisableNode` / `Stop`
+
+### 模式速查
+
+| 模式 | 示例 | 含义 |
+|------|------|------|
+| **动词+名词** | `ClickChallenge`, `CloseArenaPopup`, `EnterBank` | 执行动作 |
+| **XxxButton** | `BackButton`, `HomeButton`, `SkipButton` | 识别并点击通用按钮 |
+| **XxxFlag** | `HomeFlag`, `ArenaHomeFlag`, `FlagInBank` | 状态/地标检测，通常只做识别 |
+| **模块前缀** | `ArenaMenuClick`, `BankPurchase_Rabbit` | 业务隔离，同文件内可省略前缀 |
+| **NoXxx** | `NoFree`, `NoRabbit` | "资源不存在"，常触发 DisableNode |
+| **Sub_Xxx** | `Sub_MailBadge`, `Sub_CollectJukebox` | 子流程入口 |
+| **XxxTrue/False** | `ReturnMainStoryChapterTrue` | 条件分支 |
+| **XxxFirst** | `HomeFlagFirst`, `ClosePageFirst` | 首次专用版本 |
+| **XxxWithDelay** | `BackButtonWithDelay` | 带延迟的变体 |
+| **Xxx_wait** | `HomeLoading_wait` | 等待专用版本 |
+| **Stop** | `Stop` | 空节点，显式终止 |
+
+### 禁止
+- 不用 `_Once`、`_Loop`、`_Terminate` 后缀
+- 不用纯中文节点名
+- 不在名字里堆砌功能描述（如 `HomeFlagCloseReturnMain` 是反例）

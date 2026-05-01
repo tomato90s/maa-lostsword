@@ -2,7 +2,7 @@
     "task": [
         {
             "name": "竞技场",
-            "entry": "竞技场入口",
+            "entry": "ArenaEntry",
             "group": [
                 "daily"
             ]

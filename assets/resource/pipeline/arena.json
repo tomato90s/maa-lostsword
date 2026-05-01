@@ -2,27 +2,21 @@
     "$__mpe_config_arena": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777471444892,
+            "lastSyncTime": 1777607698122,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/arena.json",
             "savedViewport": {
-                "x": 42,
-                "y": 2503,
-                "zoom": 1.02
+                "x": 1933,
+                "y": 2538,
+                "zoom": 1.04
             },
             "filename": "arena",
             "version": "v1.4.3"
         }
     },
-    "$__mpe_external_ReturnMain_arena": {
-        "$__mpe_code": {
-            "position": {
-                "x": -1308,
-                "y": -1685
-            }
-        }
-    },
-    "FightClick": {
+    "ArenaMenuClick": {
+        "desc": "点击菜单中的竞技场图标",
+        "max_hit": 5,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -49,10 +43,13 @@
             }
         },
         "post_wait_freezes": 500,
+        "focus": {
+            "Node.Recognition.Failed": "未找到竞技场菜单图标"
+        },
         "next": [
-            "[JumpBack]FightHomeFlag",
-            "[JumpBack]点击普通",
-            "竞技场"
+            "[JumpBack]ArenaHomeFlag",
+            "[JumpBack]ClickNormal",
+            "ArenaLabel"
         ],
         "$__mpe_code": {
             "position": {
@@ -61,7 +58,8 @@
             }
         }
     },
-    "FightHomeFlag": {
+    "ArenaHomeFlag": {
+        "desc": "识别到主页则停止循环",
         "max_hit": 1,
         "recognition": {
             "type": "TemplateMatch",
@@ -78,7 +76,8 @@
             }
         }
     },
-    "Skip": {
+    "SkipBattle": {
+        "desc": "跳过战斗动画",
         "recognition": {
             "type": "OCR",
             "param": {
@@ -105,8 +104,11 @@
             }
         },
         "post_delay": 5000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到 Skip 按钮"
+        },
         "next": [
-            "arena_X"
+            "CloseArenaPopup"
         ],
         "$__mpe_code": {
             "position": {
@@ -115,7 +117,8 @@
             }
         }
     },
-    "arena_X": {
+    "CloseArenaPopup": {
+        "desc": "关闭竞技场弹窗",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -151,7 +154,7 @@
             ]
         },
         "next": [
-            "点击挑战"
+            "ClickChallenge"
         ],
         "$__mpe_code": {
             "position": {
@@ -160,7 +163,8 @@
             }
         }
     },
-    "免费钻石挑战": {
+    "FreeChallenge": {
+        "desc": "免费钻石挑战",
         "recognition": {
             "type": "OCR",
             "param": {
@@ -195,8 +199,11 @@
                 ]
             }
         },
+        "focus": {
+            "Node.Recognition.Failed": "未找到免费挑战选项"
+        },
         "next": [
-            "Skip"
+            "SkipBattle"
         ],
         "$__mpe_code": {
             "position": {
@@ -205,7 +212,204 @@
             }
         }
     },
-    "冒险": {
+    "ChallengeReady": {
+        "desc": "挑战准备界面",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    7,
+                    4,
+                    105,
+                    79
+                ],
+                "template": [
+                    "template_1777303098459.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1090,
+                    665,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2500,
+        "focus": {
+            "Node.Recognition.Failed": "未找到挑战准备界面"
+        },
+        "next": [
+            "SkipBattle",
+            "FreeChallenge",
+            "ChallengeLimit"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -122,
+                "y": -2238
+            }
+        }
+    },
+    "ChallengeLimit": {
+        "desc": "挑战次数已达上限，点击取消",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    517,
+                    339,
+                    230,
+                    75
+                ],
+                "expected": [
+                    "(3/15)",
+                    "耗50个"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    514,
+                    498,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                557,
+                60,
+                178,
+                111
+            ]
+        },
+        "focus": {
+            "Node.Action.Starting": "挑战次数已达上限，任务终止"
+        },
+        "next": [
+            "Stop"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -350,
+                "y": -1735
+            }
+        }
+    },
+    "ClickChallenge": {
+        "desc": "点击挑战按钮",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "挑战"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 500,
+        "focus": {
+            "Node.Recognition.Failed": "未找到挑战按钮"
+        },
+        "next": [
+            "ChallengeReady"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -381,
+                "y": -2189
+            }
+        }
+    },
+    "ClickNormal": {
+        "desc": "点击普通模式",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "普通"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 500,
+        "$__mpe_code": {
+            "position": {
+                "x": -671,
+                "y": -2453
+            }
+        }
+    },
+    "ArenaLabel": {
+        "desc": "识别竞技场文字",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "竞技场"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    527,
+                    507,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 500,
+        "focus": {
+            "Node.Recognition.Failed": "未找到'竞技场'文字"
+        },
+        "next": [
+            "ClickChallenge"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -677,
+                "y": -2193
+            }
+        }
+    },
+    "ArenaEntry": {
+        "desc": "竞技场任务入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行竞技场任务"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "ArenaFromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -1802,
+                "y": -2274
+            }
+        }
+    },
+    "ArenaFromHome": {
+        "desc": "从主页右上角菜单进入",
+        "max_hit": 1,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -244,7 +448,7 @@
             "Node.Recognition.Succeeded": "准备开始竞技场"
         },
         "next": [
-            "FightClick"
+            "ArenaMenuClick"
         ],
         "$__mpe_code": {
             "position": {
@@ -253,177 +457,5 @@
             }
         }
     },
-    "挑战准备": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    7,
-                    4,
-                    105,
-                    79
-                ],
-                "template": [
-                    "template_1777303098459.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1090,
-                    665,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 2500,
-        "next": [
-            "Skip",
-            "免费钻石挑战",
-            "挑战已到上限"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -122,
-                "y": -2238
-            }
-        }
-    },
-    "挑战已到上限": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    517,
-                    339,
-                    230,
-                    75
-                ],
-                "expected": [
-                    "(3/15)",
-                    "耗50个"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    514,
-                    498,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                557,
-                60,
-                178,
-                111
-            ]
-        },
-        "next": [
-            "ReturnMain"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -350,
-                "y": -1735
-            }
-        }
-    },
-    "点击挑战": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "挑战"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 500,
-        "next": [
-            "挑战准备"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -381,
-                "y": -2189
-            }
-        }
-    },
-    "点击普通": {
-        "max_hit": 1,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "普通"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 500,
-        "$__mpe_code": {
-            "position": {
-                "x": -671,
-                "y": -2453
-            }
-        }
-    },
-    "竞技场": {
-        "max_hit": 1,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "竞技场"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    527,
-                    507,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": 500,
-        "next": [
-            "点击挑战"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -677,
-                "y": -2193
-            }
-        }
-    },
-    "竞技场入口": {
-        "next": [
-            "[JumpBack]ReturnMain",
-            "冒险"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -1544,
-                "y": -2486
-            }
-        }
-    }
+    "Stop": {}
 }
