@@ -2,7 +2,7 @@
     "task": [
         {
             "name": "竞技场",
-            "entry": "ArenaEntry",
+            "entry": "Arena_Entry",
             "group": [
                 "daily"
             ]
