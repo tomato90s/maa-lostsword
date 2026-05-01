@@ -45,6 +45,7 @@
         "resource/tasks/startup.json",
         "resource/tasks/instance.json",
         "resource/tasks/arena.json",
-        "resource/tasks/stonehenge.json"
+        "resource/tasks/stonehenge.json",
+        "resource/tasks/treasure.json"
     ]
 }

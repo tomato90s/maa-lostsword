@@ -1,0 +1,11 @@
+{
+    "task": [
+        {
+            "name": "宝藏探索",
+            "entry": "Treasure_Entry",
+            "group": [
+                "daily"
+            ]
+        }
+    ]
+}

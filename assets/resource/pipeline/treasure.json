@@ -1,0 +1,370 @@
+{
+    "$__mpe_config_treasure": {
+        "$__mpe_code": {
+            "prefix": "",
+            "lastSyncTime": 1777649359629,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/treasure.json",
+            "savedViewport": {
+                "x": -138,
+                "y": -138,
+                "zoom": 0.79
+            },
+            "filename": "treasure",
+            "version": "v1.4.3"
+        }
+    },
+    "$__mpe_external_ReturnMain_treasure": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 12
+            }
+        }
+    },
+    "Treasure_Entry": {
+        "desc": "宝藏探索任务入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行宝藏探索任务"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "[JumpBack]Treasure_Label",
+            "Treasure_Stop"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 244
+            }
+        }
+    },
+    "Treasure_GetReward": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    880,
+                    559,
+                    208,
+                    48
+                ],
+                "expected": [
+                    "获取宝藏"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    5,
+                    5,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_ItemObtained"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 142
+            }
+        }
+    },
+    "Treasure_ItemObtained": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 183
+            }
+        }
+    },
+    "Treasure_Label": {
+        "desc": "识别宝藏探索入口文字",
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    462,
+                    573,
+                    799,
+                    128
+                ],
+                "template": [
+                    "template_1777642996977.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    20,
+                    20,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到'宝藏探索'文字"
+        },
+        "next": [
+            "Treasure_GetReward",
+            "Treasure_QuickSearch"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 152
+            }
+        }
+    },
+    "Treasure_QuickSearch": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    693,
+                    562,
+                    119,
+                    40
+                ],
+                "expected": [
+                    "快速探查"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    5,
+                    5,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_ItemObtained",
+            "Treasure_QuickPopupC",
+            "Treasure_QuickPopupS"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 515
+            }
+        }
+    },
+    "Treasure_Stop": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 642
+            }
+        }
+    },
+    "Treasure_QuickPopupS": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    504,
+                    499,
+                    163,
+                    44
+                ],
+                "expected": [
+                    "今日剩余免费次数"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    634,
+                    599,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_quickItemObtained"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 911
+            }
+        }
+    },
+    "Treasure_quickItemObtained": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_QuickPopupClose1"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 927
+            }
+        }
+    },
+    "Treasure_QuickPopupClose1": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1061,
+                    104,
+                    63,
+                    57
+                ],
+                "template": [
+                    "template_1777645774889.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 901
+            }
+        }
+    },
+    "Treasure_StopTask": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 615
+            }
+        }
+    },
+    "Treasure_QuickPopupC": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    528,
+                    576,
+                    60,
+                    46
+                ],
+                "template": [
+                    "template_1777649301347.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    967,
+                    113,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_QuickPopupClose2"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 506
+            }
+        }
+    },
+    "Treasure_QuickPopupClose2": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1061,
+                    104,
+                    63,
+                    57
+                ],
+                "template": [
+                    "template_1777645774889.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 521
+            }
+        }
+    }
+}

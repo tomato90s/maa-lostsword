@@ -2,13 +2,13 @@
     "$__mpe_config_startup": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777552045135,
+            "lastSyncTime": 1777648264894,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/startup.json",
             "savedViewport": {
-                "x": 4213,
-                "y": 1158,
-                "zoom": 1.55
+                "x": 2363,
+                "y": 1555,
+                "zoom": 0.79
             },
             "filename": "startup",
             "version": "v1.4.3"
@@ -29,8 +29,8 @@
         "post_wait_freezes": 200,
         "$__mpe_code": {
             "position": {
-                "x": -2170,
-                "y": -1166
+                "x": -2185,
+                "y": -1181
             }
         }
     },
@@ -159,7 +159,8 @@
             "[JumpBack]新建节点14",
             "[JumpBack]CloseX",
             "[JumpBack]右上角X",
-            "HomeFlagCloseReturnMain"
+            "HomeFlagCloseReturnMain",
+            "[JumpBack]Global_ItemObtained"
         ],
         "$__mpe_code": {
             "position": {
@@ -306,8 +307,8 @@
         "post_wait_freezes": 1000,
         "$__mpe_code": {
             "position": {
-                "x": -2115,
-                "y": -924
+                "x": -2177,
+                "y": -957
             }
         }
     },
@@ -334,8 +335,8 @@
         "post_delay": 3000,
         "$__mpe_code": {
             "position": {
-                "x": -1764,
-                "y": -1466
+                "x": -1623,
+                "y": -1598
             }
         }
     },
@@ -356,8 +357,28 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -2039,
-                "y": -1332
+                "x": -1781,
+                "y": -1776
+            }
+        }
+    },
+    "Global_ItemObtained": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": -2195,
+                "y": -1766
             }
         }
     }
