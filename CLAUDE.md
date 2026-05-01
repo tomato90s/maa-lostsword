@@ -140,6 +140,12 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - **中文意图写在 `desc`**，不靠名字塞语义
 - **循环/自毁/终止不靠命名表达**，靠 `max_hit` / `DisableNode` / `Stop`
 
+### 全局唯一性
+
+- **所有节点名必须全局唯一**，跨文件也不能重复
+- **模块前缀是强制要求**：`Arena_` / `Instance_` / `Bank_` 等
+- 通用节点（如 `ReturnMain`、`BackButton`）可跨文件引用，但不得重复定义
+
 ### 模式速查
 
 | 模式 | 示例 | 含义 |
@@ -147,7 +153,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | **动词+名词** | `ClickChallenge`, `CloseArenaPopup`, `EnterBank` | 执行动作 |
 | **XxxButton** | `BackButton`, `HomeButton`, `SkipButton` | 识别并点击通用按钮 |
 | **XxxFlag** | `HomeFlag`, `ArenaHomeFlag`, `FlagInBank` | 状态/地标检测，通常只做识别 |
-| **模块前缀** | `ArenaMenuClick`, `BankPurchase_Rabbit` | 业务隔离，同文件内可省略前缀 |
+| **模块前缀** | `Arena_MenuClick`, `BankPurchase_Rabbit` | 业务隔离，全局唯一 |
 | **NoXxx** | `NoFree`, `NoRabbit` | "资源不存在"，常触发 DisableNode |
 | **Sub_Xxx** | `Sub_MailBadge`, `Sub_CollectJukebox` | 子流程入口 |
 | **XxxTrue/False** | `ReturnMainStoryChapterTrue` | 条件分支 |

@@ -43,7 +43,7 @@
     "option": {},
     "import": [
         "resource/tasks/startup.json",
-        "resource/tasks/dungeon.json",
+        "resource/tasks/instance.json",
         "resource/tasks/arena.json"
     ]
 }

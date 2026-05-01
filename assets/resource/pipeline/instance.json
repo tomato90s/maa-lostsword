@@ -1,0 +1,622 @@
+{
+    "$__mpe_config_instance": {
+        "$__mpe_code": {
+            "prefix": "",
+            "lastSyncTime": 1777616979264,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
+            "savedViewport": {
+                "x": -398,
+                "y": -434,
+                "zoom": 1.12
+            },
+            "filename": "instance",
+            "version": "v1.4.3"
+        }
+    },
+    "Instance_AttributeStone": {
+        "desc": "属性石副本",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "属性石"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到属性石"
+        },
+        "next": [
+            "Instance_Sweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 640
+            }
+        }
+    },
+    "Instance_ClickChallenge": {
+        "desc": "点击挑战按钮",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到挑战按钮"
+        },
+        "next": [
+            "Instance_Label",
+            "Instance_ClickNormal"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 744
+            }
+        }
+    },
+    "Instance_ClickDepart": {
+        "desc": "点击出发",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "出发"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 3000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到出发按钮"
+        },
+        "next": [
+            "Instance_RemainingTime"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1932,
+                "y": 299
+            }
+        }
+    },
+    "Instance_ClickNormal": {
+        "desc": "点击副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到副本"
+        },
+        "next": [
+            "Instance_LordRaid"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 744
+            }
+        }
+    },
+    "Instance_CloseX": {
+        "desc": "关闭副本窗口X按钮",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777201937160.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1235,
+                    34,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "timeout": 20000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到关闭按钮"
+        },
+        "next": [
+            "退场"
+        ],
+        "on_error": [
+            "新建节点2"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2572,
+                "y": 241
+            }
+        }
+    },
+    "Instance_CloseSweepPopup": {
+        "desc": "关闭扫荡弹窗",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777205699464.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    908,
+                    118,
+                    1,
+                    1
+                ]
+            }
+        },
+        "focus": {
+            "Node.Recognition.Failed": "未找到扫荡弹窗关闭按钮"
+        },
+        "next": [
+            "关闭弹窗X"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1932,
+                "y": 1051
+            }
+        }
+    },
+    "Instance_ExpBook": {
+        "desc": "经验书副本",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "经验书"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到经验书"
+        },
+        "next": [
+            "Instance_Sweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 1354
+            }
+        }
+    },
+    "Instance_GoldenHound": {
+        "desc": "黄金猎犬副本",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "黄金猎犬"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到黄金猎犬"
+        },
+        "next": [
+            "Instance_Sweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 1727
+            }
+        }
+    },
+    "Instance_Entry": {
+        "desc": "副本任务入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行副本任务"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "Instance_FromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 69
+            }
+        }
+    },
+    "Instance_FromHome": {
+        "desc": "从主页右上角菜单进入",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "准备开始副本任务"
+        },
+        "next": [
+            "Instance_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 254
+            }
+        }
+    },
+    "Instance_HomeFlag": {
+        "desc": "识别到主页则停止循环",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 12
+            }
+        }
+    },
+    "Instance_Label": {
+        "desc": "识别副本入口文字",
+        "enabled": false,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到'副本'文字"
+        },
+        "next": [
+            "Instance_Stonehenge",
+            "Instance_GoldenHound",
+            "Instance_ExpBook",
+            "Instance_AttributeStone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 412
+            }
+        }
+    },
+    "Instance_MenuClick": {
+        "desc": "点击菜单中的副本图标",
+        "max_hit": 5,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    975,
+                    342,
+                    92,
+                    89
+                ],
+                "template": [
+                    "template_1777300718819.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1013,
+                    386,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 500,
+        "focus": {
+            "Node.Recognition.Failed": "未找到副本菜单图标"
+        },
+        "next": [
+            "[JumpBack]Instance_HomeFlag",
+            "[JumpBack]Instance_ClickNormal",
+            "Instance_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 649,
+                "y": 250
+            }
+        }
+    },
+    "Instance_ItemObtained": {
+        "desc": "已获得道具提示",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 200,
+        "focus": {
+            "Node.Recognition.Failed": "未找到已获得道具提示"
+        },
+        "next": [
+            "Instance_Sweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 1013
+            }
+        }
+    },
+    "Instance_LordRaid": {
+        "desc": "领主突袭",
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "领主突袭"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "Instance_Sweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 2100
+            }
+        }
+    },
+    "Instance_RemainingTime": {
+        "desc": "剩余时间界面",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "剩余时间"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    638,
+                    137,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 5000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到剩余时间界面"
+        },
+        "next": [
+            "Instance_CloseX"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 283
+            }
+        }
+    },
+    "Instance_SelectTarget": {
+        "desc": "选择目标",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "选择"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到选择按钮"
+        },
+        "next": [
+            "Instance_ClickDepart"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 299
+            }
+        }
+    },
+    "Instance_Stonehenge": {
+        "desc": "巨石阵副本",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "巨石阵"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "Instance_SelectTarget"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 299
+            }
+        }
+    },
+    "Instance_Sweep": {
+        "desc": "扫荡",
+        "max_hit": 5,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    962,
+                    664,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "next": [
+            "Instance_CloseSweepPopup",
+            "Instance_ItemObtained"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 1061
+            }
+        }
+    },
+    "$__mpe_external_退场_instance": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2892,
+                "y": 337
+            }
+        }
+    },
+    "$__mpe_external_新建节点2_instance": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2892,
+                "y": 477
+            }
+        }
+    },
+    "$__mpe_external_关闭弹窗X_instance": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 1178
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_instance": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 114
+            }
+        }
+    }
+}

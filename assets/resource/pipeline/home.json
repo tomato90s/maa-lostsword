@@ -150,9 +150,7 @@
         "next": [
             "主页"
         ],
-        "on_error": [
-            "新建节点29"
-        ],
+        "on_error": [],
         "$__mpe_code": {
             "position": {
                 "x": 2135,

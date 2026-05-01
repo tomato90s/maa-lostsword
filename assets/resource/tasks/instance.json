@@ -1,8 +1,8 @@
 {
     "task": [
         {
-            "name": "副本扫荡",
-            "entry": "战斗",
+            "name": "副本",
+            "entry": "Instance_Entry",
             "group": ["daily"]
         }
     ]

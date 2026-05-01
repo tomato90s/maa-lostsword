@@ -14,7 +14,7 @@
             "version": "v1.4.3"
         }
     },
-    "ArenaMenuClick": {
+    "Arena_MenuClick": {
         "desc": "点击菜单中的竞技场图标",
         "max_hit": 5,
         "recognition": {
@@ -47,9 +47,9 @@
             "Node.Recognition.Failed": "未找到竞技场菜单图标"
         },
         "next": [
-            "[JumpBack]ArenaHomeFlag",
-            "[JumpBack]ClickNormal",
-            "ArenaLabel"
+            "[JumpBack]Arena_HomeFlag",
+            "[JumpBack]Arena_ClickNormal",
+            "Arena_Label"
         ],
         "$__mpe_code": {
             "position": {
@@ -58,7 +58,7 @@
             }
         }
     },
-    "ArenaHomeFlag": {
+    "Arena_HomeFlag": {
         "desc": "识别到主页则停止循环",
         "max_hit": 1,
         "recognition": {
@@ -76,7 +76,7 @@
             }
         }
     },
-    "SkipBattle": {
+    "Arena_SkipBattle": {
         "desc": "跳过战斗动画",
         "recognition": {
             "type": "OCR",
@@ -108,7 +108,7 @@
             "Node.Recognition.Failed": "未找到 Skip 按钮"
         },
         "next": [
-            "CloseArenaPopup"
+            "Arena_ClosePopup"
         ],
         "$__mpe_code": {
             "position": {
@@ -117,7 +117,7 @@
             }
         }
     },
-    "CloseArenaPopup": {
+    "Arena_ClosePopup": {
         "desc": "关闭竞技场弹窗",
         "recognition": {
             "type": "TemplateMatch",
@@ -154,7 +154,7 @@
             ]
         },
         "next": [
-            "ClickChallenge"
+            "Arena_ClickChallenge"
         ],
         "$__mpe_code": {
             "position": {
@@ -163,7 +163,7 @@
             }
         }
     },
-    "FreeChallenge": {
+    "Arena_FreeChallenge": {
         "desc": "免费钻石挑战",
         "recognition": {
             "type": "OCR",
@@ -203,7 +203,7 @@
             "Node.Recognition.Failed": "未找到免费挑战选项"
         },
         "next": [
-            "SkipBattle"
+            "Arena_SkipBattle"
         ],
         "$__mpe_code": {
             "position": {
@@ -212,7 +212,7 @@
             }
         }
     },
-    "ChallengeReady": {
+    "Arena_ChallengeReady": {
         "desc": "挑战准备界面",
         "recognition": {
             "type": "TemplateMatch",
@@ -244,9 +244,9 @@
             "Node.Recognition.Failed": "未找到挑战准备界面"
         },
         "next": [
-            "SkipBattle",
-            "FreeChallenge",
-            "ChallengeLimit"
+            "Arena_SkipBattle",
+            "Arena_FreeChallenge",
+            "Arena_ChallengeLimit"
         ],
         "$__mpe_code": {
             "position": {
@@ -255,7 +255,7 @@
             }
         }
     },
-    "ChallengeLimit": {
+    "Arena_ChallengeLimit": {
         "desc": "挑战次数已达上限，点击取消",
         "recognition": {
             "type": "OCR",
@@ -296,7 +296,7 @@
             "Node.Action.Starting": "挑战次数已达上限，任务终止"
         },
         "next": [
-            "Stop"
+            "Arena_Stop"
         ],
         "$__mpe_code": {
             "position": {
@@ -305,7 +305,7 @@
             }
         }
     },
-    "ClickChallenge": {
+    "Arena_ClickChallenge": {
         "desc": "点击挑战按钮",
         "recognition": {
             "type": "OCR",
@@ -323,7 +323,7 @@
             "Node.Recognition.Failed": "未找到挑战按钮"
         },
         "next": [
-            "ChallengeReady"
+            "Arena_ChallengeReady"
         ],
         "$__mpe_code": {
             "position": {
@@ -332,7 +332,7 @@
             }
         }
     },
-    "ClickNormal": {
+    "Arena_ClickNormal": {
         "desc": "点击普通模式",
         "max_hit": 1,
         "recognition": {
@@ -354,7 +354,7 @@
             }
         }
     },
-    "ArenaLabel": {
+    "Arena_Label": {
         "desc": "识别竞技场文字",
         "max_hit": 1,
         "recognition": {
@@ -381,7 +381,7 @@
             "Node.Recognition.Failed": "未找到'竞技场'文字"
         },
         "next": [
-            "ClickChallenge"
+            "Arena_ClickChallenge"
         ],
         "$__mpe_code": {
             "position": {
@@ -390,7 +390,7 @@
             }
         }
     },
-    "ArenaEntry": {
+    "Arena_Entry": {
         "desc": "竞技场任务入口",
         "max_hit": 2,
         "focus": {
@@ -398,7 +398,7 @@
         },
         "next": [
             "[JumpBack]ReturnMain",
-            "ArenaFromHome"
+            "Arena_FromHome"
         ],
         "$__mpe_code": {
             "position": {
@@ -407,7 +407,7 @@
             }
         }
     },
-    "ArenaFromHome": {
+    "Arena_FromHome": {
         "desc": "从主页右上角菜单进入",
         "max_hit": 1,
         "recognition": {
@@ -448,7 +448,7 @@
             "Node.Recognition.Succeeded": "准备开始竞技场"
         },
         "next": [
-            "ArenaMenuClick"
+            "Arena_MenuClick"
         ],
         "$__mpe_code": {
             "position": {
@@ -457,5 +457,5 @@
             }
         }
     },
-    "Stop": {}
+    "Arena_Stop": {}
 }
