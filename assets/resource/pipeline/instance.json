@@ -2,12 +2,12 @@
     "$__mpe_config_instance": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777628462813,
+            "lastSyncTime": 1777633405732,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
             "savedViewport": {
-                "x": -68,
-                "y": 97,
+                "x": -177,
+                "y": 111,
                 "zoom": 0.75
             },
             "filename": "instance",
@@ -19,14 +19,6 @@
             "position": {
                 "x": 334,
                 "y": -20
-            }
-        }
-    },
-    "$__mpe_external_关闭弹窗X_instance": {
-        "$__mpe_code": {
-            "position": {
-                "x": 2252,
-                "y": 1178
             }
         }
     },
@@ -52,6 +44,12 @@
         "recognition": {
             "type": "OCR",
             "param": {
+                "roi": [
+                    1124,
+                    535,
+                    127,
+                    59
+                ],
                 "expected": [
                     "属性石"
                 ]
@@ -60,7 +58,7 @@
         "action": {
             "type": "Click"
         },
-        "post_wait_freezes": 1000,
+        "post_delay": 2000,
         "focus": {
             "Node.Recognition.Failed": "未找到属性石"
         },
@@ -106,32 +104,36 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
+                "roi": [
+                    549,
+                    10,
+                    557,
+                    703
+                ],
                 "template": [
-                    "template_1777205699464.png"
+                    "template_1777632657324.png"
                 ]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target": [
-                    908,
-                    118,
-                    1,
-                    1
+                "target_offset": [
+                    5,
+                    5,
+                    0,
+                    0
                 ]
             }
         },
+        "post_delay": 2000,
         "focus": {
             "Node.Recognition.Failed": "未找到扫荡弹窗关闭按钮"
         },
-        "next": [
-            "关闭弹窗X"
-        ],
         "$__mpe_code": {
             "position": {
-                "x": 1932,
-                "y": 1051
+                "x": 2048,
+                "y": 286
             }
         }
     },
@@ -166,7 +168,7 @@
         "action": {
             "type": "Click"
         },
-        "post_wait_freezes": 1000,
+        "post_delay": 2000,
         "focus": {
             "Node.Recognition.Failed": "未找到经验书"
         },
@@ -175,8 +177,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 1354
+                "x": 1293,
+                "y": 989
             }
         }
     },
@@ -244,7 +246,7 @@
         "action": {
             "type": "Click"
         },
-        "post_wait_freezes": 1000,
+        "post_delay": 2000,
         "focus": {
             "Node.Recognition.Failed": "未找到黄金猎犬"
         },
@@ -253,8 +255,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 1727
+                "x": 1298,
+                "y": 1310
             }
         }
     },
@@ -304,8 +306,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 1013
+                "x": 1729,
+                "y": 1379
             }
         }
     },
@@ -330,53 +332,20 @@
                 ]
             }
         },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                295,
-                56,
-                260,
-                87
-            ]
-        },
+        "post_delay": 2000,
         "focus": {
             "Node.Recognition.Failed": "未找到'副本'文字"
         },
         "next": [
-            "Instance_GoldenHound",
-            "Instance_ExpBook",
-            "Instance_AttributeStone"
+            "[JumpBack]Instance_GoldenHound",
+            "[JumpBack]Instance_ExpBook",
+            "[JumpBack]Instance_AttributeStone",
+            "Instance_Stop"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 949,
                 "y": 231
-            }
-        }
-    },
-    "Instance_LordRaid": {
-        "desc": "领主突袭",
-        "enabled": false,
-        "max_hit": 1,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "领主突袭"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 1000,
-        "next": [
-            "Instance_Sweep"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 2100
             }
         }
     },
@@ -447,13 +416,57 @@
         },
         "post_wait_freezes": 1000,
         "next": [
-            "Instance_CloseSweepPopup",
-            "Instance_ItemObtained"
+            "Instance_ItemObtained",
+            "[JumpBack]Instance_CloseSweepPopup",
+            "Instance_CloseEnter"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1612,
-                "y": 1061
+                "x": 1721,
+                "y": 827
+            }
+        }
+    },
+    "Instance_CloseEnter": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1201,
+                    9,
+                    70,
+                    70
+                ],
+                "template": [
+                    "template_1777631957359.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1234,
+                    39,
+                    1,
+                    1
+                ]
+            }
+        },
+        "repeat": 2,
+        "repeat_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2035,
+                "y": 1060
+            }
+        }
+    },
+    "Instance_Stop": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1300,
+                "y": 62
             }
         }
     }
