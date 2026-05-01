@@ -26,7 +26,7 @@
 
 ### 1. 下载 Release
 
-从 [Releases](https://github.com/andy90s/maa-lostsword/releases) 页面下载对应平台的安装包。
+从 [Releases](https://github.com/tomato90s/maa-lostsword/releases) 页面下载对应平台的安装包。
 
 支持平台：
 - Windows (x64 / ARM64)
