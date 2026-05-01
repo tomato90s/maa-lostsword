@@ -2,13 +2,13 @@
     "$__mpe_config_instance": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777623428092,
+            "lastSyncTime": 1777627788814,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
             "savedViewport": {
-                "x": -215,
-                "y": 160,
-                "zoom": 0.81
+                "x": -39,
+                "y": 301,
+                "zoom": 0.75
             },
             "filename": "instance",
             "version": "v1.4.3"
@@ -344,8 +344,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 924,
-                "y": -496
+                "x": 953,
+                "y": -530
             }
         }
     },
@@ -401,8 +401,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 924,
-                "y": 313
+                "x": 949,
+                "y": 231
             }
         }
     },
@@ -466,7 +466,6 @@
         },
         "next": [
             "[JumpBack]Instance_HomeFlag",
-            "[JumpBack]Instance_ClickInstanceTab",
             "Instance_Label"
         ],
         "$__mpe_code": {
@@ -594,47 +593,6 @@
             "position": {
                 "x": 1612,
                 "y": 1061
-            }
-        }
-    },
-    "Instance_ClickInstanceTab": {
-        "desc": "点击副本",
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    305,
-                    21,
-                    252,
-                    127
-                ],
-                "expected": [
-                    "副本"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    414,
-                    94,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": 1000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到副本"
-        },
-        "next": [
-            "Instance_LordRaid"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 926,
-                "y": -107
             }
         }
     }
