@@ -48,7 +48,9 @@
 ## 环境要求
 
 - [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 运行环境
-- ADB 调试连接（模拟器或真机）
+- **安卓模拟器**：推荐使用 BlueStacks、MuMu 等模拟器运行游戏（暂不支持 iOS 设备）
+- **游戏语言**：简体中文（OCR 文字识别依赖中文界面）
+- ADB 调试连接
 - 游戏分辨率：1280x720（推荐）
 
 ## 开发说明
