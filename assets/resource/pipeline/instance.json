@@ -2,16 +2,16 @@
     "$__mpe_config_instance": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777633405732,
+            "lastSyncTime": 1777712358941,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
             "savedViewport": {
-                "x": -177,
-                "y": 111,
-                "zoom": 0.75
+                "x": -1657,
+                "y": 237,
+                "zoom": 1.05
             },
             "filename": "instance",
-            "version": "v1.4.3"
+            "version": "v1.5.0"
         }
     },
     "$__mpe_external_ReturnMain_instance": {
@@ -67,8 +67,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 640
+                "x": 1275,
+                "y": 623
             }
         }
     },
@@ -96,6 +96,41 @@
             "position": {
                 "x": 18,
                 "y": 738
+            }
+        }
+    },
+    "Instance_CloseEnter": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1201,
+                    9,
+                    70,
+                    70
+                ],
+                "template": [
+                    "template_1777631957359.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1234,
+                    39,
+                    1,
+                    1
+                ]
+            }
+        },
+        "repeat": 2,
+        "repeat_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2045,
+                "y": 865
             }
         }
     },
@@ -132,8 +167,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 2048,
-                "y": 286
+                "x": 2043,
+                "y": 172
             }
         }
     },
@@ -289,6 +324,12 @@
         "recognition": {
             "type": "OCR",
             "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
                 "expected": [
                     "已获得道具"
                 ]
@@ -297,17 +338,17 @@
         "action": {
             "type": "Click"
         },
-        "post_wait_freezes": 200,
+        "post_delay": 2000,
         "focus": {
             "Node.Recognition.Failed": "未找到已获得道具提示"
         },
         "next": [
-            "Instance_Sweep"
+            "点击扫荡"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1729,
-                "y": 1379
+                "x": 2043,
+                "y": -209
             }
         }
     },
@@ -392,6 +433,14 @@
             }
         }
     },
+    "Instance_Stop": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1300,
+                "y": 62
+            }
+        }
+    },
     "Instance_Sweep": {
         "desc": "扫荡",
         "max_hit": 5,
@@ -416,57 +465,34 @@
         },
         "post_wait_freezes": 1000,
         "next": [
-            "Instance_ItemObtained",
+            "[JumpBack]Instance_ItemObtained",
             "[JumpBack]Instance_CloseSweepPopup",
             "Instance_CloseEnter"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1721,
-                "y": 827
+                "x": 1689,
+                "y": 205
             }
         }
     },
-    "Instance_CloseEnter": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1201,
-                    9,
-                    70,
-                    70
-                ],
-                "template": [
-                    "template_1777631957359.png"
-                ]
-            }
-        },
+    "点击扫荡": {
         "action": {
             "type": "Click",
             "param": {
                 "target": [
-                    1234,
-                    39,
+                    974,
+                    664,
                     1,
                     1
                 ]
             }
         },
-        "repeat": 2,
-        "repeat_delay": 2000,
+        "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2035,
-                "y": 1060
-            }
-        }
-    },
-    "Instance_Stop": {
-        "$__mpe_code": {
-            "position": {
-                "x": 1300,
-                "y": 62
+                "x": 2355,
+                "y": -173
             }
         }
     }
