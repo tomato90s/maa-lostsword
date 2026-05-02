@@ -395,9 +395,9 @@
         "next": [
             "[JumpBack]Guild_Donation",
             "[JumpBack]Guild_SignIn",
-            "[JumpBack]还没有投资",
-            "[JumpBack]新建节点7",
-            "工会签到结束"
+            "[JumpBack]Guild_InvestmentCoin",
+            "[JumpBack]Guild_InvestmentToken",
+            "Guild_TaskStop"
         ],
         "$__mpe_code": {
             "position": {
@@ -435,8 +435,8 @@
         },
         "post_delay": 2000,
         "next": [
-            "新建节点27",
-            "新建节点28"
+            "Guild_SignInReward",
+            "Guild_AlreadySignedIn"
         ],
         "$__mpe_code": {
             "position": {
@@ -538,7 +538,7 @@
             }
         }
     },
-    "新建节点27": {
+    "Guild_SignInReward": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -564,7 +564,7 @@
             }
         }
     },
-    "新建节点28": {
+    "Guild_AlreadySignedIn": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -598,7 +598,7 @@
             }
         }
     },
-    "还没有投资": {
+    "Guild_InvestmentCoin": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -626,7 +626,7 @@
         },
         "post_delay": 2000,
         "next": [
-            "获得道具"
+            "Guild_InvestmentReward"
         ],
         "$__mpe_code": {
             "position": {
@@ -635,7 +635,7 @@
             }
         }
     },
-    "获得道具": {
+    "Guild_InvestmentReward": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -661,7 +661,7 @@
             }
         }
     },
-    "新建节点7": {
+    "Guild_InvestmentToken": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -689,7 +689,7 @@
         },
         "post_delay": 2000,
         "next": [
-            "新建节点8"
+            "Guild_TokenReward"
         ],
         "$__mpe_code": {
             "position": {
@@ -698,7 +698,7 @@
             }
         }
     },
-    "新建节点8": {
+    "Guild_TokenReward": {
         "recognition": {
             "type": "OCR",
             "param": {
@@ -724,7 +724,7 @@
             }
         }
     },
-    "工会签到结束": {
+    "Guild_TaskStop": {
         "action": {
             "type": "StopTask"
         },
