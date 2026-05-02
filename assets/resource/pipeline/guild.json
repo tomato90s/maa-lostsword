@@ -2,7 +2,14 @@
     "$__mpe_config_guild": {
         "$__mpe_code": {
             "prefix": "",
+            "lastSyncTime": 1777661309137,
+            "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/guild.json",
+            "savedViewport": {
+                "x": -905,
+                "y": 262,
+                "zoom": 0.84
+            },
             "filename": "guild",
             "version": "v1.4.3"
         }
@@ -10,8 +17,210 @@
     "$__mpe_external_ReturnMain_guild": {
         "$__mpe_code": {
             "position": {
-                "x": 320,
-                "y": -45
+                "x": 572,
+                "y": 63
+            }
+        }
+    },
+    "Guild_CloseDonationPopup": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    999,
+                    69,
+                    78,
+                    63
+                ],
+                "template": [
+                    "template_1777654744173.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1044,
+                    98,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2506,
+                "y": 513
+            }
+        }
+    },
+    "Guild_CoinDonation": {
+        "max_hit": 1,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    462,
+                    610,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Guild_ItemObtained",
+            "Guild_CoinMaxLimit"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2524,
+                "y": 250
+            }
+        }
+    },
+    "Guild_CoinMaxLimit": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    533,
+                    332,
+                    203,
+                    56
+                ],
+                "expected": [
+                    "今日捐献已达上限"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    638,
+                    472,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2901,
+                "y": 394
+            }
+        }
+    },
+    "Guild_DisableDonation": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "DisableNode",
+                "custom_action_param": {
+                    "node_name": "Guild_Donation"
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2477,
+                "y": 25
+            }
+        }
+    },
+    "Guild_Donation": {
+        "next": [
+            "Guild_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1532,
+                "y": 437
+            }
+        }
+    },
+    "Guild_DonationMaxLimit": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "今日捐献已达上限"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    634,
+                    467,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Guild_DisableDonation"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2183,
+                "y": 60
+            }
+        }
+    },
+    "Guild_DonationPopup": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    576,
+                    71,
+                    121,
+                    51
+                ],
+                "expected": [
+                    "公会捐献"
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "[JumpBack]Guild_TokenDonation",
+            "[JumpBack]Guild_CoinDonation",
+            "Guild_CloseDonationPopup"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2161,
+                "y": 482
+            }
+        }
+    },
+    "Guild_EnableNodes": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Guild_Donation": {
+                        "enabled": true
+                    }
+                }
+            }
+        },
+        "next": [
+            "Guild_FromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 572,
+                "y": 203
             }
         }
     },
@@ -23,12 +232,12 @@
         },
         "next": [
             "[JumpBack]ReturnMain",
-            "Guild_FromHome"
+            "Guild_EnableNodes"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -8,
-                "y": 19
+                "x": 252,
+                "y": 136
             }
         }
     },
@@ -77,32 +286,34 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -1341,
-                "y": -2416
+                "x": 885,
+                "y": 100
             }
         }
     },
-    "Guild_HomeFlag": {
-        "desc": "识别到主页则停止循环",
-        "max_hit": 1,
+    "Guild_ItemObtained": {
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    6,
-                    4,
-                    89,
-                    70
+                    477,
+                    191,
+                    419,
+                    174
                 ],
-                "template": [
-                    "template_1777301855439.png"
+                "expected": [
+                    "已获得道具"
                 ]
             }
         },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": -686,
-                "y": -2778
+                "x": 2910,
+                "y": 64
             }
         }
     },
@@ -112,6 +323,55 @@
         "recognition": {
             "type": "OCR",
             "param": {
+                "roi": [
+                    468,
+                    649,
+                    71,
+                    35
+                ],
+                "expected": [
+                    "捐献"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    514,
+                    665,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到'公会'文字"
+        },
+        "next": [
+            "Guild_DonationPopup",
+            "Guild_DonationMaxLimit"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1827,
+                "y": 370
+            }
+        }
+    },
+    "Guild_MenuClick": {
+        "desc": "点击菜单中的公会图标",
+        "max_hit": 5,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    882,
+                    502,
+                    52,
+                    32
+                ],
                 "expected": [
                     "公会"
                 ]
@@ -121,49 +381,41 @@
             "type": "Click",
             "param": {
                 "target": [
-                    414,
-                    96,
+                    907,
+                    481,
                     1,
                     1
                 ]
             }
         },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                295,
-                56,
-                260,
-                87
-            ]
-        },
+        "post_delay": 2000,
         "focus": {
-            "Node.Recognition.Failed": "未找到'公会'文字"
+            "Node.Recognition.Failed": "未找到公会菜单图标"
         },
         "next": [
-            "Guild_Stop"
+            "[JumpBack]Guild_Donation",
+            "[JumpBack]Guild_SignIn"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -677,
-                "y": -2193
+                "x": 1212,
+                "y": 108
             }
         }
     },
-    "Guild_MenuClick": {
-        "desc": "点击菜单中的公会图标",
-        "max_hit": 5,
+    "Guild_SignIn": {
+        "max_hit": 3,
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    975,
-                    342,
-                    92,
-                    89
+                    704,
+                    651,
+                    78,
+                    36
                 ],
-                "template": [
-                    "template_1777300718819.png"
+                "expected": [
+                    "签到"
                 ]
             }
         },
@@ -171,33 +423,175 @@
             "type": "Click",
             "param": {
                 "target": [
-                    1013,
-                    386,
+                    736,
+                    670,
                     1,
                     1
                 ]
             }
         },
-        "post_delay": 1500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到公会菜单图标"
-        },
+        "post_delay": 2000,
         "next": [
-            "[JumpBack]Guild_HomeFlag",
-            "Guild_Label"
+            "新建节点27",
+            "新建节点28"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -1045,
-                "y": -2503
+                "x": 1546,
+                "y": 40
             }
         }
     },
     "Guild_Stop": {
         "$__mpe_code": {
             "position": {
-                "x": 0,
-                "y": 0
+                "x": 12,
+                "y": 12
+            }
+        }
+    },
+    "Guild_TokenDonation": {
+        "max_hit": 3,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    891,
+                    611,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Guild_TokenItemObtained",
+            "Guild_TokenMaxLimit"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2504,
+                "y": 923
+            }
+        }
+    },
+    "Guild_TokenItemObtained": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2886,
+                "y": 879
+            }
+        }
+    },
+    "Guild_TokenMaxLimit": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    533,
+                    332,
+                    203,
+                    56
+                ],
+                "expected": [
+                    "今日捐献已达上限"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    638,
+                    472,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2872,
+                "y": 1180
+            }
+        }
+    },
+    "新建节点27": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1921,
+                "y": 55
+            }
+        }
+    },
+    "新建节点28": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    563,
+                    323,
+                    130,
+                    71
+                ],
+                "expected": [
+                    "您已签到"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    627,
+                    469,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1922,
+                "y": -273
             }
         }
     }
