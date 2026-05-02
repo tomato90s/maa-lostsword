@@ -2,16 +2,16 @@
     "$__mpe_config_startup": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777648264894,
+            "lastSyncTime": 1777711589063,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/startup.json",
             "savedViewport": {
-                "x": 2363,
-                "y": 1555,
-                "zoom": 0.79
+                "x": -451,
+                "y": -1143,
+                "zoom": 1
             },
             "filename": "startup",
-            "version": "v1.4.3"
+            "version": "v1.5.0"
         }
     },
     "CardReward": {
@@ -29,8 +29,8 @@
         "post_wait_freezes": 200,
         "$__mpe_code": {
             "position": {
-                "x": -2185,
-                "y": -1181
+                "x": 1532,
+                "y": 1644
             }
         }
     },
@@ -49,8 +49,8 @@
         "post_wait_freezes": 500,
         "$__mpe_code": {
             "position": {
-                "x": -2191,
-                "y": -1693
+                "x": 1532,
+                "y": 979
             }
         }
     },
@@ -66,8 +66,34 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -3207,
-                "y": -406
+                "x": 1212,
+                "y": 1089
+            }
+        }
+    },
+    "Global_ItemObtained": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1532,
+                "y": 670
             }
         }
     },
@@ -101,8 +127,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -2359,
-                "y": -707
+                "x": 1526,
+                "y": 1908
             }
         }
     },
@@ -146,8 +172,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -2924,
-                "y": -1031
+                "x": 917,
+                "y": 1297
             }
         }
     },
@@ -164,8 +190,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -2635,
-                "y": -1034
+                "x": 1219,
+                "y": 1486
             }
         }
     },
@@ -184,8 +210,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -3229,
-                "y": -908
+                "x": 892,
+                "y": 1083
             }
         }
     },
@@ -198,8 +224,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -2914,
-                "y": -484
+                "x": 1212,
+                "y": 847
             }
         }
     },
@@ -207,13 +233,14 @@
         "timeout": 60000,
         "next": [
             "HomeFlagCloseReturnMain",
+            "[JumpBack]ReturnMain",
             "LinkStart",
             "[JumpBack]StartApp"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -3809,
-                "y": -540
+                "x": 572,
+                "y": 1348
             }
         }
     },
@@ -245,8 +272,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -2188,
-                "y": -1949
+                "x": 1532,
+                "y": 1309
             }
         }
     },
@@ -287,8 +314,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -2191,
-                "y": -1499
+                "x": 1532,
+                "y": 12
             }
         }
     },
@@ -307,8 +334,8 @@
         "post_wait_freezes": 1000,
         "$__mpe_code": {
             "position": {
-                "x": -2177,
-                "y": -957
+                "x": 1532,
+                "y": 393
             }
         }
     },
@@ -335,8 +362,8 @@
         "post_delay": 3000,
         "$__mpe_code": {
             "position": {
-                "x": -1623,
-                "y": -1598
+                "x": 332,
+                "y": 12
             }
         }
     },
@@ -357,28 +384,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -1781,
-                "y": -1776
-            }
-        }
-    },
-    "Global_ItemObtained": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "已获得道具"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": -2195,
-                "y": -1766
+                "x": 12,
+                "y": 56
             }
         }
     }
