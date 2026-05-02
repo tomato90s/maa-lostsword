@@ -47,6 +47,7 @@
         "resource/tasks/arena.json",
         "resource/tasks/stonehenge.json",
         "resource/tasks/treasure.json",
-        "resource/tasks/guild.json"
+        "resource/tasks/guild.json",
+        "resource/tasks/draw.json"
     ]
 }

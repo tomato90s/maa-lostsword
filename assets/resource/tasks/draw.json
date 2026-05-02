@@ -1,0 +1,11 @@
+{
+    "task": [
+        {
+            "name": "免费每日一抽",
+            "entry": "Draw_Entry",
+            "group": [
+                "daily"
+            ]
+        }
+    ]
+}

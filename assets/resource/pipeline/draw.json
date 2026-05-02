@@ -1,0 +1,470 @@
+{
+    "$__mpe_config_draw": {
+        "$__mpe_code": {
+            "prefix": "",
+            "lastSyncTime": 1777730023060,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/draw.json",
+            "savedViewport": {
+                "x": 174,
+                "y": 99,
+                "zoom": 0.62
+            },
+            "filename": "draw",
+            "version": "v1.5.0"
+        }
+    },
+    "$__mpe_external_ReturnMain_draw": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 314
+            }
+        }
+    },
+    "Draw_ClaimPet": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    76,
+                    654,
+                    94,
+                    32
+                ],
+                "expected": [
+                    "领取宠物"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    6,
+                    6,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Draw_DiamondDrawIcon",
+            "Draw_FreeDrawClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 917
+            }
+        }
+    },
+    "Draw_Confirm": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    598,
+                    653,
+                    82,
+                    38
+                ],
+                "expected": [
+                    "确认"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    639,
+                    672,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2572,
+                "y": 938
+            }
+        }
+    },
+    "Draw_Entry": {
+        "desc": "免费每日一抽任务入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行免费每日一抽任务"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "Draw_FromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 508
+            }
+        }
+    },
+    "Draw_FreeDraw": {
+        "desc": "识别并点击免费召唤",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    70,
+                    551,
+                    111,
+                    51
+                ],
+                "expected": [
+                    "领取角色"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target_offset": [
+                    6,
+                    6,
+                    0,
+                    0
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到免费召唤按钮"
+        },
+        "next": [
+            "Draw_FreeDrawIcon",
+            "Draw_FreeDrawClick",
+            "Draw_DiamondDrawIcon"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 480
+            }
+        }
+    },
+    "Draw_FreeDrawClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    774,
+                    661,
+                    70,
+                    33
+                ],
+                "expected": [
+                    "免费"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    809,
+                    659,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Draw_SkipAnimation"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 938
+            }
+        }
+    },
+    "Draw_FreeDrawIcon": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    742,
+                    651,
+                    59,
+                    57
+                ],
+                "template": [
+                    "template_1777727538250.png"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 332
+            }
+        }
+    },
+    "Draw_FromHome": {
+        "desc": "从主页右上角菜单进入",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "准备开始免费每日一抽"
+        },
+        "next": [
+            "Draw_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 454
+            }
+        }
+    },
+    "Draw_Label": {
+        "desc": "识别召唤入口文字",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    179,
+                    10,
+                    65,
+                    36
+                ],
+                "expected": [
+                    "召唤"
+                ]
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    121,
+                    648,
+                    1,
+                    1
+                ],
+                "end": [
+                    [
+                        129,
+                        337,
+                        0,
+                        0
+                    ]
+                ]
+            }
+        },
+        "repeat": 3,
+        "repeat_delay": 1000,
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到召唤入口"
+        },
+        "next": [
+            "[JumpBack]Draw_FreeDraw",
+            "[JumpBack]Draw_ClaimPet",
+            "Draw_Stop"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 450
+            }
+        }
+    },
+    "Draw_MenuClick": {
+        "desc": "点击菜单中的召唤图标",
+        "max_hit": 5,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    988,
+                    215,
+                    49,
+                    29
+                ],
+                "expected": [
+                    "召唤"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1012,
+                    193,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到召唤菜单图标"
+        },
+        "next": [
+            "Draw_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 480
+            }
+        }
+    },
+    "Draw_SkipAnimation": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1128,
+                    13,
+                    62,
+                    44
+                ],
+                "expected": [
+                    "Skip"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1166,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 3000,
+        "next": [
+            "Draw_ViewAll"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1932,
+                "y": 938
+            }
+        }
+    },
+    "Draw_Stop": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 293
+            }
+        }
+    },
+    "Draw_ViewAll": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    590,
+                    656,
+                    98,
+                    35
+                ],
+                "expected": [
+                    "查看全部"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    636,
+                    670,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Draw_Confirm"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 938
+            }
+        }
+    },
+    "Draw_DiamondDrawIcon": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    748,
+                    661,
+                    49,
+                    43
+                ],
+                "template": [
+                    "template_1777729931840.png"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 636
+            }
+        }
+    }
+}
