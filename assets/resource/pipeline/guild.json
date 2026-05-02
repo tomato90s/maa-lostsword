@@ -2,23 +2,23 @@
     "$__mpe_config_guild": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777661309137,
+            "lastSyncTime": 1777722098394,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/guild.json",
             "savedViewport": {
-                "x": -905,
-                "y": 262,
-                "zoom": 0.84
+                "x": -1131,
+                "y": -73,
+                "zoom": 1.05
             },
             "filename": "guild",
-            "version": "v1.4.3"
+            "version": "v1.5.0"
         }
     },
     "$__mpe_external_ReturnMain_guild": {
         "$__mpe_code": {
             "position": {
                 "x": 572,
-                "y": 63
+                "y": 465
             }
         }
     },
@@ -51,8 +51,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2506,
-                "y": 513
+                "x": 2492,
+                "y": 1870
             }
         }
     },
@@ -76,8 +76,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2524,
-                "y": 250
+                "x": 2492,
+                "y": 1561
             }
         }
     },
@@ -110,8 +110,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2901,
-                "y": 394
+                "x": 2812,
+                "y": 1831
             }
         }
     },
@@ -127,8 +127,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 2477,
-                "y": 25
+                "x": 2492,
+                "y": 1300
             }
         }
     },
@@ -139,7 +139,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1532,
-                "y": 437
+                "y": 1421
             }
         }
     },
@@ -169,8 +169,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2183,
-                "y": 60
+                "x": 2172,
+                "y": 1293
             }
         }
     },
@@ -197,8 +197,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2161,
-                "y": 482
+                "x": 2172,
+                "y": 1616
             }
         }
     },
@@ -220,7 +220,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 572,
-                "y": 203
+                "y": 605
             }
         }
     },
@@ -237,7 +237,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 252,
-                "y": 136
+                "y": 538
             }
         }
     },
@@ -286,8 +286,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 885,
-                "y": 100
+                "x": 892,
+                "y": 484
             }
         }
     },
@@ -312,8 +312,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2910,
-                "y": 64
+                "x": 2812,
+                "y": 1522
             }
         }
     },
@@ -355,8 +355,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1827,
-                "y": 370
+                "x": 1852,
+                "y": 1296
             }
         }
     },
@@ -394,12 +394,15 @@
         },
         "next": [
             "[JumpBack]Guild_Donation",
-            "[JumpBack]Guild_SignIn"
+            "[JumpBack]Guild_SignIn",
+            "[JumpBack]还没有投资",
+            "[JumpBack]新建节点7",
+            "工会签到结束"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 1212,
-                "y": 108
+                "y": 510
             }
         }
     },
@@ -437,8 +440,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1546,
-                "y": 40
+                "x": 1532,
+                "y": 822
             }
         }
     },
@@ -470,8 +473,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2504,
-                "y": 923
+                "x": 2492,
+                "y": 2278
             }
         }
     },
@@ -496,8 +499,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2886,
-                "y": 879
+                "x": 2812,
+                "y": 2172
             }
         }
     },
@@ -530,8 +533,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2872,
-                "y": 1180
+                "x": 2812,
+                "y": 2495
             }
         }
     },
@@ -556,8 +559,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 1921,
-                "y": 55
+                "x": 1852,
+                "y": 987
             }
         }
     },
@@ -590,8 +593,145 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 1922,
-                "y": -273
+                "x": 1852,
+                "y": 646
+            }
+        }
+    },
+    "还没有投资": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1196,
+                    475,
+                    48,
+                    32
+                ],
+                "expected": [
+                    "0/1"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1137,
+                    537,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "获得道具"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1532,
+                "y": 12
+            }
+        }
+    },
+    "获得道具": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1852,
+                "y": 28
+            }
+        }
+    },
+    "新建节点7": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1197,
+                    573,
+                    48,
+                    27
+                ],
+                "expected": [
+                    "0/1"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1144,
+                    629,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "新建节点8"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1532,
+                "y": 353
+            }
+        }
+    },
+    "新建节点8": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1852,
+                "y": 337
+            }
+        }
+    },
+    "工会签到结束": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1532,
+                "y": 635
             }
         }
     }
