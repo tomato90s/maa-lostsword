@@ -46,6 +46,11 @@
 
 支持 ADB 连接模拟器或物理设备。推荐使用 BlueStacks、MuMu 等安卓模拟器运行游戏。
 
+### 4. 启动任务
+
+- **模拟器自带加速**：可自动打开游戏进行任务
+- **使用第三方加速器**：需手动打开并登录游戏，在游戏大厅启动任务
+
 ## 环境要求
 
 - [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 运行环境
