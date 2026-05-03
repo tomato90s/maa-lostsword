@@ -2,12 +2,12 @@
     "$__mpe_config_startup": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777711589063,
+            "lastSyncTime": 1777734163517,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/startup.json",
             "savedViewport": {
-                "x": -451,
-                "y": -1143,
+                "x": -460,
+                "y": -1107,
                 "zoom": 1
             },
             "filename": "startup",
@@ -66,8 +66,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 1212,
-                "y": 1089
+                "x": 1099,
+                "y": 1400
             }
         }
     },
@@ -125,10 +125,13 @@
         "focus": {
             "Node.Recognition.Failed": "识别首页失败！"
         },
+        "next": [
+            "DisableStartApp"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 1526,
-                "y": 1908
+                "x": 693,
+                "y": 1333
             }
         }
     },
@@ -172,8 +175,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 917,
-                "y": 1297
+                "x": 673,
+                "y": 1008
             }
         }
     },
@@ -190,8 +193,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1219,
-                "y": 1486
+                "x": 1096,
+                "y": 1092
             }
         }
     },
@@ -202,16 +205,19 @@
                 "package": "com.wemadeconnect.aos.lostdgl"
             }
         },
-        "next": [
-            "DisableStartApp"
-        ],
+        "timeout": 60000,
+        "rate_limit": 3000,
         "on_error": [
             "StopTask"
         ],
+        "next": [
+            "HomeFlagCloseReturnMain",
+            "LinkStart"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 892,
-                "y": 1083
+                "x": 235,
+                "y": 1145
             }
         }
     },
@@ -224,23 +230,19 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 1212,
-                "y": 847
+                "x": 277,
+                "y": 1437
             }
         }
     },
     "startup": {
-        "timeout": 60000,
         "next": [
-            "HomeFlagCloseReturnMain",
-            "[JumpBack]ReturnMain",
-            "LinkStart",
-            "[JumpBack]StartApp"
+            "StartApp"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 572,
-                "y": 1348
+                "x": -59,
+                "y": 1217
             }
         }
     },
