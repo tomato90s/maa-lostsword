@@ -35,3 +35,12 @@ class NodeOverride(CustomAction):
             return CustomAction.RunResult(success=True)
         context.override_pipeline(ppover)
         return CustomAction.RunResult(success=True)
+
+
+@AgentServer.custom_action("CenterClick")
+class CenterClick(CustomAction):
+    def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
+        x, y, w, h = argv.box
+        cx, cy = x + w // 2, y + h // 2
+        context.tasker.controller.post_click(cx, cy).wait()
+        return CustomAction.RunResult(success=True)
