@@ -33,13 +33,13 @@
             "label": "日常任务"
         }
     ],
-    "agent": {
-        "child_exec": "python",
-        "child_args": [
-            "-u",
-            "./../agent/main.py"
-        ]
-    },
+    // "agent": {
+    //     "child_exec": "python",
+    //     "child_args": [
+    //         "-u",
+    //         "./../agent/main.py"
+    //     ]
+    // },
     "option": {},
     "import": [
         "resource/tasks/startup.json",
