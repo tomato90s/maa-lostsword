@@ -1,0 +1,79 @@
+{
+    "task": [
+        {
+            "name": "每日商店购买",
+            "entry": "Shop_Entry",
+            "option": [
+                "商品柜台-每日",
+                "交易所柜台-消耗品",
+                "交易所柜台-突袭",
+                "交易所柜台-公会"
+            ],
+            "group": [
+                "daily"
+            ]
+        }
+    ],
+    "option": {
+        "商品柜台-每日": {
+            "type": "checkbox",
+            "label": "商品柜台-每日",
+            "cases": [
+                {
+                    "name": "每日免费礼包",
+                    "label": "每日免费礼包",
+                    "pipeline_override": {
+                        "Shop_Item_DailyFreeGift": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "交易所柜台-消耗品": {
+            "type": "checkbox",
+            "label": "交易所柜台-消耗品",
+            "cases": [
+                {
+                    "name": "示例商品(消耗品)",
+                    "label": "示例商品(消耗品) - 复制此 case 并改对应商品节点名",
+                    "pipeline_override": {
+                        "Shop_Item_TradeConsumableTemplate": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "交易所柜台-突袭": {
+            "type": "checkbox",
+            "label": "交易所柜台-突袭",
+            "cases": [
+                {
+                    "name": "示例商品(突袭)",
+                    "label": "示例商品(突袭) - 复制此 case 并改对应商品节点名",
+                    "pipeline_override": {
+                        "Shop_Item_TradeRaidTemplate": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "交易所柜台-公会": {
+            "type": "checkbox",
+            "label": "交易所柜台-公会",
+            "cases": [
+                {
+                    "name": "示例商品(公会)",
+                    "label": "示例商品(公会) - 复制此 case 并改对应商品节点名",
+                    "pipeline_override": {
+                        "Shop_Item_TradeGuildTemplate": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

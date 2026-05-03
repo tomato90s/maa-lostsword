@@ -48,6 +48,7 @@
         "resource/tasks/stonehenge.json",
         "resource/tasks/treasure.json",
         "resource/tasks/guild.json",
-        "resource/tasks/draw.json"
+        "resource/tasks/draw.json",
+        "resource/tasks/shop.json"
     ]
 }
