@@ -2,16 +2,16 @@
     "$__mpe_config_treasure": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777649359629,
+            "lastSyncTime": 1777783162258,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/treasure.json",
             "savedViewport": {
-                "x": -138,
-                "y": -138,
-                "zoom": 0.79
+                "x": -217,
+                "y": -464,
+                "zoom": 1
             },
             "filename": "treasure",
-            "version": "v1.4.3"
+            "version": "v1.5.0"
         }
     },
     "$__mpe_external_ReturnMain_treasure": {
@@ -73,8 +73,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 652,
-                "y": 142
+                "x": 658,
+                "y": 102
             }
         }
     },
@@ -99,8 +99,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 972,
-                "y": 183
+                "x": 994,
+                "y": 115
             }
         }
     },
@@ -147,54 +147,95 @@
             }
         }
     },
-    "Treasure_QuickSearch": {
-        "max_hit": 2,
+    "Treasure_QuickPopupC": {
         "recognition": {
-            "type": "OCR",
+            "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    693,
-                    562,
-                    119,
-                    40
+                    528,
+                    576,
+                    60,
+                    46
                 ],
-                "expected": [
-                    "快速探查"
+                "template": [
+                    "template_1777649301347.png"
                 ]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target_offset": [
-                    5,
-                    5,
-                    0,
-                    0
+                "target": [
+                    967,
+                    113,
+                    1,
+                    1
                 ]
             }
         },
         "post_delay": 2000,
         "next": [
-            "Treasure_ItemObtained",
-            "Treasure_QuickPopupC",
-            "Treasure_QuickPopupS"
+            "Treasure_QuickPopupClose2"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 652,
-                "y": 515
+                "x": 972,
+                "y": 506
             }
         }
     },
-    "Treasure_Stop": {
-        "action": {
-            "type": "StopTask"
+    "Treasure_QuickPopupClose1": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1061,
+                    104,
+                    63,
+                    57
+                ],
+                "template": [
+                    "template_1777645774889.png"
+                ]
+            }
         },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 642
+                "x": 1612,
+                "y": 901
+            }
+        }
+    },
+    "Treasure_QuickPopupClose2": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1061,
+                    104,
+                    63,
+                    57
+                ],
+                "template": [
+                    "template_1777645774889.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 521
             }
         }
     },
@@ -235,6 +276,69 @@
             }
         }
     },
+    "Treasure_QuickSearch": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    693,
+                    562,
+                    119,
+                    40
+                ],
+                "expected": [
+                    "快速探查"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick",
+                "target": [
+                    755,
+                    581,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Treasure_ItemObtained",
+            "Treasure_QuickPopupC",
+            "Treasure_QuickPopupS"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 515
+            }
+        }
+    },
+    "Treasure_Stop": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 642
+            }
+        }
+    },
+    "Treasure_StopTask": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 615
+            }
+        }
+    },
     "Treasure_quickItemObtained": {
         "recognition": {
             "type": "OCR",
@@ -261,109 +365,6 @@
             "position": {
                 "x": 1292,
                 "y": 927
-            }
-        }
-    },
-    "Treasure_QuickPopupClose1": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1061,
-                    104,
-                    63,
-                    57
-                ],
-                "template": [
-                    "template_1777645774889.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": 1612,
-                "y": 901
-            }
-        }
-    },
-    "Treasure_StopTask": {
-        "action": {
-            "type": "StopTask"
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 1612,
-                "y": 615
-            }
-        }
-    },
-    "Treasure_QuickPopupC": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    528,
-                    576,
-                    60,
-                    46
-                ],
-                "template": [
-                    "template_1777649301347.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    967,
-                    113,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 2000,
-        "next": [
-            "Treasure_QuickPopupClose2"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 972,
-                "y": 506
-            }
-        }
-    },
-    "Treasure_QuickPopupClose2": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1061,
-                    104,
-                    63,
-                    57
-                ],
-                "template": [
-                    "template_1777645774889.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 2000,
-        "next": [
-            "Treasure_StopTask"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 521
             }
         }
     }
