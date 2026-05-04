@@ -2,16 +2,16 @@
     "$__mpe_config_guild": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777790589281,
+            "lastSyncTime": 1777906369632,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/guild.json",
             "savedViewport": {
-                "x": -1218,
-                "y": -295,
-                "zoom": 1.12
+                "x": -684,
+                "y": -478,
+                "zoom": 0.7
             },
             "filename": "guild",
-            "version": "v1.5.0"
+            "version": "v1.5.1"
         }
     },
     "$__mpe_external_ReturnMain_guild": {
@@ -220,30 +220,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2172,
-                "y": 1644
-            }
-        }
-    },
-    "Guild_EnableNodes": {
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "NodeOverride",
-                "custom_action_param": {
-                    "Guild_Donation": {
-                        "enabled": true
-                    }
-                }
-            }
-        },
-        "next": [
-            "Guild_FromHome"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 572,
-                "y": 692
+                "x": 2001,
+                "y": 1594
             }
         }
     },
@@ -255,12 +233,12 @@
         },
         "next": [
             "[JumpBack]ReturnMain",
-            "Guild_EnableNodes"
+            "Guild_FromHome"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 252,
-                "y": 625
+                "x": 148,
+                "y": 619
             }
         }
     },
@@ -309,12 +287,13 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 892,
-                "y": 571
+                "x": 579,
+                "y": 682
             }
         }
     },
     "Guild_InvestmentCoin": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -367,17 +346,21 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
         },
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 1835,
-                "y": 12
+                "x": 1861,
+                "y": -108
             }
         }
     },
     "Guild_InvestmentToken": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -480,7 +463,7 @@
     },
     "Guild_MenuClick": {
         "desc": "点击菜单中的公会图标",
-        "max_hit": 5,
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -514,13 +497,14 @@
             "[JumpBack]Guild_SignIn",
             "[JumpBack]Guild_InvestmentCoin",
             "[JumpBack]Guild_InvestmentToken",
-            "Guild_TaskStop",
-            "[JumpBack]Guild_Label"
+            "[JumpBack]Guild_Label",
+            "[JumpBack]Guild_GetRewards",
+            "Guild_TaskStop"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1156,
-                "y": 625
+                "x": 1151,
+                "y": 347
             }
         }
     },
@@ -559,8 +543,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1530,
-                "y": 619
+                "x": 1527,
+                "y": 589
             }
         }
     },
@@ -604,8 +588,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 1208,
-                "y": 259
+                "x": 1041,
+                "y": -32
             }
         }
     },
@@ -717,6 +701,38 @@
             "position": {
                 "x": 1840,
                 "y": 289
+            }
+        }
+    },
+    "Guild_GetRewards": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1026,
+                    562,
+                    140,
+                    36
+                ],
+                "expected": [
+                    "领取奖励"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Guild_InvestmentReward"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1527,
+                "y": -353
             }
         }
     }
