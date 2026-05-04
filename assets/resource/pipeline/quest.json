@@ -2,13 +2,13 @@
     "$__mpe_config_新建Pipeline7": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777913156979,
+            "lastSyncTime": 1777915755551,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/quest.json",
             "savedViewport": {
-                "x": -376,
-                "y": -44,
-                "zoom": 0.91
+                "x": -1147,
+                "y": -320,
+                "zoom": 1.3
             },
             "filename": "新建Pipeline7",
             "version": "v1.5.1"
@@ -46,7 +46,8 @@
         "post_delay": 2000,
         "timeout": 3000,
         "next": [
-            "Quest_RewardPopup"
+            "Quest_RewardPopup",
+            "Quest_TabSkip"
         ],
         "$__mpe_code": {
             "position": {
@@ -305,8 +306,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 1932,
-                "y": 500
+                "x": 1920,
+                "y": 494
             }
         }
     },
@@ -318,6 +319,14 @@
             "position": {
                 "x": 959,
                 "y": 1177
+            }
+        }
+    },
+    "Quest_TabSkip": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 340
             }
         }
     },
@@ -378,14 +387,6 @@
             "position": {
                 "x": 972,
                 "y": 12
-            }
-        }
-    },
-    "Quest_TabSkip": {
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 340
             }
         }
     }
