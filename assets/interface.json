@@ -14,13 +14,7 @@
     ],
     "resource": [
         {
-            "name": "官服",
-            "path": [
-                "./resource"
-            ]
-        },
-        {
-            "name": "B 服",
+            "name": "韩服",
             "path": [
                 "./resource"
             ]
