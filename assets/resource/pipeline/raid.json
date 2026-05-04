@@ -1,0 +1,337 @@
+{
+    "$__mpe_config_新建Pipeline8": {
+        "$__mpe_code": {
+            "prefix": "",
+            "lastSyncTime": 1777916724472,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/raid.json",
+            "savedViewport": {
+                "x": 209,
+                "y": -180,
+                "zoom": 1.25
+            },
+            "filename": "新建Pipeline8",
+            "version": "v1.5.1"
+        }
+    },
+    "Raid_ClickNormal": {
+        "desc": "点击普通模式标签 - ROI/坐标待补充",
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    139,
+                    80,
+                    71,
+                    35
+                ],
+                "expected": [
+                    "普通"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_wait_freezes": 500,
+        "next": [
+            "Raid_LordRaid"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 226
+            }
+        }
+    },
+    "Raid_Entry": {
+        "desc": "个人突袭任务入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行个人突袭任务"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "Raid_FromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 206
+            }
+        }
+    },
+    "Raid_FromHome": {
+        "desc": "从主页猫贤菜单进入（与 arena/instance 同入口）",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "准备进入个人突袭"
+        },
+        "next": [
+            "Raid_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 152
+            }
+        }
+    },
+    "Raid_MenuClick": {
+        "desc": "点击菜单中的战斗图标 - ROI/坐标待补充",
+        "max_hit": 5,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    992,
+                    410,
+                    41,
+                    25
+                ],
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到战斗菜单图标"
+        },
+        "next": [
+            "Raid_ClickNormal"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 210
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_新建Pipeline8": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 12
+            }
+        }
+    },
+    "Raid_LordRaid": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    142,
+                    554,
+                    94,
+                    35
+                ],
+                "expected": [
+                    "领主突袭"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Raid_Sweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1264,
+                "y": 245
+            }
+        }
+    },
+    "Raid_Sweep": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    906,
+                    646,
+                    108,
+                    41
+                ],
+                "expected": [
+                    "扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "[JumpBack]Raid_RewardPopup",
+            "[JumpBack]Raid_BossFlag",
+            "Raid_CloseX"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1571,
+                "y": 282
+            }
+        }
+    },
+    "Raid_RewardPopup": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Raid_ClickBlank"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1885,
+                "y": 153
+            }
+        }
+    },
+    "Raid_ClickBlank": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    960,
+                    665,
+                    1,
+                    1
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2220,
+                "y": 166
+            }
+        }
+    },
+    "Raid_BossFlag": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    549,
+                    10,
+                    557,
+                    703
+                ],
+                "template": [
+                    "template_1777632657324.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2064,
+                "y": 365
+            }
+        }
+    },
+    "Raid_CloseX": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1201,
+                    9,
+                    70,
+                    70
+                ],
+                "template": [
+                    "template_1777631957359.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2064,
+                "y": 738
+            }
+        }
+    }
+}
