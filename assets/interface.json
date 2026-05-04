@@ -48,7 +48,7 @@
         "resource/tasks/guild.json",
         "resource/tasks/draw.json",
         "resource/tasks/shop.json",
-        "resource/tasks/quest.json",
-        "resource/tasks/raid.json"
+        "resource/tasks/raid.json",
+        "resource/tasks/quest.json"
     ]
 }
