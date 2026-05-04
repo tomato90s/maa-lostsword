@@ -1,0 +1,392 @@
+{
+    "$__mpe_config_新建Pipeline7": {
+        "$__mpe_code": {
+            "prefix": "",
+            "lastSyncTime": 1777913156979,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/quest.json",
+            "savedViewport": {
+                "x": -376,
+                "y": -44,
+                "zoom": 0.91
+            },
+            "filename": "新建Pipeline7",
+            "version": "v1.5.1"
+        }
+    },
+    "$__mpe_external_ReturnMain_新建Pipeline7": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 262
+            }
+        }
+    },
+    "Quest_ClaimAll": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1124,
+                    664,
+                    87,
+                    33
+                ],
+                "expected": [
+                    "全部领取"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "timeout": 3000,
+        "next": [
+            "Quest_RewardPopup"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 484
+            }
+        }
+    },
+    "Quest_DailyReady": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    198,
+                    58,
+                    40,
+                    43
+                ],
+                "template": [
+                    "template_1777912120434.png"
+                ]
+            }
+        },
+        "next": [
+            "Quest_ClaimAll"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1302,
+                "y": 787
+            }
+        }
+    },
+    "Quest_DailyTab": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    88,
+                    82,
+                    67,
+                    32
+                ],
+                "expected": [
+                    "每日"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "timeout": 3000,
+        "next": [
+            "Quest_DailyReady",
+            "Quest_TabSkip"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 965,
+                "y": 742
+            }
+        }
+    },
+    "Quest_Entry": {
+        "desc": "领取任务奖励任务入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行领取任务奖励"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "Quest_FromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 217
+            }
+        }
+    },
+    "Quest_EpicReady": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    646,
+                    44,
+                    63,
+                    54
+                ],
+                "template": [
+                    "template_1777912120434.png"
+                ]
+            }
+        },
+        "next": [
+            "Quest_ClaimAll"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 527
+            }
+        }
+    },
+    "Quest_EpicTab": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    546,
+                    77,
+                    90,
+                    48
+                ],
+                "expected": [
+                    "史诗"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "timeout": 3000,
+        "next": [
+            "Quest_EpicReady",
+            "Quest_TabSkip"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 414
+            }
+        }
+    },
+    "Quest_FromHome": {
+        "desc": "从主页猫贤菜单进入（与 draw/shop 同入口）",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "准备进入任务"
+        },
+        "next": [
+            "Quest_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 402
+            }
+        }
+    },
+    "Quest_MenuClick": {
+        "desc": "点击菜单中的任务图标 - ROI/坐标待补充",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1095,
+                    220,
+                    43,
+                    27
+                ],
+                "expected": [
+                    "任务"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到任务菜单图标"
+        },
+        "next": [
+            "[JumpBack]Quest_DailyTab",
+            "[JumpBack]Quest_WeeklyTab",
+            "[JumpBack]Quest_EpicTab",
+            "Quest_Stop"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 446
+            }
+        }
+    },
+    "Quest_RewardPopup": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1932,
+                "y": 500
+            }
+        }
+    },
+    "Quest_Stop": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 959,
+                "y": 1177
+            }
+        }
+    },
+    "Quest_WeeklyReady": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    405,
+                    42,
+                    70,
+                    52
+                ],
+                "template": [
+                    "template_1777912120434.png"
+                ]
+            }
+        },
+        "next": [
+            "Quest_ClaimAll"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 17
+            }
+        }
+    },
+    "Quest_WeeklyTab": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    313,
+                    75,
+                    82,
+                    46
+                ],
+                "expected": [
+                    "每周"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "timeout": 3000,
+        "next": [
+            "Quest_WeeklyReady",
+            "Quest_TabSkip"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 12
+            }
+        }
+    },
+    "Quest_TabSkip": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 340
+            }
+        }
+    }
+}

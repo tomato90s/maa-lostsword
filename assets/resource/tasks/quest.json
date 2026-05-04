@@ -1,0 +1,11 @@
+{
+    "task": [
+        {
+            "name": "领取任务奖励",
+            "entry": "Quest_Entry",
+            "group": [
+                "daily"
+            ]
+        }
+    ]
+}
