@@ -1,6 +1,10 @@
 {
     "interface_version": 2,
     "name": "maa-lostsword",
+    "description": "Lost Sword 自动化助手，基于 MaaFramework",
+    "contact": "游戏交流 QQ 群: 1020907837",
+    "welcome": "欢迎使用 MAA-LostSword！请确保模拟器打开adb调试并且分辨率为 1280x720 或 1920x1080。正在完善功能中,如遇到任何问题, 请提issue 或者加入交流群反馈！",
+    "github": "https://github.com/tomato90s/maa-lostsword",
     "controller": [
         {
             "name": "安卓端",
