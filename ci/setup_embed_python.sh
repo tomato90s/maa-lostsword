@@ -81,12 +81,19 @@ BASE_DIR=$(pwd)
 if [ -f "$DEST_DIR/bin/python3" ]; then
     chmod +x "$DEST_DIR/bin/python3"
     PYTHON_BIN="$BASE_DIR/$DEST_DIR/bin/python3"
-elif [ -f "$DEST_DIR/bin/python" ]; then
+fi
+if [ -f "$DEST_DIR/bin/python" ]; then
     chmod +x "$DEST_DIR/bin/python"
     PYTHON_BIN="$BASE_DIR/$DEST_DIR/bin/python"
-else
+fi
+if [ -z "$PYTHON_BIN" ]; then
     echo -e "\033[31m错误: 未找到Python可执行文件\033[0m"
     exit 1
+fi
+
+# 确保 bin 目录下所有可执行文件都有执行权限
+if [ -d "$DEST_DIR/bin" ]; then
+    chmod +x "$DEST_DIR/bin/"*
 fi
 
 # 复制setup_pip.py脚本
