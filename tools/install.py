@@ -139,6 +139,11 @@ def install_chores():
         working_dir / "LICENSE",
         install_path,
     )
+    if (working_dir / "SelfSign_自签名_mac.sh").exists():
+        shutil.copy2(
+            working_dir / "SelfSign_自签名_mac.sh",
+            install_path,
+        )
 
 
 def install_agent():
