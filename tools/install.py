@@ -118,6 +118,14 @@ def install_resource():
 
     interface["version"] = version
 
+    # 根据目标平台设置Python路径和agent路径
+    if os_name in ["darwin", "macos", "linux"]:
+        interface["agent"]["child_exec"] = "./python/bin/python"
+    else:
+        interface["agent"]["child_exec"] = "./python/python.exe"
+
+    interface["agent"]["child_args"] = ["-u", "./agent/main.py"]
+
     with open(install_path / "interface.json", "w", encoding="utf-8") as f:
         jsonc.dump(interface, f, ensure_ascii=False, indent=4)
 

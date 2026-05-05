@@ -69,11 +69,22 @@ jobs:
 
   install:
     needs: meta
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
-        os: [win, macos, linux, android]
-        arch: [aarch64, x86_64]
+        include:
+          - os: win
+            arch: x86_64
+            runs-on: windows-latest
+          - os: win
+            arch: aarch64
+            runs-on: windows-latest
+          - os: macos
+            arch: x86_64
+            runs-on: macos-latest
+          - os: macos
+            arch: aarch64
+            runs-on: macos-latest
       fail-fast: false
 
     steps:
@@ -92,19 +103,17 @@ jobs:
           extract: true
 
       - name: Download MFAAvalonia
-        if: matrix.os != 'android'
         id: download_mfa
         uses: robinraju/release-downloader@v1
         with:
           repository: SweetSmellFox/MFAAvalonia
-          fileName: "MFAAvalonia-*-${{ (matrix.os == 'win' && 'win') || (matrix.os == 'macos' && 'osx') || (matrix.os == 'linux' && 'linux') }}-${{ (matrix.arch == 'x86_64' && 'x64') || (matrix.arch == 'aarch64' && 'arm64') }}*"
+          fileName: "MFAAvalonia-*-${{ (matrix.os == 'win' && 'win') || (matrix.os == 'macos' && 'osx') }}-${{ (matrix.arch == 'x86_64' && 'x64') || (matrix.arch == 'aarch64' && 'arm64') }}*"
           latest: ${{ env.MFAA_VERSION == '' }}
           tag: ${{ env.MFAA_VERSION }}
           out-file-path: "MFA"
           extract: true
 
       - name: Clean up MFAAvalonia archive
-        if: matrix.os != 'android'
         shell: bash
         run: |
           ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
@@ -112,31 +121,48 @@ jobs:
           echo "Archive cleanup command executed for MFAAvalonia."
 
       - name: Remove built-in runtime in MFA
-        if: matrix.os != 'android'
         shell: bash
         run: |
           rm -rf MFA/runtimes
-      
+
+      - name: Setup Embed Python (Windows)
+        if: matrix.os == 'win'
+        shell: pwsh
+        run: |
+          & ./ci/setup_embed_python.ps1
+
+      - name: Setup Embed Python (macOS)
+        if: matrix.os == 'macos'
+        shell: bash
+        run: |
+          chmod +x ./ci/setup_embed_python.sh
+          ./ci/setup_embed_python.sh
+
       - name: Install
         shell: bash
         run: |
-          if [[ "${{ matrix.os }}" != "android" ]]; then
-            if [ -d "MFA" ]; then
-              echo "Copying MFA files to install directory..."
-              mkdir -p install
-              rsync -av --ignore-existing MFA/ install/
-              echo "MFA files copied successfully."
-            else
-              echo "MFA directory not found, skipping copy."
-            fi
+          if [ -d "MFA" ]; then
+            echo "Copying MFA files to install directory..."
+            mkdir -p install
+            rsync -av --ignore-existing MFA/ install/
+            echo "MFA files copied successfully."
           else
-            echo "Skipping copy MFA for Android."
+            echo "MFA directory not found, skipping copy."
           fi
 
           cd tools/
           python -m pip install -r ./requirements.txt
           python ./install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
           cd ..
+
+      - name: Install agent dependencies
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "win" ]; then
+            ./install/python/python.exe -m pip install -r ./requirements.txt
+          else
+            ./install/python/bin/python -m pip install -r ./requirements.txt
+          fi
 
       - uses: actions/upload-artifact@v4
         with:

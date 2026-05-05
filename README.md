@@ -34,8 +34,6 @@
 支持平台：
 - Windows (x64 / ARM64)
 - macOS (x64 / ARM64)
-- Linux (x64 / ARM64)
-- Android (x64 / ARM64)
 
 ### 2. 运行
 
@@ -43,8 +41,6 @@
 
 - **Windows**: `MaaLostSword.exe`
 - **macOS**: `MaaLostSword.app`（首次运行可能需要手动签名）
-- **Linux**: `MaaLostSword`
-- **Android**: 通过 MAA 安卓端加载
 
 ### 3. 连接设备
 
@@ -61,7 +57,7 @@
 - **安卓模拟器**：推荐使用 BlueStacks、MuMu 等模拟器运行游戏（暂不支持 iOS 设备）
 - **游戏语言**：简体中文（OCR 文字识别依赖中文界面）
 - ADB 调试连接
-- 游戏分辨率：1280x720（推荐）
+- 游戏分辨率：1920x1080（推荐）/ 1280x720
 
 ## 开发说明
 
