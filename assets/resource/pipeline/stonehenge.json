@@ -2,9 +2,84 @@
     "$__mpe_config_stonehenge": {
         "$__mpe_code": {
             "prefix": "",
+            "lastSyncTime": 1777974801423,
+            "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/stonehenge.json",
+            "savedViewport": {
+                "x": -1546,
+                "y": -126,
+                "zoom": 0.9
+            },
             "filename": "stonehenge",
-            "version": "v1.4.3"
+            "version": "v1.5.1"
+        }
+    },
+    "Stonehenge_ClickDepart": {
+        "desc": "点击出发",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "出发"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 3000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到出发按钮"
+        },
+        "next": [
+            "Stonehenge_RemainingTime"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1925,
+                "y": 317
+            }
+        }
+    },
+    "Stonehenge_CloseX": {
+        "desc": "关闭副本窗口X按钮",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777201937160.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1235,
+                    34,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到关闭按钮"
+        },
+        "next": [
+            "退场"
+        ],
+        "on_error": [
+            "新建节点2"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2572,
+                "y": 276
+            }
         }
     },
     "Stonehenge_Entry": {
@@ -19,8 +94,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -1802,
-                "y": -2274
+                "x": 12,
+                "y": 139
             }
         }
     },
@@ -69,8 +144,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -1341,
-                "y": -2416
+                "x": 332,
+                "y": 324
             }
         }
     },
@@ -93,8 +168,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": -686,
-                "y": -2778
+                "x": 972,
+                "y": 707
             }
         }
     },
@@ -110,25 +185,12 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    414,
-                    96,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                295,
-                56,
-                260,
-                87
-            ]
-        },
+        "post_delay": 2000,
         "focus": {
             "Node.Recognition.Failed": "未找到'副本'文字"
         },
@@ -137,8 +199,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -677,
-                "y": -2193
+                "x": 972,
+                "y": 302
             }
         }
     },
@@ -180,8 +242,74 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -1045,
-                "y": -2503
+                "x": 652,
+                "y": 324
+            }
+        }
+    },
+    "Stonehenge_RemainingTime": {
+        "desc": "剩余时间界面",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    600,
+                    159,
+                    75,
+                    32
+                ],
+                "expected": [
+                    "召唤领主"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 5000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到剩余时间界面"
+        },
+        "next": [
+            "Stonehenge_CloseX"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 311
+            }
+        }
+    },
+    "Stonehenge_SelectTarget": {
+        "desc": "选择目标",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "选择"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Failed": "未找到选择按钮"
+        },
+        "next": [
+            "Stonehenge_ClickDepart"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1609,
+                "y": 314
             }
         }
     },
@@ -197,152 +325,51 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
         },
-        "post_wait_freezes": 1000,
+        "post_delay": 2000,
         "next": [
             "Stonehenge_SelectTarget"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -350,
-                "y": -1735
-            }
-        }
-    },
-    "Stonehenge_SelectTarget": {
-        "desc": "选择目标",
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "选择"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 1000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到选择按钮"
-        },
-        "next": [
-            "Stonehenge_ClickDepart"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -122,
-                "y": -2238
-            }
-        }
-    },
-    "Stonehenge_ClickDepart": {
-        "desc": "点击出发",
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "出发"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 3000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到出发按钮"
-        },
-        "next": [
-            "Stonehenge_RemainingTime"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -381,
-                "y": -2189
-            }
-        }
-    },
-    "Stonehenge_RemainingTime": {
-        "desc": "剩余时间界面",
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "剩余时间"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    638,
-                    137,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 5000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到剩余时间界面"
-        },
-        "next": [
-            "Stonehenge_CloseX"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 332,
-                "y": -2216
-            }
-        }
-    },
-    "Stonehenge_CloseX": {
-        "desc": "关闭副本窗口X按钮",
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "template_1777201937160.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1235,
-                    34,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": 1000,
-        "timeout": 20000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到关闭按钮"
-        },
-        "next": [
-            "退场"
-        ],
-        "on_error": [
-            "新建节点2"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 675,
-                "y": -2396
+                "x": 1295,
+                "y": 311
             }
         }
     },
     "Stonehenge_Stop": {
         "$__mpe_code": {
             "position": {
-                "x": 0,
-                "y": 0
+                "x": 156,
+                "y": -10
+            }
+        }
+    },
+    "$__mpe_external_退场_stonehenge": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2892,
+                "y": 372
+            }
+        }
+    },
+    "$__mpe_external_新建节点2_stonehenge": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2892,
+                "y": 512
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_stonehenge": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 184
             }
         }
     }
