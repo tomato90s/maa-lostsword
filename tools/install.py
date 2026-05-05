@@ -72,28 +72,25 @@ def install_deps():
             dirs_exist_ok=True,
         )
     else:
-        shutil.copytree(
-            working_dir / "deps" / "bin",
-            install_path / "runtimes" / get_dotnet_platform_tag() / "native",
-            ignore=shutil.ignore_patterns(
-                "*MaaDbgControlUnit*",
-                "*MaaThriftControlUnit*",
-                "*MaaRpc*",
-                "*MaaHttp*",
-                "plugins",
-                "*.node",
-                "*MaaPiCli*",
-            ),
-            dirs_exist_ok=True,
-        )
+        # MXU 需要 maafw/ 目录存放 MaaFramework 运行库
+        maafw_path = install_path / "maafw"
+        maafw_path.mkdir(parents=True, exist_ok=True)
+
+        deps_bin = working_dir / "deps" / "bin"
+        for f in deps_bin.iterdir():
+            name = f.name
+            # 跳过调试/开发专用工具
+            if name.startswith(("MaaDbg", "MaaThrift", "MaaRpc", "MaaHttp")):
+                continue
+            if f.is_dir():
+                shutil.copytree(f, maafw_path / name, dirs_exist_ok=True)
+            else:
+                shutil.copy2(f, maafw_path / name)
+
+        # 复制 MaaAgentBinary 供 agent 服务端使用
         shutil.copytree(
             working_dir / "deps" / "share" / "MaaAgentBinary",
-            install_path / "libs" / "MaaAgentBinary",
-            dirs_exist_ok=True,
-        )
-        shutil.copytree(
-            working_dir / "deps" / "bin" / "plugins",
-            install_path / "plugins" / get_dotnet_platform_tag(),
+            install_path / "MaaAgentBinary",
             dirs_exist_ok=True,
         )
 
@@ -112,6 +109,11 @@ def install_resource():
         working_dir / "assets" / "interface.json",
         install_path,
     )
+    if (working_dir / "assets" / "logo.webp").exists():
+        shutil.copy2(
+            working_dir / "assets" / "logo.webp",
+            install_path,
+        )
 
     with open(install_path / "interface.json", "r", encoding="utf-8") as f:
         interface = jsonc.load(f)
