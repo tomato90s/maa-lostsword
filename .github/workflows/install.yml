@@ -157,6 +157,15 @@ jobs:
             ./install/python/bin/python -m pip install -r ./requirements.txt
           fi
 
+      - name: Generate resource update package
+        shell: bash
+        run: |
+          python tools/generate_update.py \
+            --version "${{ needs.meta.outputs.tag }}" \
+            --root install \
+            --output-dir install \
+            --include "agent/**/*.py" "resource/**/*" "interface.json"
+
       - uses: actions/upload-artifact@v4
         with:
           name: MaaLostSword-${{ matrix.os }}-${{ matrix.arch }}
@@ -205,7 +214,10 @@ jobs:
           
       - uses: softprops/action-gh-release@v2
         with:
-          files: assets/*
+          files: |
+            assets/*
+            assets/**/resource-manifest.json
+            assets/**/resource-update-*.zip
           tag_name: ${{ needs.meta.outputs.tag }}
           body: ${{ needs.changelog.outputs.release_body }}
           draft: false
