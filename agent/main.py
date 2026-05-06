@@ -1,4 +1,8 @@
 import sys
+from pathlib import Path
+
+# 嵌入式 Python 的 _pth 文件不会自动把脚本目录加入 sys.path，需手动确保
+sys.path.insert(0, str(Path(__file__).parent.resolve()))
 
 from maa.agent.agent_server import AgentServer
 from maa.toolkit import Toolkit
