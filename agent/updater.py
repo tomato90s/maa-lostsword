@@ -3,6 +3,7 @@ import json
 import os
 import shutil
 import tempfile
+import time
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -10,6 +11,14 @@ from pathlib import Path
 
 class ResourceUpdater:
     """增量更新：下载 zip 全量业务包，解压覆盖"""
+
+    MIRROR_PREFIXES = [
+        "",
+        "https://gh-proxy.com/",
+        "https://v6.gh-proxy.org/",
+        "https://fastly.gh-proxy.org/",
+        "https://edgeone.gh-proxy.org/",
+    ]
 
     MANIFEST_URL = (
         "https://github.com/tomato90s/maa-lostsword"
@@ -96,12 +105,21 @@ class ResourceUpdater:
             json.dump(manifest, f, ensure_ascii=False, indent=2)
 
     def _fetch_manifest(self) -> dict | None:
-        req = urllib.request.Request(
-            self.MANIFEST_URL,
-            headers={"User-Agent": "maa-lostsword-updater/1.0"},
-        )
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            return json.loads(resp.read().decode("utf-8"))
+        last_error = None
+        for prefix in self.MIRROR_PREFIXES:
+            url = prefix + self.MANIFEST_URL
+            try:
+                req = urllib.request.Request(
+                    url,
+                    headers={"User-Agent": "maa-lostsword-updater/1.0"},
+                )
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    return json.loads(resp.read().decode("utf-8"))
+            except Exception as e:
+                last_error = e
+                continue
+        print(f"[Updater] manifest 拉取失败: {last_error}")
+        return None
 
     def _need_update(self, remote: dict, local: dict) -> bool:
         """对比 hash，确认文件是否真的变了"""
@@ -124,15 +142,77 @@ class ResourceUpdater:
                 h.update(chunk)
         return f"sha256:{h.hexdigest()}"
 
+    def _download_zip(self, url: str, tmp):
+        """分块下载 ZIP，打印进度和速度"""
+
+        def _fmt_size(b: int) -> str:
+            if b < 1024:
+                return f"{b} B"
+            if b < 1024 * 1024:
+                return f"{b / 1024:.1f} KB"
+            return f"{b / (1024 * 1024):.1f} MB"
+
+        req = urllib.request.Request(
+            url, headers={"User-Agent": "maa-lostsword-updater/1.0"}
+        )
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            total = int(resp.headers.get("Content-Length", 0))
+            downloaded = 0
+            chunk_size = 64 * 1024  # 64KB
+            start_time = time.monotonic()
+            last_print_time = start_time
+
+            while True:
+                chunk = resp.read(chunk_size)
+                if not chunk:
+                    break
+                tmp.write(chunk)
+                downloaded += len(chunk)
+
+                now = time.monotonic()
+                if now - last_print_time >= 0.5 or downloaded == total:
+                    elapsed = now - start_time
+                    speed = downloaded / elapsed if elapsed > 0 else 0
+                    pct = downloaded / total * 100 if total else 0
+
+                    total_str = _fmt_size(total) if total else "未知"
+                    dl_str = _fmt_size(downloaded)
+                    speed_str = _fmt_size(speed) + "/s"
+
+                    print(
+                        f"\r[Updater] 下载中... {pct:.1f}% "
+                        f"({dl_str} / {total_str}) {speed_str}",
+                        end="",
+                        flush=True,
+                    )
+                    last_print_time = now
+
+            print()  # 换行
+
     def _download_and_apply(self, url: str):
         """下载 zip -> 临时解压 -> 覆盖本地文件。失败时保留临时目录，下次启动再试。"""
-        with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
-            req = urllib.request.Request(
-                url, headers={"User-Agent": "maa-lostsword-updater/1.0"}
-            )
-            with urllib.request.urlopen(req, timeout=120) as resp:
-                tmp.write(resp.read())
-            tmp_path = tmp.name
+        tmp_path = None
+        last_error = None
+
+        # 尝试多镜像下载
+        for prefix in self.MIRROR_PREFIXES:
+            mirror_url = prefix + url
+            try:
+                # 清理上一次的临时文件
+                if tmp_path:
+                    Path(tmp_path).unlink(missing_ok=True)
+                    tmp_path = None
+                with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
+                    self._download_zip(mirror_url, tmp)
+                    tmp_path = tmp.name
+                break
+            except Exception as e:
+                last_error = e
+                print(f"[Updater] 镜像下载失败，尝试下一个... ({e})")
+                continue
+
+        if not tmp_path:
+            raise last_error or Exception("所有镜像下载均失败")
 
         # 清理旧临时目录（如果上次有残留）
         if self.tmp_dir.exists():
