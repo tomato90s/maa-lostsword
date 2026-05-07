@@ -31,9 +31,6 @@
             }
         },
         "post_delay": 3000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到出发按钮"
-        },
         "next": [
             "Stonehenge_RemainingTime"
         ],
@@ -42,6 +39,9 @@
                 "x": 1925,
                 "y": 317
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "点击出发"
         }
     },
     "Stonehenge_CloseX": {
@@ -66,9 +66,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到关闭按钮"
-        },
         "next": [
             "退场"
         ],
@@ -80,6 +77,9 @@
                 "x": 2572,
                 "y": 276
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "关闭副本窗口"
         }
     },
     "Stonehenge_Entry": {
@@ -171,6 +171,9 @@
                 "x": 972,
                 "y": 707
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "返回主页"
         }
     },
     "Stonehenge_Label": {
@@ -191,9 +194,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到'副本'文字"
-        },
         "next": [
             "Stonehenge_Stonehenge"
         ],
@@ -202,6 +202,9 @@
                 "x": 972,
                 "y": 302
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入副本"
         }
     },
     "Stonehenge_MenuClick": {
@@ -233,9 +236,6 @@
             }
         },
         "post_delay": 1500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到副本菜单图标"
-        },
         "next": [
             "[JumpBack]Stonehenge_HomeFlag",
             "Stonehenge_Label"
@@ -245,6 +245,9 @@
                 "x": 652,
                 "y": 324
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开副本菜单"
         }
     },
     "Stonehenge_RemainingTime": {
@@ -270,9 +273,6 @@
             }
         },
         "post_delay": 5000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到剩余时间界面"
-        },
         "next": [
             "Stonehenge_CloseX"
         ],
@@ -281,6 +281,9 @@
                 "x": 2252,
                 "y": 311
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入剩余时间界面"
         }
     },
     "Stonehenge_SelectTarget": {
@@ -300,9 +303,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到选择按钮"
-        },
         "next": [
             "Stonehenge_ClickDepart"
         ],
@@ -311,6 +311,9 @@
                 "x": 1609,
                 "y": 314
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "选择目标"
         }
     },
     "Stonehenge_Stonehenge": {
@@ -339,6 +342,9 @@
                 "x": 1295,
                 "y": 311
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入巨石阵"
         }
     },
     "Stonehenge_Stop": {

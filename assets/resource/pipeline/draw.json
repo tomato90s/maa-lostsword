@@ -141,9 +141,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到免费召唤按钮"
-        },
         "next": [
             "Draw_FreeDrawIcon",
             "Draw_FreeDrawClick",
@@ -154,6 +151,9 @@
                 "x": 1292,
                 "y": 480
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "执行免费召唤"
         }
     },
     "Draw_FreeDrawClick": {
@@ -303,9 +303,6 @@
         "repeat": 3,
         "repeat_delay": 1000,
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到召唤入口"
-        },
         "next": [
             "[JumpBack]Draw_FreeDraw",
             "[JumpBack]Draw_ClaimPet",
@@ -316,6 +313,9 @@
                 "x": 972,
                 "y": 450
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入召唤"
         }
     },
     "Draw_MenuClick": {
@@ -347,9 +347,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到召唤菜单图标"
-        },
         "next": [
             "Draw_Label"
         ],
@@ -358,6 +355,9 @@
                 "x": 652,
                 "y": 480
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开召唤菜单"
         }
     },
     "Draw_SkipAnimation": {

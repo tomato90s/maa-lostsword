@@ -103,6 +103,9 @@
                 "x": -686,
                 "y": -2778
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "返回主页"
         }
     },
     "Arena_Label": {
@@ -128,9 +131,6 @@
             }
         },
         "post_wait_freezes": 500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到'竞技场'文字"
-        },
         "next": [
             "Arena_ClickChallenge"
         ],
@@ -139,6 +139,9 @@
                 "x": -677,
                 "y": -2193
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入竞技场"
         }
     },
     "Arena_MenuClick": {
@@ -170,9 +173,6 @@
             }
         },
         "post_wait_freezes": 500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到竞技场菜单图标"
-        },
         "next": [
             "[JumpBack]Arena_HomeFlag",
             "[JumpBack]Arena_ClickNormal",
@@ -183,6 +183,9 @@
                 "x": -1045,
                 "y": -2503
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开竞技场菜单"
         }
     },
     "Arena_ChallengeLimit": {
@@ -263,9 +266,6 @@
             }
         },
         "post_delay": 2500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到挑战准备界面"
-        },
         "next": [
             "Arena_SkipBattle",
             "Arena_FreeChallenge",
@@ -276,6 +276,9 @@
                 "x": -122,
                 "y": -2238
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入挑战准备"
         }
     },
     "Arena_ClickChallenge": {
@@ -292,9 +295,6 @@
             "type": "Click"
         },
         "post_wait_freezes": 500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到挑战按钮"
-        },
         "next": [
             "Arena_ChallengeReady"
         ],
@@ -303,6 +303,9 @@
                 "x": -381,
                 "y": -2189
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "点击挑战"
         }
     },
     "Arena_ClickNormal": {
@@ -325,6 +328,9 @@
                 "x": -681,
                 "y": -2476
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "选择普通模式"
         }
     },
     "Arena_ClosePopup": {
@@ -371,6 +377,9 @@
                 "x": 675,
                 "y": -2396
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "关闭竞技场弹窗"
         }
     },
     "Arena_FreeChallenge": {
@@ -409,9 +418,6 @@
                 ]
             }
         },
-        "focus": {
-            "Node.Recognition.Failed": "未找到免费挑战选项"
-        },
         "next": [
             "Arena_SkipBattle"
         ],
@@ -420,6 +426,9 @@
                 "x": 67,
                 "y": -2579
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "免费钻石挑战"
         }
     },
     "Arena_SkipBattle": {
@@ -450,9 +459,6 @@
             }
         },
         "post_delay": 5000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到 Skip 按钮"
-        },
         "next": [
             "Arena_ClosePopup"
         ],
@@ -461,6 +467,9 @@
                 "x": 332,
                 "y": -2216
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "跳过战斗动画"
         }
     },
     "$__mpe_external_ReturnMain_arena": {

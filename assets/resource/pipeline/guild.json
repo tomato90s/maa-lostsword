@@ -447,9 +447,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到'公会'文字"
-        },
         "next": [
             "Guild_DonationPopup",
             "Guild_DonationMaxLimit"
@@ -459,6 +456,9 @@
                 "x": 1530,
                 "y": 984
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入公会"
         }
     },
     "Guild_MenuClick": {
@@ -490,9 +490,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到公会菜单图标"
-        },
         "next": [
             "[JumpBack]Guild_SignIn",
             "[JumpBack]Guild_InvestmentCoin",
@@ -506,6 +503,9 @@
                 "x": 1151,
                 "y": 347
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开公会菜单"
         }
     },
     "Guild_SignIn": {

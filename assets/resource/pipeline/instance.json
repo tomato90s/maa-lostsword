@@ -59,9 +59,6 @@
             "type": "Click"
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到属性石"
-        },
         "next": [
             "Instance_Sweep"
         ],
@@ -70,6 +67,9 @@
                 "x": 1275,
                 "y": 623
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入属性石副本"
         }
     },
     "Instance_ClickChallenge": {
@@ -86,9 +86,6 @@
             "type": "Click"
         },
         "post_wait_freezes": 1000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到挑战按钮"
-        },
         "next": [
             "Instance_Label"
         ],
@@ -97,6 +94,9 @@
                 "x": 18,
                 "y": 738
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "点击挑战"
         }
     },
     "Instance_CloseEnter": {
@@ -162,14 +162,14 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到扫荡弹窗关闭按钮"
-        },
         "$__mpe_code": {
             "position": {
                 "x": 2043,
                 "y": 172
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "关闭扫荡弹窗"
         }
     },
     "Instance_Entry": {
@@ -204,9 +204,6 @@
             "type": "Click"
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到经验书"
-        },
         "next": [
             "Instance_Sweep"
         ],
@@ -215,6 +212,9 @@
                 "x": 1293,
                 "y": 989
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入经验书副本"
         }
     },
     "Instance_FromHome": {
@@ -282,9 +282,6 @@
             "type": "Click"
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到黄金猎犬"
-        },
         "next": [
             "Instance_Sweep"
         ],
@@ -293,6 +290,9 @@
                 "x": 1298,
                 "y": 1310
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入黄金猎犬副本"
         }
     },
     "Instance_HomeFlag": {
@@ -317,6 +317,9 @@
                 "x": 953,
                 "y": -530
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "返回主页"
         }
     },
     "Instance_ItemObtained": {
@@ -339,9 +342,6 @@
             "type": "Click"
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到已获得道具提示"
-        },
         "next": [
             "点击扫荡"
         ],
@@ -350,6 +350,9 @@
                 "x": 2043,
                 "y": -209
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "获得道具"
         }
     },
     "Instance_Label": {
@@ -374,9 +377,6 @@
             }
         },
         "post_delay": 2000,
-        "focus": {
-            "Node.Recognition.Failed": "未找到'副本'文字"
-        },
         "next": [
             "[JumpBack]Instance_GoldenHound",
             "[JumpBack]Instance_ExpBook",
@@ -388,6 +388,9 @@
                 "x": 949,
                 "y": 231
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入副本"
         }
     },
     "Instance_MenuClick": {
@@ -419,9 +422,6 @@
             }
         },
         "post_delay": 1500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到副本菜单图标"
-        },
         "next": [
             "[JumpBack]Instance_HomeFlag",
             "Instance_Label"
@@ -431,6 +431,9 @@
                 "x": 594,
                 "y": 106
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开副本菜单"
         }
     },
     "Instance_Stop": {
@@ -474,6 +477,9 @@
                 "x": 1689,
                 "y": 205
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "开始扫荡"
         }
     },
     "点击扫荡": {

@@ -130,9 +130,6 @@
             }
         },
         "post_delay": 3500,
-        "focus": {
-            "Node.Recognition.Failed": "未找到'宝藏探索'文字"
-        },
         "next": [
             "Treasure_GetReward",
             "Treasure_QuickSearch"
@@ -142,6 +139,9 @@
                 "x": 357,
                 "y": 129
             }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入宝藏探索"
         }
     },
     "Treasure_QuickPopupC": {
