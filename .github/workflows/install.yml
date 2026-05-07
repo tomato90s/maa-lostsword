@@ -157,15 +157,6 @@ jobs:
             ./install/python/bin/python -m pip install -r ./requirements.txt
           fi
 
-      - name: Generate resource update package
-        shell: bash
-        run: |
-          python tools/generate_update.py \
-            --version "${{ needs.meta.outputs.tag }}" \
-            --root install \
-            --output-dir install \
-            --include "agent/**/*.py" "resource/**/*" "interface.json"
-
       - uses: actions/upload-artifact@v4
         with:
           name: MaaLostSword-${{ matrix.os }}-${{ matrix.arch }}
@@ -202,22 +193,38 @@ jobs:
     needs: [meta, install, changelog]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/download-artifact@v4
         with:
           path: assets
 
+      - name: Generate resource update package
+        shell: bash
+        run: |
+          PLATFORM_DIR=$(ls assets | head -1)
+          python tools/generate_update.py \
+            --version "${{ needs.meta.outputs.tag }}" \
+            --root "assets/$PLATFORM_DIR" \
+            --output-dir . \
+            --include "agent/**/*.py" "resource/**/*" "interface.json"
+
       - run: |
           cd assets
           for f in *; do
-            (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
+            if [ -d "$f" ]; then
+              (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
+            fi
           done
-          
+
       - uses: softprops/action-gh-release@v2
         with:
           files: |
-            assets/*
-            assets/**/resource-manifest.json
-            assets/**/resource-update-*.zip
+            assets/*-v*.zip
+            resource-manifest.json
+            resource-update-*.zip
           tag_name: ${{ needs.meta.outputs.tag }}
           body: ${{ needs.changelog.outputs.release_body }}
           draft: false
