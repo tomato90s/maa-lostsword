@@ -180,14 +180,11 @@ class ResourceUpdater:
                     speed_str = _fmt_size(speed) + "/s"
 
                     print(
-                        f"\r[Updater] 下载中... {pct:.1f}% "
+                        f"[Updater] 下载中... {pct:.1f}% "
                         f"({dl_str} / {total_str}) {speed_str}",
-                        end="",
                         flush=True,
                     )
                     last_print_time = now
-
-            print()  # 换行
 
     def _download_and_apply(self, url: str):
         """下载 zip -> 临时解压 -> 覆盖本地文件。失败时保留临时目录，下次启动再试。"""
