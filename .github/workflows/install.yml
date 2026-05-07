@@ -200,6 +200,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: assets
+          pattern: MaaLostSword-*
 
       - name: Generate resource update package
         shell: bash
@@ -213,9 +214,9 @@ jobs:
 
       - run: |
           cd assets
-          for f in *; do
-            if [ -d "$f" ]; then
-              (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
+          for f in MaaLostSword-*; do
+            if [ -d "$f" ] && [ -n "$(ls -A "$f" 2>/dev/null)" ]; then
+              (cd "$f" && zip -r "../$f-${{ needs.meta.outputs.tag }}.zip" .)
             fi
           done
 
