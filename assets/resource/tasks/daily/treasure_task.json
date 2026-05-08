@@ -5,7 +5,10 @@
             "entry": "Treasure_Entry",
             "group": [
                 "daily"
-            ]
+            ],
+            "label": "💎宝藏探索",
+            "default_check": true
         }
-    ]
+    ],
+    "option": {}
 }

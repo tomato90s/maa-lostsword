@@ -1,9 +1,0 @@
-{
-    "task": [
-        {
-            "name": "公会签到",
-            "entry": "Guild_Entry",
-            "group": ["daily"]
-        }
-    ]
-}

@@ -5,7 +5,10 @@
             "entry": "Quest_Entry",
             "group": [
                 "daily"
-            ]
+            ],
+            "label": "📜领取任务奖励",
+            "default_check": true
         }
-    ]
+    ],
+    "option": {}
 }

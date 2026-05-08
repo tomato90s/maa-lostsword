@@ -2,39 +2,23 @@
     "$__mpe_config_instance": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777712358941,
+            "lastSyncTime": 1778162975431,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
             "savedViewport": {
-                "x": -1657,
-                "y": 237,
-                "zoom": 1.05
+                "x": -1142,
+                "y": -197,
+                "zoom": 1
             },
             "filename": "instance",
-            "version": "v1.5.0"
+            "version": "v1.5.2"
         }
     },
     "$__mpe_external_ReturnMain_instance": {
         "$__mpe_code": {
             "position": {
-                "x": 334,
-                "y": -20
-            }
-        }
-    },
-    "$__mpe_external_新建节点2_instance": {
-        "$__mpe_code": {
-            "position": {
-                "x": 2892,
-                "y": 477
-            }
-        }
-    },
-    "$__mpe_external_退场_instance": {
-        "$__mpe_code": {
-            "position": {
-                "x": 2892,
-                "y": 337
+                "x": 792,
+                "y": 57
             }
         }
     },
@@ -59,17 +43,17 @@
             "type": "Click"
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入属性石副本"
+        },
         "next": [
             "Instance_Sweep"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1275,
-                "y": 623
+                "x": 1752,
+                "y": 1308
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入属性石副本"
         }
     },
     "Instance_ClickChallenge": {
@@ -86,17 +70,17 @@
             "type": "Click"
         },
         "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Succeeded": "点击挑战"
+        },
         "next": [
             "Instance_Label"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 18,
-                "y": 738
+                "x": 1112,
+                "y": 687
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "点击挑战"
         }
     },
     "Instance_CloseEnter": {
@@ -129,8 +113,8 @@
         "repeat_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2045,
-                "y": 865
+                "x": 2392,
+                "y": 460
             }
         }
     },
@@ -162,14 +146,14 @@
             }
         },
         "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": 2043,
-                "y": 172
-            }
-        },
         "focus": {
             "Node.Recognition.Succeeded": "关闭扫荡弹窗"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2392,
+                "y": 886
+            }
         }
     },
     "Instance_Entry": {
@@ -184,8 +168,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 12,
-                "y": 69
+                "x": 472,
+                "y": 12
             }
         }
     },
@@ -204,17 +188,17 @@
             "type": "Click"
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入经验书副本"
+        },
         "next": [
             "Instance_Sweep"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1293,
-                "y": 989
+                "x": 1752,
+                "y": 935
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入经验书副本"
         }
     },
     "Instance_FromHome": {
@@ -262,8 +246,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 314,
-                "y": 245
+                "x": 792,
+                "y": 197
             }
         }
     },
@@ -282,17 +266,17 @@
             "type": "Click"
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入黄金猎犬副本"
+        },
         "next": [
             "Instance_Sweep"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1298,
-                "y": 1310
+                "x": 1752,
+                "y": 548
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入黄金猎犬副本"
         }
     },
     "Instance_HomeFlag": {
@@ -312,14 +296,14 @@
                 ]
             }
         },
-        "$__mpe_code": {
-            "position": {
-                "x": 953,
-                "y": -530
-            }
-        },
         "focus": {
             "Node.Recognition.Succeeded": "返回主页"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1432,
+                "y": 162
+            }
         }
     },
     "Instance_ItemObtained": {
@@ -342,17 +326,17 @@
             "type": "Click"
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "获得道具"
+        },
         "next": [
             "点击扫荡"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2043,
-                "y": -209
+                "x": 2392,
+                "y": 1358
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "获得道具"
         }
     },
     "Instance_Label": {
@@ -377,6 +361,9 @@
             }
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入副本"
+        },
         "next": [
             "[JumpBack]Instance_GoldenHound",
             "[JumpBack]Instance_ExpBook",
@@ -385,12 +372,9 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 949,
-                "y": 231
+                "x": 1432,
+                "y": 585
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入副本"
         }
     },
     "Instance_MenuClick": {
@@ -422,25 +406,25 @@
             }
         },
         "post_delay": 1500,
+        "focus": {
+            "Node.Recognition.Succeeded": "打开副本菜单"
+        },
         "next": [
             "[JumpBack]Instance_HomeFlag",
             "Instance_Label"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 594,
-                "y": 106
+                "x": 1112,
+                "y": 197
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "打开副本菜单"
         }
     },
     "Instance_Stop": {
         "$__mpe_code": {
             "position": {
-                "x": 1300,
-                "y": 62
+                "x": 1752,
+                "y": 361
             }
         }
     },
@@ -467,6 +451,9 @@
             }
         },
         "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Succeeded": "开始扫荡"
+        },
         "next": [
             "[JumpBack]Instance_ItemObtained",
             "[JumpBack]Instance_CloseSweepPopup",
@@ -474,12 +461,9 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1689,
-                "y": 205
+                "x": 2072,
+                "y": 919
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "开始扫荡"
         }
     },
     "点击扫荡": {
@@ -497,8 +481,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 2355,
-                "y": -173
+                "x": 2712,
+                "y": 1413
             }
         }
     }

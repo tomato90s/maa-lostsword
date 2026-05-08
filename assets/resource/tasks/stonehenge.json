@@ -1,9 +1,0 @@
-{
-    "task": [
-        {
-            "name": "巨石阵",
-            "entry": "Stonehenge_Entry",
-            "group": ["daily"]
-        }
-    ]
-}

@@ -5,7 +5,10 @@
             "entry": "Arena_Entry",
             "group": [
                 "daily"
-            ]
+            ],
+            "label": "🏆竞技场",
+            "default_check": true
         }
-    ]
+    ],
+    "option": {}
 }

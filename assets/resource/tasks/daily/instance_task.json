@@ -1,0 +1,14 @@
+{
+    "task": [
+        {
+            "name": "副本",
+            "entry": "Instance_Entry",
+            "group": [
+                "daily"
+            ],
+            "label": "⚔️副本",
+            "default_check": true
+        }
+    ],
+    "option": {}
+}

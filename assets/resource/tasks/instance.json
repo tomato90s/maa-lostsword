@@ -1,9 +1,0 @@
-{
-    "task": [
-        {
-            "name": "副本",
-            "entry": "Instance_Entry",
-            "group": ["daily"]
-        }
-    ]
-}

@@ -1,0 +1,14 @@
+{
+    "task": [
+        {
+            "name": "巨石阵",
+            "entry": "Stonehenge_Entry",
+            "group": [
+                "daily"
+            ],
+            "label": "🗿巨石阵",
+            "default_check": true
+        }
+    ],
+    "option": {}
+}

@@ -5,7 +5,10 @@
             "entry": "Draw_Entry",
             "group": [
                 "daily"
-            ]
+            ],
+            "label": "🎲免费每日一抽",
+            "default_check": true
         }
-    ]
+    ],
+    "option": {}
 }

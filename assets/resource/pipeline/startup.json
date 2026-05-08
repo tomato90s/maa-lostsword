@@ -2,16 +2,16 @@
     "$__mpe_config_startup": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777734163517,
+            "lastSyncTime": 1778168460520,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/startup.json",
             "savedViewport": {
-                "x": -460,
-                "y": -1107,
-                "zoom": 1
+                "x": -1686,
+                "y": -1674,
+                "zoom": 1.77
             },
             "filename": "startup",
-            "version": "v1.5.0"
+            "version": "v1.5.2"
         }
     },
     "CardReward": {
@@ -29,8 +29,8 @@
         "post_wait_freezes": 200,
         "$__mpe_code": {
             "position": {
-                "x": 1532,
-                "y": 1644
+                "x": 1292,
+                "y": 928
             }
         }
     },
@@ -49,8 +49,8 @@
         "post_wait_freezes": 500,
         "$__mpe_code": {
             "position": {
-                "x": 1532,
-                "y": 979
+                "x": 1292,
+                "y": 289
             }
         }
     },
@@ -66,8 +66,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 1099,
-                "y": 1400
+                "x": 1612,
+                "y": 2000
             }
         }
     },
@@ -92,8 +92,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 1532,
-                "y": 670
+                "x": 1292,
+                "y": 619
             }
         }
     },
@@ -127,8 +127,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 693,
-                "y": 1333
+                "x": 1292,
+                "y": 1921
             }
         }
     },
@@ -172,8 +172,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 673,
-                "y": 1008
+                "x": 652,
+                "y": 896
             }
         }
     },
@@ -185,13 +185,13 @@
             "[JumpBack]新建节点14",
             "[JumpBack]CloseX",
             "[JumpBack]右上角X",
-            "HomeFlagCloseReturnMain",
-            "[JumpBack]Global_ItemObtained"
+            "[JumpBack]Global_ItemObtained",
+            "HomeFlagCloseReturnMain"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1096,
-                "y": 1092
+                "x": 972,
+                "y": 946
             }
         }
     },
@@ -204,17 +204,17 @@
         },
         "timeout": 60000,
         "rate_limit": 3000,
-        "on_error": [
-            "StopTask"
-        ],
         "next": [
             "HomeFlagCloseReturnMain",
             "LinkStart"
         ],
+        "on_error": [
+            "StopTask"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 235,
-                "y": 1145
+                "x": 332,
+                "y": 2025
             }
         }
     },
@@ -227,8 +227,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 277,
-                "y": 1437
+                "x": 652,
+                "y": 2149
             }
         }
     },
@@ -238,8 +238,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -59,
-                "y": 1217
+                "x": 12,
+                "y": 2084
             }
         }
     },
@@ -271,8 +271,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 1532,
-                "y": 1309
+                "x": 1292,
+                "y": 1205
             }
         }
     },
@@ -313,8 +313,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 1532,
-                "y": 12
+                "x": 1292,
+                "y": 1540
             }
         }
     },
@@ -333,58 +333,8 @@
         "post_wait_freezes": 1000,
         "$__mpe_code": {
             "position": {
-                "x": 1532,
-                "y": 393
-            }
-        }
-    },
-    "新建节点17": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "免费"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1235,
-                    40,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 3000,
-        "$__mpe_code": {
-            "position": {
-                "x": 332,
+                "x": 1292,
                 "y": 12
-            }
-        }
-    },
-    "转盘": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "贝迪兔女郎轮盘 "
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "next": [
-            "新建节点17"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 12,
-                "y": 56
             }
         }
     }

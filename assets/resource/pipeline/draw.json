@@ -2,23 +2,23 @@
     "$__mpe_config_draw": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777730023060,
+            "lastSyncTime": 1778164269328,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/draw.json",
             "savedViewport": {
                 "x": 174,
-                "y": 99,
-                "zoom": 0.62
+                "y": 53,
+                "zoom": 0.92
             },
             "filename": "draw",
-            "version": "v1.5.0"
+            "version": "v1.5.2"
         }
     },
     "$__mpe_external_ReturnMain_draw": {
         "$__mpe_code": {
             "position": {
                 "x": 332,
-                "y": 314
+                "y": 33
             }
         }
     },
@@ -57,7 +57,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1292,
-                "y": 917
+                "y": 636
             }
         }
     },
@@ -91,13 +91,35 @@
         "$__mpe_code": {
             "position": {
                 "x": 2572,
-                "y": 938
+                "y": 657
+            }
+        }
+    },
+    "Draw_DiamondDrawIcon": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    748,
+                    661,
+                    49,
+                    43
+                ],
+                "template": [
+                    "template_1777729931840.png"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 341
             }
         }
     },
     "Draw_Entry": {
         "desc": "免费每日一抽任务入口",
-        "max_hit": 2,
+        "max_hit": 3,
         "focus": {
             "Node.Action.Starting": "开始执行免费每日一抽任务"
         },
@@ -108,7 +130,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 12,
-                "y": 508
+                "y": 119
             }
         }
     },
@@ -141,6 +163,9 @@
             }
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "执行免费召唤"
+        },
         "next": [
             "Draw_FreeDrawIcon",
             "Draw_FreeDrawClick",
@@ -149,11 +174,8 @@
         "$__mpe_code": {
             "position": {
                 "x": 1292,
-                "y": 480
+                "y": 199
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "执行免费召唤"
         }
     },
     "Draw_FreeDrawClick": {
@@ -189,7 +211,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1612,
-                "y": 938
+                "y": 657
             }
         }
     },
@@ -211,13 +233,13 @@
         "$__mpe_code": {
             "position": {
                 "x": 1612,
-                "y": 332
+                "y": 37
             }
         }
     },
     "Draw_FromHome": {
         "desc": "从主页右上角菜单进入",
-        "max_hit": 1,
+        "max_hit": 4,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -261,7 +283,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 332,
-                "y": 454
+                "y": 173
             }
         }
     },
@@ -285,24 +307,27 @@
             "type": "Swipe",
             "param": {
                 "begin": [
-                    121,
-                    648,
+                    118,
+                    571,
                     1,
                     1
                 ],
                 "end": [
                     [
-                        129,
-                        337,
-                        0,
-                        0
+                        126,
+                        213,
+                        1,
+                        1
                     ]
                 ]
             }
         },
         "repeat": 3,
-        "repeat_delay": 1000,
+        "repeat_delay": 2000,
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入召唤"
+        },
         "next": [
             "[JumpBack]Draw_FreeDraw",
             "[JumpBack]Draw_ClaimPet",
@@ -311,11 +336,8 @@
         "$__mpe_code": {
             "position": {
                 "x": 972,
-                "y": 450
+                "y": 169
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入召唤"
         }
     },
     "Draw_MenuClick": {
@@ -347,17 +369,17 @@
             }
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "打开召唤菜单"
+        },
         "next": [
             "Draw_Label"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 652,
-                "y": 480
+                "x": 640,
+                "y": 189
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "打开召唤菜单"
         }
     },
     "Draw_SkipAnimation": {
@@ -393,7 +415,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1932,
-                "y": 938
+                "y": 657
             }
         }
     },
@@ -404,7 +426,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1292,
-                "y": 293
+                "y": 12
             }
         }
     },
@@ -441,29 +463,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 2252,
-                "y": 938
-            }
-        }
-    },
-    "Draw_DiamondDrawIcon": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    748,
-                    661,
-                    49,
-                    43
-                ],
-                "template": [
-                    "template_1777729931840.png"
-                ]
-            }
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 1612,
-                "y": 636
+                "y": 657
             }
         }
     }

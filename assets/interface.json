@@ -1,10 +1,10 @@
 {
     "interface_version": 2,
     "name": "maa-lostsword",
-    "title": "MAA-LostSword - Lost Sword 自动化助手 v0.1.19",
+    "title": "MAA-LostSword - Lost Sword 自动化助手 v0.1.20",
     "icon": "logo.webp",
     "description": "Lost Sword 自动化助手，基于 MaaFramework",
-    "version": "v0.1.19",
+    "version": "v0.1.20",
     "contact": "游戏交流 QQ 群: 1020907837",
     "welcome": "欢迎使用 MAA-LostSword！请确保模拟器打开adb调试并且分辨率为 1280x720 或 1920x1080。正在完善功能中,如遇到任何问题, 请提issue 或者加入交流群反馈！",
     "github": "https://github.com/tomato90s/maa-lostsword",
@@ -43,15 +43,15 @@
     },
     "option": {},
     "import": [
-        "resource/tasks/startup.json",
-        "resource/tasks/instance.json",
-        "resource/tasks/arena.json",
-        "resource/tasks/stonehenge.json",
-        "resource/tasks/treasure.json",
-        "resource/tasks/guild.json",
-        "resource/tasks/draw.json",
-        "resource/tasks/shop.json",
-        "resource/tasks/raid.json",
-        "resource/tasks/quest.json"
+        "resource/tasks/system/startup_task.json",
+        "resource/tasks/daily/arena_task.json",
+        "resource/tasks/daily/draw_task.json",
+        "resource/tasks/daily/guild_task.json",
+        "resource/tasks/daily/instance_task.json",
+        "resource/tasks/daily/quest_task.json",
+        "resource/tasks/daily/raid_task.json",
+        "resource/tasks/daily/shop_task.json",
+        "resource/tasks/daily/stonehenge_task.json",
+        "resource/tasks/daily/treasure_task.json"
     ]
 }
