@@ -105,7 +105,7 @@ jobs:
         id: download_mxu
         uses: robinraju/release-downloader@v1
         with:
-          repository: MistEO/MXU
+          repository: tomato90s/MXU
           fileName: "MXU-${{ matrix.os }}-${{ matrix.arch }}*"
           latest: true
           out-file-path: "MXU_Bin"
