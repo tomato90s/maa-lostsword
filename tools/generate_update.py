@@ -39,6 +39,12 @@ def generate(root: Path, patterns: list[str], version: str, out_dir: Path):
         "files": files,
     }
 
+    if not files:
+        raise RuntimeError(
+            "No files matched include patterns. "
+            f"root={root}, include={patterns}"
+        )
+
     manifest_path = out_dir / "resource-manifest.json"
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)

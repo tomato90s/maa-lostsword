@@ -206,9 +206,17 @@ jobs:
         shell: bash
         run: |
           PLATFORM_DIR=$(ls assets | head -1)
+          ROOT_DIR="assets/$PLATFORM_DIR"
+          if [ ! -f "$ROOT_DIR/interface.json" ] && [ -d "$ROOT_DIR/install" ]; then
+            ROOT_DIR="$ROOT_DIR/install"
+          fi
+
+          echo "Detected artifact root: $ROOT_DIR"
+          ls -la "$ROOT_DIR"
+
           python tools/generate_update.py \
             --version "${{ needs.meta.outputs.tag }}" \
-            --root "assets/$PLATFORM_DIR" \
+            --root "$ROOT_DIR" \
             --output-dir . \
             --include "agent/**/*.py" "resource/**/*" "interface.json"
 
