@@ -199,14 +199,14 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          path: assets
+          path: release-artifacts
           pattern: MaaLostSword-*
 
       - name: Generate resource update package
         shell: bash
         run: |
-          PLATFORM_DIR=$(ls assets | head -1)
-          ROOT_DIR="assets/$PLATFORM_DIR"
+          PLATFORM_DIR=$(ls -d release-artifacts/MaaLostSword-* | head -1)
+          ROOT_DIR="$PLATFORM_DIR"
           if [ ! -f "$ROOT_DIR/interface.json" ] && [ -d "$ROOT_DIR/install" ]; then
             ROOT_DIR="$ROOT_DIR/install"
           fi
@@ -221,7 +221,7 @@ jobs:
             --include "agent/**/*.py" "resource/**/*" "interface.json"
 
       - run: |
-          cd assets
+          cd release-artifacts
           for f in MaaLostSword-*; do
             if [ -d "$f" ] && [ -n "$(ls -A "$f" 2>/dev/null)" ]; then
               (cd "$f" && zip -r "../$f-${{ needs.meta.outputs.tag }}.zip" .)
@@ -231,7 +231,7 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           files: |
-            assets/*-v*.zip
+            release-artifacts/*-v*.zip
             resource-manifest.json
             resource-update-*.zip
           tag_name: ${{ needs.meta.outputs.tag }}
