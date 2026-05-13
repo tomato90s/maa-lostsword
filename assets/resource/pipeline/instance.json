@@ -330,7 +330,7 @@
             "Node.Recognition.Succeeded": "获得道具"
         },
         "next": [
-            "点击扫荡"
+            "Instance_ClickSweep"
         ],
         "$__mpe_code": {
             "position": {
@@ -466,7 +466,7 @@
             }
         }
     },
-    "点击扫荡": {
+    "Instance_ClickSweep": {
         "action": {
             "type": "Click",
             "param": {

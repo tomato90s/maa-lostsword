@@ -180,11 +180,10 @@
     "ReturnMain": {
         "max_hit": 2,
         "next": [
-            "[JumpBack]女仆活动弹窗",
+            "[JumpBack]Startup_CloseMaidPopup",
             "[JumpBack]CardReward",
-            "[JumpBack]新建节点14",
             "[JumpBack]CloseX",
-            "[JumpBack]右上角X",
+            "[JumpBack]Startup_CloseTopRight",
             "[JumpBack]Global_ItemObtained",
             "HomeFlagCloseReturnMain"
         ],
@@ -243,7 +242,7 @@
             }
         }
     },
-    "右上角X": {
+    "Startup_CloseTopRight": {
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -276,7 +275,7 @@
             }
         }
     },
-    "女仆活动弹窗": {
+    "Startup_CloseMaidPopup": {
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -315,26 +314,6 @@
             "position": {
                 "x": 1292,
                 "y": 1540
-            }
-        }
-    },
-    "新建节点14": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "已获得道具"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 1000,
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 12
             }
         }
     }

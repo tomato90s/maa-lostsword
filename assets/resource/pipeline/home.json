@@ -11,7 +11,7 @@
             "version": "v1.4.3"
         }
     },
-    "主页": {
+    "Home_Flag": {
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -27,7 +27,7 @@
             }
         }
     },
-    "关闭弹窗X": {
+    "Home_ClosePopup": {
         "max_hit": 10,
         "recognition": {
             "type": "TemplateMatch",
@@ -42,8 +42,8 @@
         },
         "post_wait_freezes": 500,
         "next": [
-            "关闭弹窗X",
-            "主页"
+            "Home_ClosePopup",
+            "Home_Flag"
         ],
         "$__mpe_code": {
             "position": {
@@ -52,7 +52,7 @@
             }
         }
     },
-    "新建节点2": {
+    "Home_ClickTopRight": {
         "action": {
             "type": "Click",
             "param": {
@@ -66,7 +66,7 @@
         },
         "post_wait_freezes": 200,
         "next": [
-            "退场"
+            "Home_ExitConfirm"
         ],
         "$__mpe_code": {
             "position": {
@@ -75,55 +75,7 @@
             }
         }
     },
-    "新建节点37": {
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1233,
-                    40,
-                    1,
-                    1
-                ]
-            }
-        },
-        "repeat": 3,
-        "repeat_delay": 1500,
-        "next": [
-            "主页"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 557,
-                "y": -1006
-            }
-        }
-    },
-    "新建节点39": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "template_1777188901592.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "repeat": 5,
-        "repeat_wait_freezes": 1500,
-        "next": [
-            "主页"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -67,
-                "y": -797
-            }
-        }
-    },
-    "退场": {
+    "Home_ExitConfirm": {
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -145,7 +97,7 @@
         },
         "post_wait_freezes": 1000,
         "next": [
-            "主页"
+            "Home_Flag"
         ],
         "on_error": [],
         "$__mpe_code": {

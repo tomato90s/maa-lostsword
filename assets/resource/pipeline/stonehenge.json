@@ -22,22 +22,6 @@
             }
         }
     },
-    "$__mpe_external_新建节点2_stonehenge": {
-        "$__mpe_code": {
-            "position": {
-                "x": 2892,
-                "y": 512
-            }
-        }
-    },
-    "$__mpe_external_退场_stonehenge": {
-        "$__mpe_code": {
-            "position": {
-                "x": 2892,
-                "y": 372
-            }
-        }
-    },
     "Stonehenge_ClickDepart": {
         "desc": "点击出发",
         "recognition": {
@@ -94,10 +78,10 @@
             "Node.Recognition.Succeeded": "关闭副本窗口"
         },
         "next": [
-            "退场"
+            "Home_ExitConfirm"
         ],
         "on_error": [
-            "新建节点2"
+            "Home_ClickTopRight"
         ],
         "$__mpe_code": {
             "position": {
