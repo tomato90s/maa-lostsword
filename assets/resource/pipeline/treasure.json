@@ -2,16 +2,17 @@
     "$__mpe_config_treasure": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777892341983,
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1778683248509,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/treasure.json",
             "savedViewport": {
-                "x": -129,
-                "y": -56,
-                "zoom": 1.02
+                "x": 77,
+                "y": -24,
+                "zoom": 1.01
             },
             "filename": "treasure",
-            "version": "v1.5.1"
+            "version": "v1.5.3"
         }
     },
     "$__mpe_external_ReturnMain_treasure": {
@@ -30,13 +31,12 @@
         },
         "next": [
             "[JumpBack]ReturnMain",
-            "[JumpBack]Treasure_Label",
-            "Treasure_Stop"
+            "[JumpBack]Treasure_Label"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 12,
-                "y": 244
+                "x": -49,
+                "y": 168
             }
         }
     },
@@ -106,20 +106,28 @@
             }
         }
     },
+    "Treasure_ItemObtainedEnd": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1370,
+                "y": 230
+            }
+        }
+    },
     "Treasure_Label": {
         "desc": "识别宝藏探索入口文字",
         "max_hit": 3,
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    788,
-                    592,
-                    73,
-                    67
+                    775,
+                    660,
+                    101,
+                    32
                 ],
-                "template": [
-                    "template_1777642996977.png"
+                "expected": [
+                    "宝藏探索"
                 ]
             }
         },
@@ -130,18 +138,21 @@
             }
         },
         "post_delay": 3500,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入宝藏探索"
+        },
         "next": [
             "Treasure_GetReward",
             "Treasure_QuickSearch"
         ],
+        "on_error": [
+            "Treasure_Stop"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 357,
-                "y": 129
+                "x": 338,
+                "y": 124
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入宝藏探索"
         }
     },
     "Treasure_QuickPopupC": {
@@ -233,6 +244,35 @@
             "position": {
                 "x": 1370,
                 "y": 460
+            }
+        }
+    },
+    "Treasure_QuickPopupClose3": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1061,
+                    104,
+                    63,
+                    57
+                ],
+                "template": [
+                    "template_1777645774889.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 1370,
+                "y": -165
             }
         }
     },
@@ -356,43 +396,6 @@
             "position": {
                 "x": 1275,
                 "y": 878
-            }
-        }
-    },
-    "Treasure_QuickPopupClose3": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1061,
-                    104,
-                    63,
-                    57
-                ],
-                "template": [
-                    "template_1777645774889.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": 1370,
-                "y": -165
-            }
-        }
-    },
-    "Treasure_ItemObtainedEnd": {
-        "$__mpe_code": {
-            "position": {
-                "x": 1370,
-                "y": 230
             }
         }
     }
