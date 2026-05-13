@@ -1,0 +1,14 @@
+{
+    "task": [
+        {
+            "name": "活动扫荡",
+            "entry": "Event_Entry",
+            "group": [
+                "daily"
+            ],
+            "label": "🎉活动扫荡",
+            "default_check": false
+        }
+    ],
+    "option": {}
+}

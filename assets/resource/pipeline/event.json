@@ -1,0 +1,392 @@
+{
+    "$__mpe_config_新建Pipeline3": {
+        "$__mpe_code": {
+            "prefix": "",
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1778682751325,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/event.json",
+            "savedViewport": {
+                "x": -489,
+                "y": -416,
+                "zoom": 1.01
+            },
+            "filename": "新建Pipeline3",
+            "version": "v1.5.3"
+        }
+    },
+    "$__mpe_external_ReturnMain_新建Pipeline3": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 432
+            }
+        }
+    },
+    "Event_ClickNormal": {
+        "desc": "点击可扫荡副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    156,
+                    599,
+                    67,
+                    32
+                ],
+                "expected": [
+                    "可扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入普通副本"
+        },
+        "next": [
+            "Event_Sweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1612,
+                "y": 600
+            }
+        }
+    },
+    "Event_ClickSweep": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    974,
+                    664,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2572,
+                "y": 1085
+            }
+        }
+    },
+    "Event_CloseEnter": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1201,
+                    9,
+                    70,
+                    70
+                ],
+                "template": [
+                    "template_1777631957359.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1234,
+                    39,
+                    1,
+                    1
+                ]
+            }
+        },
+        "repeat": 2,
+        "repeat_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 139
+            }
+        }
+    },
+    "Event_CloseSweepPopup": {
+        "desc": "关闭扫荡弹窗",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    549,
+                    10,
+                    557,
+                    703
+                ],
+                "template": [
+                    "template_1777632657324.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "关闭扫荡弹窗"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 565
+            }
+        }
+    },
+    "Event_Entry": {
+        "desc": "活动扫荡入口",
+        "max_hit": 2,
+        "focus": {
+            "Node.Action.Starting": "开始执行活动扫荡任务"
+        },
+        "next": [
+            "[JumpBack]ReturnMain",
+            "Event_FromHome"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 610
+            }
+        }
+    },
+    "Event_FromHome": {
+        "desc": "从主页右上角菜单进入",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "next": [
+            "Event_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 572
+            }
+        }
+    },
+    "Event_HomeFlag": {
+        "desc": "识别到主页则停止循环",
+        "max_hit": 1,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    6,
+                    4,
+                    89,
+                    70
+                ],
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "next": [
+            "Event_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 605
+            }
+        }
+    },
+    "Event_ItemObtained": {
+        "desc": "已获得道具提示",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "获得道具"
+        },
+        "next": [
+            "Event_ClickSweep"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 1037
+            }
+        }
+    },
+    "Event_Label": {
+        "desc": "点击活动标签",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1119,
+                    75,
+                    81,
+                    46
+                ],
+                "expected": [
+                    "活动"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Event_ClickNormal"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1292,
+                "y": 616
+            }
+        }
+    },
+    "Event_MenuClick": {
+        "desc": "点击菜单中的副本图标",
+        "max_hit": 5,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    975,
+                    342,
+                    92,
+                    89
+                ],
+                "template": [
+                    "template_1777300718819.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1013,
+                    386,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "Event_HomeFlag"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 652,
+                "y": 572
+            }
+        }
+    },
+    "Event_Stop": {
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 12
+            }
+        }
+    },
+    "Event_Sweep": {
+        "desc": "扫荡",
+        "max_hit": 5,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    962,
+                    664,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": 1000,
+        "focus": {
+            "Node.Recognition.Succeeded": "开始扫荡"
+        },
+        "next": [
+            "[JumpBack]Event_ItemObtained",
+            "[JumpBack]Event_CloseSweepPopup",
+            "Event_CloseEnter"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1932,
+                "y": 598
+            }
+        }
+    }
+}
