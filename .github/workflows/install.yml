@@ -205,7 +205,7 @@ jobs:
       - name: Generate resource update package
         shell: bash
         run: |
-          PLATFORM_DIR=$(ls -d release-artifacts/MaaLostSword-* | head -1)
+          PLATFORM_DIR=$(ls -d release-artifacts/MaaLostSword-win-x86_64 | head -1)
           ROOT_DIR="$PLATFORM_DIR"
           if [ ! -f "$ROOT_DIR/interface.json" ] && [ -d "$ROOT_DIR/install" ]; then
             ROOT_DIR="$ROOT_DIR/install"
