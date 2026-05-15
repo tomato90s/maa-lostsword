@@ -4,6 +4,8 @@ import json
 import zipfile
 from pathlib import Path
 
+GITHUB_REPO = "tomato90s/maa-lostsword"
+
 
 def file_hash(path: Path) -> str:
     h = hashlib.sha256()
@@ -13,10 +15,16 @@ def file_hash(path: Path) -> str:
     return f"sha256:{h.hexdigest()}"
 
 
-def generate(root: Path, patterns: list[str], version: str, out_dir: Path):
-    """生成 manifest + 业务文件 zip（全量业务包，不是 diff）"""
+def generate(
+    root: Path,
+    patterns: list[str],
+    version: str,
+    out_dir: Path,
+    platform: str = "",
+):
+    suffix = f"-{platform}" if platform else ""
     files = {}
-    zip_path = out_dir / f"resource-update-{version}.zip"
+    zip_path = out_dir / f"resource-update-{version}{suffix}.zip"
 
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for pattern in patterns:
@@ -30,22 +38,22 @@ def generate(root: Path, patterns: list[str], version: str, out_dir: Path):
                 }
                 zf.write(path, rel)
 
-    manifest = {
-        "version": version,
-        "update_url": (
-            f"https://github.com/tomato90s/maa-lostsword"
-            f"/releases/download/{version}/resource-update-{version}.zip"
-        ),
-        "files": files,
-    }
-
     if not files:
         raise RuntimeError(
             "No files matched include patterns. "
             f"root={root}, include={patterns}"
         )
 
-    manifest_path = out_dir / "resource-manifest.json"
+    manifest = {
+        "version": version,
+        "update_url": (
+            f"https://github.com/{GITHUB_REPO}"
+            f"/releases/download/{version}/resource-update-{version}{suffix}.zip"
+        ),
+        "files": files,
+    }
+
+    manifest_path = out_dir / f"resource-manifest{suffix}.json"
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
 
@@ -59,6 +67,11 @@ if __name__ == "__main__":
     parser.add_argument("--root", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--include", nargs="+", required=True)
+    parser.add_argument(
+        "--platform",
+        default="",
+        help="Platform tag (e.g. win-x86_64, macos-aarch64). Empty = generic",
+    )
     args = parser.parse_args()
 
-    generate(args.root, args.include, args.version, args.output_dir)
+    generate(args.root, args.include, args.version, args.output_dir, args.platform)
