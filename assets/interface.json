@@ -1,7 +1,7 @@
 {
     "interface_version": 2,
     "name": "maa-lostsword",
-    "title": "MAA-LostSword - Lost Sword 自动化助手 v0.1.27",
+    "title": "MAA-LostSword - Lost Sword 自动化助手",
     "icon": "logo.webp",
     "description": "Lost Sword 自动化助手，基于 MaaFramework",
     "version": "v0.1.27",
