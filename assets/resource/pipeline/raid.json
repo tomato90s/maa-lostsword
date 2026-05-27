@@ -190,6 +190,7 @@
         }
     },
     "Raid_Sweep": {
+        "max_hit": 5,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -267,6 +268,10 @@
                 ]
             }
         },
+        "post_delay": 1000,
+        "next": [
+            "Raid_Sweep"
+        ],
         "$__mpe_code": {
             "position": {
                 "x": 2220,
@@ -296,6 +301,9 @@
             }
         },
         "post_delay": 2000,
+        "next": [
+            "Raid_Sweep"
+        ],
         "$__mpe_code": {
             "position": {
                 "x": 2064,
