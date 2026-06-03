@@ -1,0 +1,245 @@
+{
+    "$__mpe_config_common": {
+        "$__mpe_code": {
+            "prefix": "",
+            "filename": "common",
+            "version": "v1.6.0"
+        }
+    },
+    "CardReward": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "月卡每日奖励"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 200,
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 1327
+            }
+        }
+    },
+    "CloseX": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1777188837649.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_wait_freezes": 500,
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 12
+            }
+        }
+    },
+    "Global_ItemObtained": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 692
+            }
+        }
+    },
+    "HomeFlagCloseReturnMain": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1096,
+                    407,
+                    151,
+                    121
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 1003
+            }
+        }
+    },
+    "Home_OpenTopRightMenu": {
+        "desc": "识别首页并打开右上角菜单，业务后继由 NodeOverride 注入",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1089,
+                    383,
+                    162,
+                    170
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1236,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1201,
+                21,
+                59,
+                52
+            ]
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 12
+            }
+        }
+    },
+    "ReturnMain": {
+        "next": [
+            "[JumpBack]Startup_CloseMaidPopup",
+            "[JumpBack]CardReward",
+            "[JumpBack]CloseX",
+            "[JumpBack]Startup_CloseTopRight",
+            "[JumpBack]Global_ItemObtained",
+            "HomeFlagCloseReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -136,
+                "y": 814
+            }
+        }
+    },
+    "Startup_CloseMaidPopup": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    177,
+                    129,
+                    550,
+                    303
+                ],
+                "template": [
+                    "template_1777287143669.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1229,
+                    38,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_wait_freezes": {
+            "time": 500,
+            "target": [
+                1196,
+                10,
+                71,
+                59
+            ]
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 1579
+            }
+        }
+    },
+    "Startup_CloseTopRight": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1199,
+                    10,
+                    65,
+                    62
+                ],
+                "template": [
+                    "template_1777310648326.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1232,
+                    38,
+                    1,
+                    1
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 340
+            }
+        }
+    },
+    "StopTask": {
+        "action": {
+            "type": "StopTask"
+        },
+        "focus": {
+            "Node.Action.Starting": "无法进行下去，脚本结束"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 610,
+                "y": 415
+            }
+        }
+    }
+}

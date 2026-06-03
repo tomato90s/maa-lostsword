@@ -2,190 +2,51 @@
     "$__mpe_config_arena": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777614955453,
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780502166580,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/arena.json",
             "savedViewport": {
-                "x": 1423,
-                "y": 2947,
-                "zoom": 1.03
+                "x": -471,
+                "y": -324,
+                "zoom": 1.01
             },
             "filename": "arena",
-            "version": "v1.4.3"
+            "version": "v1.6.0"
         }
     },
-    "Arena_Entry": {
-        "desc": "竞技场任务入口",
-        "max_hit": 2,
-        "focus": {
-            "Node.Action.Starting": "开始执行竞技场任务"
-        },
-        "next": [
-            "[JumpBack]ReturnMain",
-            "Arena_FromHome"
-        ],
+    "$__mpe_external_Home_OpenTopRightMenu_arena": {
         "$__mpe_code": {
             "position": {
-                "x": -1802,
-                "y": -2274
+                "x": 319,
+                "y": 380
             }
         }
     },
-    "Arena_FromHome": {
-        "desc": "从主页右上角菜单进入",
-        "max_hit": 1,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1089,
-                    383,
-                    162,
-                    170
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
+    "$__mpe_external_ReturnMain_arena": {
+        "$__mpe_code": {
+            "position": {
+                "x": 307,
+                "y": 81
             }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1236,
-                    36,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1201,
-                21,
-                59,
-                52
+        }
+    },
+    "$__mpe_external_StopTask_arena": {
+        "$__mpe_code": {
+            "position": {
+                "x": 514,
+                "y": 975
+            },
+            "extra_positions": [
+                {
+                    "x": 1666,
+                    "y": 908
+                },
+                {
+                    "x": 2544,
+                    "y": 992
+                }
             ]
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "准备开始竞技场"
-        },
-        "next": [
-            "Arena_MenuClick"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -1341,
-                "y": -2416
-            }
-        }
-    },
-    "Arena_HomeFlag": {
-        "desc": "识别到主页则停止循环",
-        "max_hit": 1,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    6,
-                    1,
-                    81,
-                    75
-                ],
-                "template": [
-                    "template_1777301855439.png"
-                ]
-            }
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": -686,
-                "y": -2778
-            }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "返回主页"
-        }
-    },
-    "Arena_Label": {
-        "desc": "识别竞技场文字",
-        "max_hit": 1,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "竞技场"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    527,
-                    507,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": 500,
-        "next": [
-            "Arena_ClickChallenge"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -677,
-                "y": -2193
-            }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入竞技场"
-        }
-    },
-    "Arena_MenuClick": {
-        "desc": "点击菜单中的竞技场图标",
-        "max_hit": 5,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    975,
-                    342,
-                    92,
-                    89
-                ],
-                "template": [
-                    "template_1777300718819.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1013,
-                    386,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": 500,
-        "next": [
-            "[JumpBack]Arena_HomeFlag",
-            "[JumpBack]Arena_ClickNormal",
-            "Arena_Label"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -1045,
-                "y": -2503
-            }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "打开竞技场菜单"
         }
     },
     "Arena_ChallengeLimit": {
@@ -229,43 +90,36 @@
             "Node.Action.Starting": "挑战次数已达上限，任务终止"
         },
         "next": [
-            "Arena_Stop"
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -350,
-                "y": -1735
+                "x": 2184,
+                "y": 908
             }
         }
     },
     "Arena_ChallengeReady": {
-        "desc": "挑战准备界面",
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    7,
-                    4,
-                    105,
-                    79
+                    1079,
+                    649,
+                    63,
+                    36
                 ],
-                "template": [
-                    "template_1777303098459.png"
+                "expected": [
+                    "进入"
                 ]
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1090,
-                    665,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
-        "post_delay": 2500,
         "next": [
             "Arena_SkipBattle",
             "Arena_FreeChallenge",
@@ -273,12 +127,9 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -122,
-                "y": -2238
+                "x": 1686,
+                "y": 565
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入挑战准备"
         }
     },
     "Arena_ClickChallenge": {
@@ -286,51 +137,75 @@
         "recognition": {
             "type": "OCR",
             "param": {
+                "roi": [
+                    1139,
+                    163,
+                    132,
+                    515
+                ],
                 "expected": [
                     "挑战"
                 ]
             }
         },
         "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 500,
-        "next": [
-            "Arena_ChallengeReady"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": -381,
-                "y": -2189
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
             }
         },
         "focus": {
             "Node.Recognition.Succeeded": "点击挑战"
+        },
+        "next": [
+            "Arena_FightReadyFlag"
+        ],
+        "on_error": [
+            "Arena_ClickChallenge"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1186,
+                "y": 569
+            }
         }
     },
     "Arena_ClickNormal": {
-        "desc": "点击普通模式",
-        "max_hit": 1,
+        "desc": "点击普通战斗类别",
         "recognition": {
             "type": "OCR",
             "param": {
+                "roi": [
+                    135,
+                    81,
+                    76,
+                    33
+                ],
                 "expected": [
                     "普通"
                 ]
             }
         },
         "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 500,
-        "$__mpe_code": {
-            "position": {
-                "x": -681,
-                "y": -2476
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
             }
         },
         "focus": {
-            "Node.Recognition.Succeeded": "选择普通模式"
+            "Node.Recognition.Succeeded": "选择普通战斗类别"
+        },
+        "next": [
+            "Arena_Label"
+        ],
+        "on_error": [
+            "Arena_ClickNormal"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 444,
+                "y": 584
+            }
         }
     },
     "Arena_ClosePopup": {
@@ -353,33 +228,108 @@
             "type": "Click",
             "param": {
                 "target": [
-                    1241,
-                    38,
+                    1172,
+                    538,
                     1,
                     1
                 ]
             }
         },
-        "post_wait_freezes": {
-            "time": 1000,
-            "target": [
-                1193,
-                4,
-                78,
-                63
-            ]
+        "focus": {
+            "Node.Recognition.Succeeded": "关闭竞技场弹窗"
+        },
+        "next": [
+            "Arena_FightSelectFlag"
+        ],
+        "on_error": [
+            "Arena_ClosePopup"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2559,
+                "y": 15
+            }
+        }
+    },
+    "Arena_Entry": {
+        "desc": "竞技场任务入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "Arena_FromHome"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "开始执行竞技场任务"
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 12
+            }
+        }
+    },
+    "Arena_FightReadyFlag": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    22,
+                    8,
+                    68,
+                    63
+                ],
+                "template": [
+                    "template_1777303098459.png"
+                ]
+            }
+        },
+        "next": [
+            "Arena_ChallengeReady"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1396,
+                "y": 565
+            }
+        }
+    },
+    "Arena_FightSelectFlag": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    330,
+                    86,
+                    109,
+                    41
+                ],
+                "expected": [
+                    "对战对手"
+                ]
+            }
         },
         "next": [
             "Arena_ClickChallenge"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 675,
-                "y": -2396
+                "x": 935,
+                "y": 605
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "关闭竞技场弹窗"
         }
     },
     "Arena_FreeChallenge": {
@@ -398,15 +348,6 @@
                 ]
             }
         },
-        "pre_wait_freezes": {
-            "time": 500,
-            "target": [
-                505,
-                197,
-                312,
-                117
-            ]
-        },
         "action": {
             "type": "Click",
             "param": {
@@ -418,17 +359,154 @@
                 ]
             }
         },
+        "focus": {
+            "Node.Recognition.Succeeded": "免费钻石挑战"
+        },
         "next": [
             "Arena_SkipBattle"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 67,
-                "y": -2579
+                "x": 2184,
+                "y": 555
+            }
+        }
+    },
+    "Arena_FromHome": {
+        "desc": "配置首页右上角菜单打开后的竞技场后继",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "Arena_MenuClick"
+                        ]
+                    }
+                }
             }
         },
         "focus": {
-            "Node.Recognition.Succeeded": "免费钻石挑战"
+            "Node.Action.Starting": "配置竞技场菜单后继"
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3,
+                "y": 311
+            }
+        }
+    },
+    "Arena_HomeFlag": {
+        "desc": "识别到战斗主页",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    6,
+                    1,
+                    81,
+                    75
+                ],
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "战斗主页"
+        },
+        "next": [
+            "Arena_ClickNormal"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 173,
+                "y": 584
+            }
+        }
+    },
+    "Arena_Label": {
+        "desc": "识别竞技场文字",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    476,
+                    542,
+                    97,
+                    51
+                ],
+                "expected": [
+                    "竞技场"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入竞技场"
+        },
+        "next": [
+            "Arena_FightSelectFlag"
+        ],
+        "on_error": [
+            "Arena_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 696,
+                "y": 576
+            }
+        }
+    },
+    "Arena_MenuClick": {
+        "desc": "点击菜单中的竞技场图标",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    975,
+                    342,
+                    92,
+                    89
+                ],
+                "template": [
+                    "template_1777300718819.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "打开竞技场菜单"
+        },
+        "next": [
+            "Arena_HomeFlag"
+        ],
+        "on_error": [
+            "Arena_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -53,
+                "y": 591
+            }
         }
     },
     "Arena_SkipBattle": {
@@ -448,43 +526,21 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1128,
-                    35,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
-        "post_delay": 5000,
+        "focus": {
+            "Node.Recognition.Succeeded": "跳过战斗动画"
+        },
         "next": [
             "Arena_ClosePopup"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": -2216
-            }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "跳过战斗动画"
-        }
-    },
-    "$__mpe_external_ReturnMain_arena": {
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": -152
-            }
-        }
-    },
-    "Arena_Stop": {
-        "$__mpe_code": {
-            "position": {
-                "x": 0,
-                "y": 0
+                "x": 2159,
+                "y": 29
             }
         }
     }

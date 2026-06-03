@@ -2,134 +2,17 @@
     "$__mpe_config_startup": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1778168460520,
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780480841986,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/startup.json",
             "savedViewport": {
-                "x": -1686,
-                "y": -1674,
-                "zoom": 1.77
+                "x": 226,
+                "y": 151,
+                "zoom": 1
             },
             "filename": "startup",
-            "version": "v1.5.2"
-        }
-    },
-    "CardReward": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "expected": [
-                    "月卡每日奖励"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 200,
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 928
-            }
-        }
-    },
-    "CloseX": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "template_1777188837649.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_wait_freezes": 500,
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 289
-            }
-        }
-    },
-    "DisableStartApp": {
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "DisableNode",
-                "custom_action_param": {
-                    "node_name": "StartApp"
-                }
-            }
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 1612,
-                "y": 2000
-            }
-        }
-    },
-    "Global_ItemObtained": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    477,
-                    191,
-                    419,
-                    174
-                ],
-                "expected": [
-                    "已获得道具"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 619
-            }
-        }
-    },
-    "HomeFlagCloseReturnMain": {
-        "max_hit": 4,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1096,
-                    407,
-                    151,
-                    121
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1200,
-                18,
-                68,
-                51
-            ]
-        },
-        "next": [
-            "DisableStartApp"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1292,
-                "y": 1921
-            }
+            "version": "v1.6.0"
         }
     },
     "LinkStart": {
@@ -172,25 +55,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 652,
-                "y": 896
-            }
-        }
-    },
-    "ReturnMain": {
-        "max_hit": 2,
-        "next": [
-            "[JumpBack]Startup_CloseMaidPopup",
-            "[JumpBack]CardReward",
-            "[JumpBack]CloseX",
-            "[JumpBack]Startup_CloseTopRight",
-            "[JumpBack]Global_ItemObtained",
-            "HomeFlagCloseReturnMain"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 972,
-                "y": 946
+                "x": 610,
+                "y": 97
             }
         }
     },
@@ -212,22 +78,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 2025
-            }
-        }
-    },
-    "StopTask": {
-        "action": {
-            "type": "StopTask"
-        },
-        "focus": {
-            "Node.Action.Starting": "无法进行下去，脚本结束"
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 652,
-                "y": 2149
+                "x": 219,
+                "y": 137
             }
         }
     },
@@ -237,83 +89,24 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 12,
-                "y": 2084
+                "x": -131,
+                "y": 174
             }
         }
     },
-    "Startup_CloseTopRight": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1199,
-                    10,
-                    65,
-                    62
-                ],
-                "template": [
-                    "template_1777310648326.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1232,
-                    38,
-                    1,
-                    1
-                ]
-            }
-        },
+    "$__mpe_external_ReturnMain_startup": {
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 1205
+                "x": 941,
+                "y": 158
             }
         }
     },
-    "Startup_CloseMaidPopup": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    177,
-                    129,
-                    550,
-                    303
-                ],
-                "template": [
-                    "template_1777287143669.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1229,
-                    38,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1196,
-                10,
-                71,
-                59
-            ]
-        },
+    "$__mpe_external_HomeFlagCloseReturnMain_startup": {
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 1540
+                "x": 620,
+                "y": -23
             }
         }
     }
