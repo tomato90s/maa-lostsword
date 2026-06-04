@@ -2,280 +2,54 @@
     "$__mpe_config_raid": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777916724472,
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780583633559,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/raid.json",
             "savedViewport": {
-                "x": 209,
-                "y": -180,
-                "zoom": 1.25
+                "x": -2970,
+                "y": -60,
+                "zoom": 1
             },
             "filename": "raid",
-            "version": "v1.5.1"
+            "version": "v1.6.1"
         }
     },
-    "Raid_ClickNormal": {
-        "desc": "点击普通模式标签 - ROI/坐标待补充",
-        "max_hit": 1,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    139,
-                    80,
-                    71,
-                    35
-                ],
-                "expected": [
-                    "普通"
-                ]
-            }
-        },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_wait_freezes": 500,
-        "next": [
-            "Raid_LordRaid"
-        ],
+    "$__mpe_external_Global_ItemObtained_raid": {
         "$__mpe_code": {
             "position": {
-                "x": 972,
-                "y": 226
+                "x": 3450,
+                "y": 453
             }
         }
     },
-    "Raid_Entry": {
-        "desc": "个人突袭任务入口",
-        "max_hit": 2,
-        "focus": {
-            "Node.Action.Starting": "开始执行个人突袭任务"
-        },
-        "next": [
-            "[JumpBack]ReturnMain",
-            "Raid_FromHome"
-        ],
+    "$__mpe_external_Home_OpenTopRightMenu_raid": {
         "$__mpe_code": {
             "position": {
-                "x": 12,
-                "y": 206
+                "x": 737,
+                "y": 135
             }
         }
     },
-    "Raid_FromHome": {
-        "desc": "从主页猫贤菜单进入（与 arena/instance 同入口）",
-        "max_hit": 1,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1089,
-                    383,
-                    162,
-                    170
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    1236,
-                    36,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1201,
-                21,
-                59,
-                52
+    "$__mpe_external_StopTask_raid": {
+        "$__mpe_code": {
+            "position": {
+                "x": 4117,
+                "y": 246
+            },
+            "extra_positions": [
+                {
+                    "x": 2852,
+                    "y": 794
+                }
             ]
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "准备进入个人突袭"
-        },
-        "next": [
-            "Raid_MenuClick"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 332,
-                "y": 152
-            }
-        }
-    },
-    "Raid_MenuClick": {
-        "desc": "点击菜单中的战斗图标 - ROI/坐标待补充",
-        "max_hit": 5,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    992,
-                    410,
-                    41,
-                    25
-                ],
-                "expected": [
-                    "战斗"
-                ]
-            }
-        },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_delay": 2000,
-        "next": [
-            "Raid_ClickNormal"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 652,
-                "y": 210
-            }
         }
     },
     "$__mpe_external_ReturnMain_raid": {
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 12
-            }
-        }
-    },
-    "Raid_LordRaid": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    142,
-                    554,
-                    94,
-                    35
-                ],
-                "expected": [
-                    "领主突袭"
-                ]
-            }
-        },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_delay": 2000,
-        "next": [
-            "Raid_Sweep"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1264,
-                "y": 245
-            }
-        }
-    },
-    "Raid_Sweep": {
-        "max_hit": 5,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    906,
-                    646,
-                    108,
-                    41
-                ],
-                "expected": [
-                    "扫荡"
-                ]
-            }
-        },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_delay": 2000,
-        "next": [
-            "[JumpBack]Raid_RewardPopup",
-            "[JumpBack]Raid_BossFlag",
-            "Raid_CloseX"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1571,
-                "y": 282
-            }
-        }
-    },
-    "Raid_RewardPopup": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    477,
-                    191,
-                    419,
-                    174
-                ],
-                "expected": [
-                    "已获得道具"
-                ]
-            }
-        },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_delay": 2000,
-        "next": [
-            "Raid_ClickBlank"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1885,
-                "y": 153
-            }
-        }
-    },
-    "Raid_ClickBlank": {
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    960,
-                    665,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 1000,
-        "next": [
-            "Raid_Sweep"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 2220,
-                "y": 166
+                "x": 1342,
+                "y": 129
             }
         }
     },
@@ -302,27 +76,340 @@
         },
         "post_delay": 2000,
         "next": [
-            "Raid_Sweep"
+            "Raid_BossFlag_Check",
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2064,
-                "y": 365
+                "x": 3757,
+                "y": 137
             }
         }
     },
-    "Raid_CloseX": {
+    "Raid_BossFlag_Check": {
+        "max_hit": 2,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    1201,
-                    9,
-                    70,
-                    70
+                    549,
+                    10,
+                    557,
+                    703
                 ],
                 "template": [
-                    "template_1777631957359.png"
+                    "template_1777632657324.png"
+                ]
+            }
+        },
+        "next": [
+            "Raid_BossFlag"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3746,
+                "y": -216
+            }
+        }
+    },
+    "Raid_ClickNormal": {
+        "desc": "点击普通战斗类别",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    135,
+                    81,
+                    76,
+                    33
+                ],
+                "expected": [
+                    "普通"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "选择普通战斗类别"
+        },
+        "next": [
+            "Raid_LordRaidLabel",
+            "Raid_ClickNormal_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2039,
+                "y": 19
+            }
+        }
+    },
+    "Raid_ClickNormal_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    135,
+                    81,
+                    76,
+                    33
+                ],
+                "expected": [
+                    "普通"
+                ]
+            }
+        },
+        "next": [
+            "Raid_ClickNormal"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2264,
+                "y": -165
+            }
+        }
+    },
+    "Raid_Entry": {
+        "desc": "个人突袭任务入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "Raid_FromHome"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "开始执行个人突袭任务"
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1022,
+                "y": 12
+            }
+        }
+    },
+    "Raid_FromHome": {
+        "desc": "配置首页右上角菜单打开后的突袭后继",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "Raid_MenuClick"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "配置个人突袭菜单后继"
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 472,
+                "y": 12
+            }
+        }
+    },
+    "Raid_HomeFlag": {
+        "desc": "识别到战斗主页",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    6,
+                    1,
+                    81,
+                    75
+                ],
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "战斗主页"
+        },
+        "next": [
+            "Raid_ClickNormal"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1708,
+                "y": 101
+            }
+        }
+    },
+    "Raid_LordRaidLabel": {
+        "desc": "识别领主突袭文字",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    142,
+                    554,
+                    94,
+                    35
+                ],
+                "expected": [
+                    "领主突袭"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入领主突袭"
+        },
+        "next": [
+            "突袭_扫荡页面",
+            "Raid_LordRaidLabel_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2524,
+                "y": 399
+            }
+        }
+    },
+    "Raid_LordRaidLabel_Check": {
+        "desc": "确认仍停留在战斗主页领主突袭入口",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    142,
+                    554,
+                    94,
+                    35
+                ],
+                "expected": [
+                    "领主突袭"
+                ]
+            }
+        },
+        "next": [
+            "Raid_LordRaidLabel"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2539,
+                "y": 100
+            }
+        }
+    },
+    "Raid_MenuClick": {
+        "desc": "点击菜单中的战斗",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    985,
+                    409,
+                    60,
+                    29
+                ],
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "打开战斗菜单"
+        },
+        "next": [
+            "Raid_HomeFlag",
+            "Raid_MenuClick_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1143,
+                "y": 289
+            }
+        }
+    },
+    "Raid_MenuClick_Check": {
+        "desc": "确认右上角菜单仍打开且竞技场图标仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    985,
+                    409,
+                    60,
+                    29
+                ],
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "next": [
+            "Raid_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1427,
+                "y": -47
+            }
+        }
+    },
+    "Raid_Sweep": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    906,
+                    646,
+                    108,
+                    41
+                ],
+                "expected": [
+                    "扫荡"
                 ]
             }
         },
@@ -334,8 +421,99 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 2064,
-                "y": 738
+                "x": 3450,
+                "y": 551
+            }
+        }
+    },
+    "突袭_一键扫荡": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    579,
+                    98,
+                    117,
+                    41
+                ],
+                "expected": [
+                    "一键扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Raid_BossFlag",
+            "突袭_一键扫荡_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3443,
+                "y": 109
+            }
+        }
+    },
+    "突袭_一键扫荡_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    579,
+                    98,
+                    117,
+                    41
+                ],
+                "expected": [
+                    "一键扫荡"
+                ]
+            }
+        },
+        "next": [
+            "突袭_一键扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3431,
+                "y": -237
+            }
+        }
+    },
+    "突袭_扫荡页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    71,
+                    644,
+                    105,
+                    41
+                ],
+                "expected": [
+                    "队伍编排"
+                ]
+            }
+        },
+        "next": [
+            "突袭_一键扫荡",
+            "[JumpBack]Global_ItemObtained",
+            "[JumpBack]Raid_Sweep"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3083,
+                "y": 182
             }
         }
     }
