@@ -84,6 +84,14 @@
             }
         }
     },
+    "NoopDone": {
+        "$__mpe_code": {
+            "position": {
+                "x": 610,
+                "y": 854
+            }
+        }
+    },
     "Global_ItemObtained_Check": {
         "desc": "确认已获得道具弹框仍存在，重试关闭弹框",
         "max_hit": 2,
