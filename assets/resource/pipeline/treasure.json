@@ -3,28 +3,28 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780569913288,
+            "lastSyncTime": 1780570068453,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/treasure.json",
             "savedViewport": {
-                "x": -758,
-                "y": -118,
-                "zoom": 0.99
+                "x": -951,
+                "y": -634,
+                "zoom": 1
             },
             "filename": "treasure",
-            "version": "v1.6.0"
+            "version": "v1.6.1"
         }
     },
     "$__mpe_external_Global_ItemObtained_treasure": {
         "$__mpe_code": {
             "position": {
                 "x": 2162,
-                "y": 715
+                "y": 792
             },
             "extra_positions": [
                 {
                     "x": 2162,
-                    "y": 894
+                    "y": 1003
                 }
             ]
         }
@@ -33,7 +33,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 332,
-                "y": 113
+                "y": 129
             }
         }
     },
@@ -59,7 +59,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 562,
-                "y": 106
+                "y": 120
             }
         }
     },
@@ -119,7 +119,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1842,
-                "y": 644
+                "y": 695
             }
         }
     },
@@ -138,7 +138,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1522,
-                "y": 676
+                "y": 742
             },
             "handleDirection": "top-bottom"
         }
@@ -179,7 +179,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 882,
-                "y": 65
+                "y": 57
             }
         }
     },
@@ -233,7 +233,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1202,
-                "y": 367
+                "y": 399
             }
         }
     },
@@ -272,7 +272,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1522,
-                "y": 289
+                "y": 323
             }
         }
     },
@@ -311,7 +311,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1522,
-                "y": 963
+                "y": 1063
             }
         }
     },
@@ -336,7 +336,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 2162,
-                "y": 1034
+                "y": 1143
             }
         }
     },
@@ -368,7 +368,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1842,
-                "y": 1009
+                "y": 1099
             }
         }
     },
@@ -400,7 +400,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 2802,
-                "y": 1330
+                "y": 1467
             }
         }
     },
@@ -426,8 +426,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 3159,
-                "y": 1260
+                "x": 3122,
+                "y": 1381
             }
         }
     },
@@ -453,7 +453,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 2482,
-                "y": 1041
+                "y": 1140
             },
             "handleDirection": "top-bottom"
         }
@@ -475,7 +475,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 2802,
-                "y": 955
+                "y": 1059
             },
             "handleDirection": "top-bottom"
         }
@@ -484,13 +484,13 @@
         "$__mpe_code": {
             "position": {
                 "x": 3122,
-                "y": 1646
+                "y": 1821
             },
             "handleDirection": "top-bottom",
             "extra_positions": [
                 {
                     "x": 1202,
-                    "y": 676
+                    "y": 760
                 }
             ]
         }
