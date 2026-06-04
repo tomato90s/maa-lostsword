@@ -2,16 +2,17 @@
     "$__mpe_config_instance": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1778162975431,
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780584035266,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/instance.json",
             "savedViewport": {
-                "x": -1142,
-                "y": -197,
+                "x": -1082,
+                "y": -523,
                 "zoom": 1
             },
             "filename": "instance",
-            "version": "v1.5.2"
+            "version": "v1.6.1"
         }
     },
     "$__mpe_external_ReturnMain_instance": {
@@ -80,6 +81,26 @@
             "position": {
                 "x": 1112,
                 "y": 687
+            }
+        }
+    },
+    "Instance_ClickSweep": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    974,
+                    664,
+                    1,
+                    1
+                ]
+            }
+        },
+        "post_delay": 2000,
+        "$__mpe_code": {
+            "position": {
+                "x": 2712,
+                "y": 1413
             }
         }
     },
@@ -463,26 +484,6 @@
             "position": {
                 "x": 2072,
                 "y": 919
-            }
-        }
-    },
-    "Instance_ClickSweep": {
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    974,
-                    664,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": 2712,
-                "y": 1413
             }
         }
     }

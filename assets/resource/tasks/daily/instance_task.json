@@ -2,7 +2,7 @@
     "task": [
         {
             "name": "副本",
-            "entry": "Instance_Entry",
+            "entry": "副本_入口",
             "group": [
                 "daily"
             ],
