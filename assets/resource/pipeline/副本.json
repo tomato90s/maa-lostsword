@@ -1,0 +1,1176 @@
+{
+    "$__mpe_config_副本": {
+        "$__mpe_code": {
+            "prefix": "",
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780589941363,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/副本.json",
+            "savedViewport": {
+                "x": -3184,
+                "y": -398,
+                "zoom": 1.12
+            },
+            "filename": "副本",
+            "version": "v1.6.1"
+        }
+    },
+    "$__mpe_external_Global_ItemObtained_副本": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2792,
+                "y": 3022
+            }
+        }
+    },
+    "$__mpe_external_Home_OpenTopRightMenu_副本": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1052,
+                "y": 129
+            }
+        }
+    },
+    "$__mpe_external_NoopDone_副本": {
+        "$__mpe_code": {
+            "position": {
+                "x": 3227,
+                "y": 630
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_副本": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1602,
+                "y": 129
+            }
+        }
+    },
+    "$__mpe_external_StopTask_副本": {
+        "$__mpe_code": {
+            "position": {
+                "x": 3112,
+                "y": 2053
+            }
+        }
+    },
+    "副本_一键扫荡": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    579,
+                    98,
+                    117,
+                    41
+                ],
+                "expected": [
+                    "键扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "副本_扫荡关闭弹框",
+            "副本_一键扫荡_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2881,
+                "y": 3166
+            }
+        }
+    },
+    "副本_一键扫荡_Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    579,
+                    98,
+                    117,
+                    41
+                ],
+                "expected": [
+                    "键扫荡"
+                ]
+            }
+        },
+        "next": [
+            "副本_一键扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2824,
+                "y": 2862
+            }
+        }
+    },
+    "副本_从首页": {
+        "desc": "配置首页右上角菜单打开后的副本后继",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "副本_点击战斗菜单"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "配置副本菜单后继"
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 732,
+                "y": 12
+            }
+        }
+    },
+    "副本_入口": {
+        "desc": "副本任务入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "副本_从首页"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "开始执行副本任务"
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1282,
+                "y": 12
+            }
+        }
+    },
+    "副本_属性石扫荡页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    186,
+                    32,
+                    97,
+                    43
+                ],
+                "expected": [
+                    "冒险区域"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "副本_扫荡关闭右上角": {
+                        "next": [
+                            "副本_禁用属性石",
+                            "副本_扫荡关闭右上角_Check"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "副本_一键扫荡",
+            "[JumpBack]Global_ItemObtained",
+            "[JumpBack]副本_扫荡"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2348,
+                "y": 2523
+            }
+        }
+    },
+    "副本_巨石阵_点击召唤领主": {
+        "desc": "点击巨石阵召唤领主",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    600,
+                    159,
+                    75,
+                    32
+                ],
+                "expected": [
+                    "召唤领主"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 5000,
+        "focus": {
+            "Node.Recognition.Succeeded": "召唤巨石阵领主"
+        },
+        "next": [
+            "副本_巨石阵_点击召唤领主_Check",
+            "NoopDone"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3155,
+                "y": 484
+            }
+        }
+    },
+    "副本_巨石阵_点击召唤领主_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    600,
+                    159,
+                    75,
+                    32
+                ],
+                "expected": [
+                    "召唤领主"
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵_点击召唤领主"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3156,
+                "y": 190
+            }
+        }
+    },
+    "副本_巨石阵冒险区域_点击选择": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    999,
+                    641,
+                    86,
+                    25
+                ],
+                "expected": [
+                    "选择"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "副本_巨石阵队伍编辑_点击出发",
+            "副本_巨石阵冒险区域_点击选择_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2407,
+                "y": 682
+            }
+        }
+    },
+    "副本_巨石阵冒险区域_点击选择_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    999,
+                    641,
+                    86,
+                    25
+                ],
+                "expected": [
+                    "选择"
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵冒险区域_点击选择"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2415,
+                "y": 555
+            }
+        }
+    },
+    "副本_巨石阵队伍编辑_点击出发": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1009,
+                    649,
+                    70,
+                    35
+                ],
+                "expected": [
+                    "出发"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "副本_巨石阵_点击召唤领主",
+            "副本_巨石阵队伍编辑_点击出发_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2789,
+                "y": 537
+            }
+        }
+    },
+    "副本_巨石阵队伍编辑_点击出发_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1009,
+                    649,
+                    70,
+                    35
+                ],
+                "expected": [
+                    "出发"
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵队伍编辑_点击出发"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2789,
+                "y": 240
+            }
+        }
+    },
+    "副本_战斗主页": {
+        "desc": "识别到战斗主页",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    6,
+                    1,
+                    81,
+                    75
+                ],
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "战斗主页"
+        },
+        "next": [
+            "副本_点击副本"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2794,
+                "y": 964
+            }
+        }
+    },
+    "副本_扫荡": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    906,
+                    646,
+                    108,
+                    41
+                ],
+                "expected": [
+                    "扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2814,
+                "y": 2781
+            }
+        }
+    },
+    "副本_扫荡关闭右上角": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1203,
+                    13,
+                    62,
+                    60
+                ],
+                "template": [
+                    "template_1780589182058.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "副本_选择副本页面",
+            "副本_扫荡关闭右上角_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3456,
+                "y": 3295
+            }
+        }
+    },
+    "副本_扫荡关闭右上角_Check": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1203,
+                    13,
+                    62,
+                    60
+                ],
+                "template": [
+                    "template_1780589182058.png"
+                ]
+            }
+        },
+        "next": [
+            "副本_扫荡关闭右上角"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3458,
+                "y": 2984
+            }
+        }
+    },
+    "副本_扫荡关闭弹框": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    549,
+                    10,
+                    557,
+                    703
+                ],
+                "template": [
+                    "template_1777632657324.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "副本_扫荡关闭右上角",
+            "副本_扫荡关闭弹框_Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3154,
+                "y": 3262
+            }
+        }
+    },
+    "副本_扫荡关闭弹框_Check": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    549,
+                    10,
+                    557,
+                    703
+                ],
+                "template": [
+                    "template_1777632657324.png"
+                ]
+            }
+        },
+        "next": [
+            "副本_扫荡关闭弹框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3144,
+                "y": 2907
+            }
+        }
+    },
+    "副本_点击副本": {
+        "desc": "点击副本战斗类别",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    379,
+                    73,
+                    76,
+                    46
+                ],
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "选择副本战斗类别"
+        },
+        "next": [
+            "[JumpBack]副本_点击属性石",
+            "[JumpBack]副本_点击经验书",
+            "[JumpBack]副本_点击黄金猎犬",
+            "[JumpBack]副本_点击巨石阵",
+            "副本_点击副本_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1622,
+                "y": 1072
+            }
+        }
+    },
+    "副本_点击副本_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    135,
+                    81,
+                    76,
+                    33
+                ],
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "next": [
+            "副本_点击副本"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2152,
+                "y": 1055
+            }
+        }
+    },
+    "副本_点击属性石": {
+        "desc": "点击属性石副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1124,
+                    535,
+                    127,
+                    59
+                ],
+                "expected": [
+                    "属性石"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入属性石副本"
+        },
+        "next": [
+            "副本_属性石扫荡页面",
+            "副本_点击属性石_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2076,
+                "y": 2012
+            }
+        }
+    },
+    "副本_点击属性石_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1124,
+                    535,
+                    127,
+                    59
+                ],
+                "expected": [
+                    "属性石"
+                ]
+            }
+        },
+        "next": [
+            "副本_点击属性石"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2185,
+                "y": 1492
+            }
+        }
+    },
+    "副本_点击巨石阵": {
+        "desc": "点击巨石阵副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    149,
+                    546,
+                    78,
+                    46
+                ],
+                "expected": [
+                    "巨石阵"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入巨石阵副本"
+        },
+        "next": [
+            "副本_巨石阵冒险区域_点击选择",
+            "副本_点击巨石阵_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2056,
+                "y": 502
+            }
+        }
+    },
+    "副本_点击巨石阵_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    149,
+                    546,
+                    78,
+                    46
+                ],
+                "expected": [
+                    "巨石阵"
+                ]
+            }
+        },
+        "next": [
+            "副本_点击巨石阵"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2554,
+                "y": 399
+            }
+        }
+    },
+    "副本_点击战斗菜单": {
+        "desc": "点击菜单中的战斗",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    985,
+                    409,
+                    60,
+                    29
+                ],
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "打开战斗菜单"
+        },
+        "next": [
+            "副本_战斗主页",
+            "副本_点击战斗菜单_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2472,
+                "y": 1362
+            }
+        }
+    },
+    "副本_点击战斗菜单_Check": {
+        "desc": "确认右上角菜单仍打开且战斗入口仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    985,
+                    409,
+                    60,
+                    29
+                ],
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "next": [
+            "副本_点击战斗菜单"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2792,
+                "y": 1597
+            }
+        }
+    },
+    "副本_点击经验书": {
+        "desc": "点击经验书副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    825,
+                    549,
+                    81,
+                    40
+                ],
+                "expected": [
+                    "经验书"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入经验书副本"
+        },
+        "next": [
+            "副本_经验书扫荡页面",
+            "副本_点击经验书_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1909,
+                "y": 2968
+            }
+        }
+    },
+    "副本_点击经验书_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "经验书"
+                ]
+            }
+        },
+        "next": [
+            "副本_点击经验书"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2343,
+                "y": 2964
+            }
+        }
+    },
+    "副本_点击黄金猎犬": {
+        "desc": "点击黄金猎犬副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    476,
+                    546,
+                    98,
+                    46
+                ],
+                "expected": [
+                    "黄金猎犬"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入黄金猎犬副本"
+        },
+        "next": [
+            "副本_黄金猎犬扫荡页面",
+            "副本_点击黄金猎犬_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2405,
+                "y": 1433
+            }
+        }
+    },
+    "副本_点击黄金猎犬_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "黄金猎犬"
+                ]
+            }
+        },
+        "next": [
+            "副本_点击黄金猎犬"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2472,
+                "y": 1843
+            }
+        }
+    },
+    "副本_禁用属性石": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    387,
+                    81,
+                    65,
+                    35
+                ],
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "副本_点击属性石": {
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 12
+            }
+        }
+    },
+    "副本_禁用经验书": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    387,
+                    81,
+                    65,
+                    35
+                ],
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "副本_点击经验书": {
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 252,
+                "y": 12
+            }
+        }
+    },
+    "副本_禁用黄金猎犬": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    387,
+                    81,
+                    65,
+                    35
+                ],
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "副本_点击黄金猎犬": {
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 492,
+                "y": 12
+            }
+        }
+    },
+    "副本_经验书扫荡页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    180,
+                    27,
+                    106,
+                    48
+                ],
+                "expected": [
+                    "冒险区域"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "副本_扫荡关闭右上角": {
+                        "next": [
+                            "副本_禁用经验书",
+                            "副本_扫荡关闭右上角_Check"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "副本_一键扫荡",
+            "[JumpBack]Global_ItemObtained",
+            "[JumpBack]副本_扫荡"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2366,
+                "y": 2953
+            }
+        }
+    },
+    "副本_选择副本页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    387,
+                    81,
+                    65,
+                    35
+                ],
+                "expected": [
+                    "副本"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3777,
+                "y": 3349
+            }
+        }
+    },
+    "副本_黄金猎犬扫荡页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    177,
+                    30,
+                    108,
+                    48
+                ],
+                "expected": [
+                    "冒险区域"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "副本_扫荡关闭右上角": {
+                        "next": [
+                            "副本_禁用黄金猎犬",
+                            "副本_扫荡关闭右上角_Check"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "副本_一键扫荡",
+            "[JumpBack]Global_ItemObtained",
+            "[JumpBack]副本_扫荡"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2407,
+                "y": 2157
+            }
+        }
+    }
+}
