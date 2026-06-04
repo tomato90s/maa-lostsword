@@ -65,9 +65,48 @@
             "type": "Click"
         },
         "post_delay": 2000,
+        "next": [
+            "Global_ItemObtained_Check",
+            "Global_ItemObtained_Done"
+        ],
         "$__mpe_code": {
             "position": {
                 "x": 332,
+                "y": 692
+            }
+        }
+    },
+    "Global_ItemObtained_Done": {
+        "$__mpe_code": {
+            "position": {
+                "x": 888,
+                "y": 692
+            }
+        }
+    },
+    "Global_ItemObtained_Check": {
+        "desc": "确认已获得道具弹框仍存在，重试关闭弹框",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    477,
+                    191,
+                    419,
+                    174
+                ],
+                "expected": [
+                    "已获得道具"
+                ]
+            }
+        },
+        "next": [
+            "Global_ItemObtained"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 610,
                 "y": 692
             }
         }
