@@ -3,45 +3,95 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1778683248509,
+            "lastSyncTime": 1780569913288,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/treasure.json",
             "savedViewport": {
-                "x": 77,
-                "y": -24,
-                "zoom": 1.01
+                "x": -758,
+                "y": -118,
+                "zoom": 0.99
             },
             "filename": "treasure",
-            "version": "v1.5.3"
+            "version": "v1.6.0"
+        }
+    },
+    "$__mpe_external_Global_ItemObtained_treasure": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2162,
+                "y": 715
+            },
+            "extra_positions": [
+                {
+                    "x": 2162,
+                    "y": 894
+                }
+            ]
         }
     },
     "$__mpe_external_ReturnMain_treasure": {
         "$__mpe_code": {
             "position": {
                 "x": 332,
-                "y": 12
+                "y": 113
+            }
+        }
+    },
+    "Treasure_DisableGetReward": {
+        "desc": "获取宝藏奖励已领取，禁用获取宝藏分支以便回跳后继续快速探查",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Treasure_GetReward": {
+                        "enabled": false
+                    },
+                    "Treasure_PrepareGetReward": {
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "next": [
+            "Treasure_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 562,
+                "y": 106
             }
         }
     },
     "Treasure_Entry": {
         "desc": "宝藏探索任务入口",
-        "max_hit": 2,
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "Treasure_Label"
+                        ]
+                    }
+                }
+            }
+        },
         "focus": {
             "Node.Action.Starting": "开始执行宝藏探索任务"
         },
         "next": [
-            "[JumpBack]ReturnMain",
-            "[JumpBack]Treasure_Label"
+            "ReturnMain"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -49,
-                "y": 168
+                "x": 12,
+                "y": 12
             }
         }
     },
     "Treasure_GetReward": {
-        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -62,61 +112,39 @@
                 "custom_action": "CenterClick"
             }
         },
-        "post_delay": 2000,
         "next": [
-            "Treasure_ItemObtained"
+            "Global_ItemObtained",
+            "Treasure_GetReward_Check"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 692,
-                "y": 42
+                "x": 1842,
+                "y": 644
             }
         }
     },
-    "Treasure_ItemObtained": {
+    "Treasure_GetReward_Check": {
         "recognition": {
-            "type": "OCR",
+            "type": "TemplateMatch",
             "param": {
-                "roi": [
-                    477,
-                    191,
-                    419,
-                    174
-                ],
-                "expected": [
-                    "已获得道具"
+                "template": [
+                    "template_1780566853580.png"
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_delay": 2000,
         "next": [
-            "Treasure_QuickPopupClose3",
-            "Treasure_ItemObtainedEnd"
+            "Treasure_GetReward"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1008,
-                "y": 24
-            }
-        }
-    },
-    "Treasure_ItemObtainedEnd": {
-        "$__mpe_code": {
-            "position": {
-                "x": 1370,
-                "y": 230
-            }
+                "x": 1522,
+                "y": 676
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Treasure_Label": {
         "desc": "识别宝藏探索入口文字",
-        "max_hit": 3,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -142,16 +170,148 @@
             "Node.Recognition.Succeeded": "进入宝藏探索"
         },
         "next": [
-            "Treasure_GetReward",
-            "Treasure_QuickSearch"
+            "Treasure_Page",
+            "Treasure_Label_Check"
         ],
         "on_error": [
-            "Treasure_Stop"
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 338,
-                "y": 124
+                "x": 882,
+                "y": 65
+            }
+        }
+    },
+    "Treasure_Label_Check": {
+        "desc": "确认仍停留在首页宝藏探索入口，重试点击宝藏探索",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    775,
+                    660,
+                    101,
+                    32
+                ],
+                "expected": [
+                    "宝藏探索"
+                ]
+            }
+        },
+        "next": [
+            "Treasure_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1202,
+                "y": 12
+            }
+        }
+    },
+    "Treasure_Page": {
+        "desc": "识别已进入宝藏探索功能页面",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    893,
+                    565,
+                    181,
+                    41
+                ],
+                "expected": [
+                    "获取宝藏"
+                ]
+            }
+        },
+        "next": [
+            "Treasure_PrepareGetReward",
+            "Treasure_PrepareQuickSearch"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1202,
+                "y": 367
+            }
+        }
+    },
+    "Treasure_PrepareGetReward": {
+        "desc": "准备领取获取宝藏奖励，配置公共道具弹框关闭后的后继",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    880,
+                    559,
+                    208,
+                    48
+                ],
+                "expected": [
+                    "获取宝藏"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Global_ItemObtained_Done": {
+                        "next": [
+                            "Treasure_DisableGetReward"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "Treasure_GetReward"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1522,
+                "y": 289
+            }
+        }
+    },
+    "Treasure_PrepareQuickSearch": {
+        "desc": "准备执行快速探查，配置公共道具弹框关闭后的后继",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    693,
+                    562,
+                    119,
+                    40
+                ],
+                "expected": [
+                    "快速探查"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Global_ItemObtained_Done": {
+                        "next": [
+                            "Treasure_Label"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "Treasure_QuickSearch"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1522,
+                "y": 963
             }
         }
     },
@@ -170,151 +330,17 @@
                 ]
             }
         },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    967,
-                    113,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 2000,
         "next": [
-            "Treasure_QuickPopupClose2"
+            "关闭快速探查弹框"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1047,
-                "y": 445
-            }
-        }
-    },
-    "Treasure_QuickPopupClose1": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1061,
-                    104,
-                    63,
-                    57
-                ],
-                "template": [
-                    "template_1777645774889.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": 1590,
-                "y": 863
-            }
-        }
-    },
-    "Treasure_QuickPopupClose2": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1061,
-                    104,
-                    63,
-                    57
-                ],
-                "template": [
-                    "template_1777645774889.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "post_delay": 2000,
-        "next": [
-            "Treasure_StopTask"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1370,
-                "y": 460
-            }
-        }
-    },
-    "Treasure_QuickPopupClose3": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1061,
-                    104,
-                    63,
-                    57
-                ],
-                "template": [
-                    "template_1777645774889.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "post_delay": 2000,
-        "$__mpe_code": {
-            "position": {
-                "x": 1370,
-                "y": -165
-            }
-        }
-    },
-    "Treasure_QuickPopupS": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    504,
-                    499,
-                    163,
-                    44
-                ],
-                "expected": [
-                    "今日剩余免费次数"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    634,
-                    599,
-                    1,
-                    1
-                ]
-            }
-        },
-        "post_delay": 2000,
-        "next": [
-            "Treasure_quickItemObtained"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 968,
-                "y": 854
+                "x": 2162,
+                "y": 1034
             }
         }
     },
     "Treasure_QuickSearch": {
-        "max_hit": 2,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -335,68 +361,138 @@
                 "custom_action": "CenterClick"
             }
         },
-        "post_delay": 2000,
         "next": [
-            "Treasure_ItemObtained",
             "Treasure_QuickPopupC",
-            "Treasure_QuickPopupS"
+            "Global_ItemObtained"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 692,
-                "y": 440
+                "x": 1842,
+                "y": 1009
             }
         }
     },
-    "Treasure_Stop": {
-        "action": {
-            "type": "StopTask"
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 443,
-                "y": 777
-            }
-        }
-    },
-    "Treasure_StopTask": {
-        "action": {
-            "type": "StopTask"
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 1646,
-                "y": 592
-            }
-        }
-    },
-    "Treasure_quickItemObtained": {
+    "关闭宝藏探索弹框": {
         "recognition": {
-            "type": "OCR",
+            "type": "TemplateMatch",
             "param": {
                 "roi": [
-                    477,
-                    191,
-                    419,
-                    174
+                    1061,
+                    104,
+                    63,
+                    57
                 ],
-                "expected": [
-                    "已获得道具"
+                "template": [
+                    "template_1777645774889.png"
                 ]
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
         },
-        "post_delay": 2000,
         "next": [
-            "Treasure_QuickPopupClose1"
+            "关闭宝藏探索弹框_Check",
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1275,
-                "y": 878
+                "x": 2802,
+                "y": 1330
             }
+        }
+    },
+    "关闭宝藏探索弹框_Check": {
+        "desc": "确认宝藏探索弹框关闭按钮仍存在，重试关闭宝藏探索弹框",
+        "max_hit": 2,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1061,
+                    104,
+                    63,
+                    57
+                ],
+                "template": [
+                    "template_1777645774889.png"
+                ]
+            }
+        },
+        "next": [
+            "关闭宝藏探索弹框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3159,
+                "y": 1260
+            }
+        }
+    },
+    "关闭快速探查弹框": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1780569296374.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "关闭快速探查弹框_Check",
+            "关闭宝藏探索弹框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2482,
+                "y": 1041
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "关闭快速探查弹框_Check": {
+        "desc": "确认快速探查弹框关闭按钮仍存在，重试关闭快速探查弹框",
+        "max_hit": 2,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "template_1780569296374.png"
+                ]
+            }
+        },
+        "next": [
+            "关闭快速探查弹框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2802,
+                "y": 955
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "$__mpe_external_StopTask_treasure": {
+        "$__mpe_code": {
+            "position": {
+                "x": 3122,
+                "y": 1646
+            },
+            "handleDirection": "top-bottom",
+            "extra_positions": [
+                {
+                    "x": 1202,
+                    "y": 676
+                }
+            ]
         }
     }
 }

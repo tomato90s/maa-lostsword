@@ -3,16 +3,16 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1778682751325,
+            "lastSyncTime": 1780562123112,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/event.json",
             "savedViewport": {
-                "x": -489,
-                "y": -416,
+                "x": 270,
+                "y": -257,
                 "zoom": 1.01
             },
             "filename": "新建Pipeline3",
-            "version": "v1.5.3"
+            "version": "v1.6.0"
         }
     },
     "$__mpe_external_ReturnMain_新建Pipeline3": {
