@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780543415561,
+            "lastSyncTime": 1780544031074,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/arena.json",
             "savedViewport": {
-                "x": -1805,
-                "y": 132,
-                "zoom": 1
+                "x": 416,
+                "y": -341,
+                "zoom": 1.01
             },
             "filename": "arena",
             "version": "v1.6.0"
@@ -18,8 +18,8 @@
     "$__mpe_external_Home_OpenTopRightMenu_arena": {
         "$__mpe_code": {
             "position": {
-                "x": 322,
-                "y": 374
+                "x": 307,
+                "y": 369
             }
         }
     },
@@ -642,18 +642,18 @@
         }
     },
     "Arena_MenuClick": {
-        "desc": "点击菜单中的竞技场图标",
+        "desc": "点击菜单中的战斗",
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    975,
-                    342,
-                    92,
-                    89
+                    985,
+                    409,
+                    60,
+                    29
                 ],
-                "template": [
-                    "template_1777300718819.png"
+                "expected": [
+                    "战斗"
                 ]
             }
         },
@@ -665,7 +665,7 @@
         },
         "post_delay": 2000,
         "focus": {
-            "Node.Recognition.Succeeded": "打开竞技场菜单"
+            "Node.Recognition.Succeeded": "打开战斗菜单"
         },
         "next": [
             "Arena_HomeFlag",
@@ -685,16 +685,16 @@
         "desc": "确认右上角菜单仍打开且竞技场图标仍可点",
         "max_hit": 2,
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    975,
-                    342,
-                    92,
-                    89
+                    985,
+                    409,
+                    60,
+                    29
                 ],
-                "template": [
-                    "template_1777300718819.png"
+                "expected": [
+                    "战斗"
                 ]
             }
         },
@@ -703,8 +703,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": -123,
-                "y": 765
+                "x": 103,
+                "y": 708
             }
         }
     },

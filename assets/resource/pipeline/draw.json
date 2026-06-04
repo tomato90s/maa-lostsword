@@ -2,28 +2,100 @@
     "$__mpe_config_draw": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1778164269328,
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780561636896,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/draw.json",
             "savedViewport": {
-                "x": 174,
-                "y": 53,
-                "zoom": 0.92
+                "x": 404,
+                "y": -1730,
+                "zoom": 1.06
             },
             "filename": "draw",
-            "version": "v1.5.2"
+            "version": "v1.6.0"
+        }
+    },
+    "$__mpe_external_Home_OpenTopRightMenu_draw": {
+        "$__mpe_code": {
+            "position": {
+                "x": 332,
+                "y": 113
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "$__mpe_external_ReturnMain_draw": {
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 33
+                "x": 882,
+                "y": 113
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "$__mpe_external_StopTask_draw": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 1592
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_CharacterFreeUsed_Diamond": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    748,
+                    661,
+                    49,
+                    43
+                ],
+                "template": [
+                    "template_1777729931840.png"
+                ]
             }
+        },
+        "next": [
+            "Draw_DisableFreeDraw"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1070,
+                "y": -7
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_CharacterFreeUsed_Ticket": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    754,
+                    658,
+                    36,
+                    46
+                ],
+                "template": [
+                    "template_1780561392663.png"
+                ]
+            }
+        },
+        "next": [
+            "Draw_DisableFreeDraw"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1315,
+                "y": -7
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_ClaimPet": {
-        "max_hit": 1,
+        "desc": "识别并点击免费宠物召唤",
         "recognition": {
             "type": "OCR",
             "param": {
@@ -39,26 +111,116 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target_offset": [
-                    6,
-                    6,
-                    0,
-                    0
-                ]
+                "custom_action": "CenterClick"
             }
         },
         "post_delay": 2000,
         "next": [
-            "Draw_DiamondDrawIcon",
-            "Draw_FreeDrawClick"
+            "Draw_ClaimPetClick",
+            "Draw_PetFreeUsed_Diamond",
+            "Draw_PetFreeUsed_Ticket",
+            "Draw_ClaimPet_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 636
+                "x": 356,
+                "y": 1900
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_ClaimPetClick": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    774,
+                    661,
+                    70,
+                    33
+                ],
+                "expected": [
+                    "免费"
+                ]
             }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Draw_PrepareDisableClaimPet",
+            "Draw_ClaimPetClick_Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 486,
+                "y": 1368
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_ClaimPetClick_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    774,
+                    661,
+                    70,
+                    33
+                ],
+                "expected": [
+                    "免费"
+                ]
+            }
+        },
+        "next": [
+            "Draw_ClaimPetClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 1678
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_ClaimPet_Check": {
+        "desc": "确认仍停留在领取宠物入口，重试点击领取宠物",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    278,
+                    232,
+                    300,
+                    59
+                ],
+                "expected": [
+                    "可获得3~5星宠物作为同伴。"
+                ]
+            }
+        },
+        "inverse": true,
+        "next": [
+            "Draw_ClaimPet"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 754,
+                "y": 2044
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_Confirm": {
@@ -77,66 +239,153 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    639,
-                    672,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
-        "post_delay": 2000,
+        "next": [
+            "Draw_Confirm_Check",
+            "Draw_Confirm_Done"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 2572,
-                "y": 657
-            }
+                "x": 1932,
+                "y": 460
+            },
+            "handleDirection": "top-bottom"
         }
     },
-    "Draw_DiamondDrawIcon": {
+    "Draw_Confirm_Check": {
+        "max_hit": 2,
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    748,
-                    661,
-                    49,
-                    43
+                    598,
+                    653,
+                    82,
+                    38
                 ],
-                "template": [
-                    "template_1777729931840.png"
+                "expected": [
+                    "确认"
                 ]
+            }
+        },
+        "next": [
+            "Draw_Confirm"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 694
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_Confirm_Done": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    598,
+                    653,
+                    82,
+                    38
+                ],
+                "expected": [
+                    "确认"
+                ]
+            }
+        },
+        "inverse": true,
+        "next": [
+            "Draw_DisableFreeDraw"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2252,
+                "y": 385
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_DisableClaimPet": {
+        "desc": "本轮宠物免费抽已完成，禁用宠物分支以便回跳后结束任务",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Draw_ClaimPet": {
+                        "enabled": false
+                    }
+                }
             }
         },
         "$__mpe_code": {
             "position": {
-                "x": 1612,
-                "y": 341
+                "x": 881,
+                "y": 1582
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_DisableFreeDraw": {
+        "desc": "本轮角色免费抽已完成，禁用角色分支以便回跳后继续检查宠物",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Draw_FreeDraw": {
+                        "enabled": false
+                    }
+                }
             }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 1530,
+                "y": 391
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_Entry": {
         "desc": "免费每日一抽任务入口",
-        "max_hit": 3,
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "Draw_FromHome"
+                        ]
+                    }
+                }
+            }
+        },
         "focus": {
             "Node.Action.Starting": "开始执行免费每日一抽任务"
         },
         "next": [
-            "[JumpBack]ReturnMain",
-            "Draw_FromHome"
+            "ReturnMain"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 12,
-                "y": 119
-            }
+                "x": 562,
+                "y": 12
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_FreeDraw": {
         "desc": "识别并点击免费召唤",
-        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -152,14 +401,9 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target_offset": [
-                    6,
-                    6,
-                    0,
-                    0
-                ]
+                "custom_action": "CenterClick"
             }
         },
         "post_delay": 2000,
@@ -167,15 +411,20 @@
             "Node.Recognition.Succeeded": "执行免费召唤"
         },
         "next": [
-            "Draw_FreeDrawIcon",
             "Draw_FreeDrawClick",
-            "Draw_DiamondDrawIcon"
+            "Draw_CharacterFreeUsed_Diamond",
+            "Draw_CharacterFreeUsed_Ticket",
+            "Draw_FreeDraw_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 199
-            }
+                "x": 414,
+                "y": 560
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_FreeDrawClick": {
@@ -194,97 +443,109 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    809,
-                    659,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
-        "post_delay": 2000,
         "next": [
-            "Draw_SkipAnimation"
+            "Draw_SkipAnimation",
+            "Draw_FreeDrawClick_Check"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1612,
-                "y": 657
-            }
+                "x": 972,
+                "y": 682
+            },
+            "handleDirection": "top-bottom"
         }
     },
-    "Draw_FreeDrawIcon": {
+    "Draw_FreeDrawClick_Check": {
+        "max_hit": 2,
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "OCR",
             "param": {
                 "roi": [
-                    742,
-                    651,
-                    59,
-                    57
+                    774,
+                    661,
+                    70,
+                    33
                 ],
-                "template": [
-                    "template_1777727538250.png"
+                "expected": [
+                    "免费"
                 ]
             }
         },
+        "next": [
+            "Draw_FreeDrawClick"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 1612,
-                "y": 37
+                "x": 1292,
+                "y": 682
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_FreeDraw_Check": {
+        "desc": "确认还未进入角色免费召唤页，重试点击领取角色",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    278,
+                    232,
+                    300,
+                    59
+                ],
+                "expected": [
+                    "可获得3~5星角色作为同伴。"
+                ]
             }
+        },
+        "inverse": true,
+        "next": [
+            "Draw_FreeDraw"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 906,
+                "y": 1004
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_FromHome": {
-        "desc": "从主页右上角菜单进入",
-        "max_hit": 4,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1089,
-                    383,
-                    162,
-                    170
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
+        "desc": "配置首页右上角菜单打开后的召唤后继",
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1236,
-                    36,
-                    1,
-                    1
-                ]
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "Draw_MenuClick"
+                        ],
+                        "on_error": [
+                            "StopTask"
+                        ]
+                    }
+                }
             }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1201,
-                21,
-                59,
-                52
-            ]
         },
         "focus": {
             "Node.Recognition.Succeeded": "准备开始免费每日一抽"
         },
         "next": [
-            "Draw_MenuClick"
+            "Home_OpenTopRightMenu"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 173
-            }
+                "x": 12,
+                "y": 12
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_Label": {
@@ -331,18 +592,18 @@
         "next": [
             "[JumpBack]Draw_FreeDraw",
             "[JumpBack]Draw_ClaimPet",
-            "Draw_Stop"
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 972,
-                "y": 169
-            }
+                "x": 12,
+                "y": 1808
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_MenuClick": {
         "desc": "点击菜单中的召唤图标",
-        "max_hit": 5,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -358,14 +619,9 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1012,
-                    193,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
         "post_delay": 2000,
@@ -373,13 +629,138 @@
             "Node.Recognition.Succeeded": "打开召唤菜单"
         },
         "next": [
-            "Draw_Label"
+            "Draw_Label",
+            "Draw_MenuClick_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 640,
-                "y": 189
+                "x": 332,
+                "y": 508
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_MenuClick_Check": {
+        "desc": "确认右上角菜单仍打开且召唤图标仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    988,
+                    215,
+                    49,
+                    29
+                ],
+                "expected": [
+                    "召唤"
+                ]
             }
+        },
+        "next": [
+            "Draw_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 497
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_PetFreeUsed_Diamond": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    748,
+                    661,
+                    49,
+                    43
+                ],
+                "template": [
+                    "template_1777729931840.png"
+                ]
+            }
+        },
+        "next": [
+            "Draw_DisableClaimPet"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 271,
+                "y": 1517
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_PetFreeUsed_Ticket": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    754,
+                    658,
+                    36,
+                    46
+                ],
+                "template": [
+                    "template_1780561628722.png"
+                ]
+            }
+        },
+        "next": [
+            "Draw_DisableClaimPet"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 589,
+                "y": 1694
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_PrepareDisableClaimPet": {
+        "desc": "宠物免费抽已进入动画，切换确认结束后的禁用节点",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1128,
+                    13,
+                    62,
+                    44
+                ],
+                "expected": [
+                    "Skip"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Draw_Confirm_Done": {
+                        "next": [
+                            "Draw_DisableClaimPet"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "Draw_SkipAnimation"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 972,
+                "y": 1350
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_SkipAnimation": {
@@ -398,36 +779,51 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1166,
-                    36,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
-        "post_delay": 3000,
         "next": [
-            "Draw_ViewAll"
+            "Draw_ViewAll",
+            "Draw_SkipAnimation_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1932,
-                "y": 657
-            }
+                "x": 1292,
+                "y": 1370
+            },
+            "handleDirection": "top-bottom"
         }
     },
-    "Draw_Stop": {
-        "action": {
-            "type": "StopTask"
+    "Draw_SkipAnimation_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1128,
+                    13,
+                    62,
+                    44
+                ],
+                "expected": [
+                    "Skip"
+                ]
+            }
         },
+        "next": [
+            "Draw_SkipAnimation"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 1292,
-                "y": 12
-            }
+                "x": 1612,
+                "y": 1369
+            },
+            "handleDirection": "top-bottom"
         }
     },
     "Draw_ViewAll": {
@@ -446,25 +842,51 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    636,
-                    670,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
-        "post_delay": 2000,
         "next": [
-            "Draw_Confirm"
+            "Draw_Confirm",
+            "Draw_ViewAll_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2252,
-                "y": 657
+                "x": 1612,
+                "y": 1088
+            },
+            "handleDirection": "top-bottom"
+        }
+    },
+    "Draw_ViewAll_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    590,
+                    656,
+                    98,
+                    35
+                ],
+                "expected": [
+                    "查看全部"
+                ]
             }
+        },
+        "next": [
+            "Draw_ViewAll"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1932,
+                "y": 1179
+            },
+            "handleDirection": "top-bottom"
         }
     }
 }
