@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780502166580,
+            "lastSyncTime": 1780543415561,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/arena.json",
             "savedViewport": {
-                "x": -471,
-                "y": -324,
-                "zoom": 1.01
+                "x": -1805,
+                "y": 132,
+                "zoom": 1
             },
             "filename": "arena",
             "version": "v1.6.0"
@@ -18,8 +18,8 @@
     "$__mpe_external_Home_OpenTopRightMenu_arena": {
         "$__mpe_code": {
             "position": {
-                "x": 319,
-                "y": 380
+                "x": 322,
+                "y": 374
             }
         }
     },
@@ -44,7 +44,7 @@
                 },
                 {
                     "x": 2544,
-                    "y": 992
+                    "y": 1011
                 }
             ]
         }
@@ -94,8 +94,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2184,
-                "y": 908
+                "x": 2159,
+                "y": 689
             }
         }
     },
@@ -123,12 +123,42 @@
         "next": [
             "Arena_SkipBattle",
             "Arena_FreeChallenge",
-            "Arena_ChallengeLimit"
+            "Arena_ChallengeLimit",
+            "Arena_ChallengeReady_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1686,
-                "y": 565
+                "x": 1771,
+                "y": 1041
+            }
+        }
+    },
+    "Arena_ChallengeReady_Check": {
+        "max_hit": 30,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1079,
+                    649,
+                    63,
+                    36
+                ],
+                "expected": [
+                    "进入"
+                ]
+            }
+        },
+        "next": [
+            "Arena_ChallengeReady"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2188,
+                "y": 1080
             }
         }
     },
@@ -158,15 +188,42 @@
             "Node.Recognition.Succeeded": "点击挑战"
         },
         "next": [
-            "Arena_FightReadyFlag"
+            "Arena_FightReadyFlag",
+            "Arena_ClickChallenge_Check"
         ],
         "on_error": [
-            "Arena_ClickChallenge"
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 1186,
                 "y": 569
+            }
+        }
+    },
+    "Arena_ClickChallenge_Check": {
+        "max_hit": 30,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1139,
+                    163,
+                    132,
+                    515
+                ],
+                "expected": [
+                    "挑战"
+                ]
+            }
+        },
+        "next": [
+            "Arena_ClickChallenge"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1462,
+                "y": 740
             }
         }
     },
@@ -196,15 +253,42 @@
             "Node.Recognition.Succeeded": "选择普通战斗类别"
         },
         "next": [
-            "Arena_Label"
+            "Arena_Label",
+            "Arena_ClickNormal_Check"
         ],
         "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 449,
+                "y": 576
+            }
+        }
+    },
+    "Arena_ClickNormal_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    135,
+                    81,
+                    76,
+                    33
+                ],
+                "expected": [
+                    "普通"
+                ]
+            }
+        },
+        "next": [
             "Arena_ClickNormal"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 444,
-                "y": 584
+                "x": 696,
+                "y": 740
             }
         }
     },
@@ -239,15 +323,43 @@
             "Node.Recognition.Succeeded": "关闭竞技场弹窗"
         },
         "next": [
-            "Arena_FightSelectFlag"
+            "Arena_FightSelectFlag",
+            "Arena_ClosePopup_Check"
         ],
         "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2805,
+                "y": 41
+            }
+        }
+    },
+    "Arena_ClosePopup_Check": {
+        "desc": "确认竞技场弹窗仍未关闭",
+        "max_hit": 30,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1155,
+                    412,
+                    103,
+                    106
+                ],
+                "template": [
+                    "template_1777471511738.png"
+                ]
+            }
+        },
+        "next": [
             "Arena_ClosePopup"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2559,
-                "y": 15
+                "x": 3101,
+                "y": -17
             }
         }
     },
@@ -302,8 +414,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1396,
-                "y": 565
+                "x": 1462,
+                "y": 569
             }
         }
     },
@@ -363,12 +475,43 @@
             "Node.Recognition.Succeeded": "免费钻石挑战"
         },
         "next": [
-            "Arena_SkipBattle"
+            "Arena_SkipBattle",
+            "Arena_FreeChallenge_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2184,
-                "y": 555
+                "x": 2159,
+                "y": 354
+            }
+        }
+    },
+    "Arena_FreeChallenge_Check": {
+        "desc": "确认免费挑战确认框仍未关闭",
+        "max_hit": 30,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    532,
+                    342,
+                    190,
+                    38
+                ],
+                "expected": [
+                    "耗0个"
+                ]
+            }
+        },
+        "next": [
+            "Arena_FreeChallenge"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2399,
+                "y": 508
             }
         }
     },
@@ -395,8 +538,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 3,
-                "y": 311
+                "x": 12,
+                "y": 305
             }
         }
     },
@@ -458,15 +601,43 @@
             "Node.Recognition.Succeeded": "进入竞技场"
         },
         "next": [
-            "Arena_FightSelectFlag"
+            "Arena_FightSelectFlag",
+            "Arena_Label_Check"
         ],
         "on_error": [
-            "Arena_Label"
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 696,
                 "y": 576
+            }
+        }
+    },
+    "Arena_Label_Check": {
+        "desc": "确认仍停留在战斗主页竞技场入口",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    476,
+                    542,
+                    97,
+                    51
+                ],
+                "expected": [
+                    "竞技场"
+                ]
+            }
+        },
+        "next": [
+            "Arena_Label"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 935,
+                "y": 760
             }
         }
     },
@@ -497,15 +668,43 @@
             "Node.Recognition.Succeeded": "打开竞技场菜单"
         },
         "next": [
-            "Arena_HomeFlag"
+            "Arena_HomeFlag",
+            "Arena_MenuClick_Check"
         ],
         "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": -123,
+                "y": 604
+            }
+        }
+    },
+    "Arena_MenuClick_Check": {
+        "desc": "确认右上角菜单仍打开且竞技场图标仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    975,
+                    342,
+                    92,
+                    89
+                ],
+                "template": [
+                    "template_1777300718819.png"
+                ]
+            }
+        },
+        "next": [
             "Arena_MenuClick"
         ],
         "$__mpe_code": {
             "position": {
-                "x": -53,
-                "y": 591
+                "x": -123,
+                "y": 765
             }
         }
     },
@@ -535,12 +734,43 @@
             "Node.Recognition.Succeeded": "跳过战斗动画"
         },
         "next": [
-            "Arena_ClosePopup"
+            "Arena_ClosePopup",
+            "Arena_SkipBattle_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 2159,
                 "y": 29
+            }
+        }
+    },
+    "Arena_SkipBattle_Check": {
+        "desc": "确认战斗跳过按钮仍可点",
+        "max_hit": 30,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1100,
+                    4,
+                    101,
+                    59
+                ],
+                "expected": [
+                    "Skip"
+                ]
+            }
+        },
+        "next": [
+            "Arena_SkipBattle"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2461,
+                "y": 77
             }
         }
     }
