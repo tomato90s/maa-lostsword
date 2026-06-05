@@ -1,0 +1,640 @@
+{
+    "$__mpe_config_活动": {
+        "$__mpe_code": {
+            "prefix": "",
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780640000000,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/活动.json",
+            "savedViewport": {
+                "x": 0,
+                "y": 0,
+                "zoom": 1
+            },
+            "filename": "活动",
+            "version": "v1.6.1"
+        }
+    },
+    "$__mpe_external_Global_ItemObtained_活动": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2792,
+                "y": 3022
+            }
+        }
+    },
+    "$__mpe_external_Home_OpenTopRightMenu_活动": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1052,
+                "y": 129
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_活动": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1602,
+                "y": 129
+            }
+        }
+    },
+    "$__mpe_external_StopTask_活动": {
+        "$__mpe_code": {
+            "position": {
+                "x": 3112,
+                "y": 2053
+            }
+        }
+    },
+    "活动_一键扫荡": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    579,
+                    98,
+                    117,
+                    41
+                ],
+                "expected": [
+                    "键扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "活动_扫荡关闭弹框",
+            "活动_一键扫荡_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2881,
+                "y": 3166
+            }
+        }
+    },
+    "活动_一键扫荡_Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    579,
+                    98,
+                    117,
+                    41
+                ],
+                "expected": [
+                    "键扫荡"
+                ]
+            }
+        },
+        "next": [
+            "活动_一键扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2824,
+                "y": 2862
+            }
+        }
+    },
+    "活动_从首页": {
+        "desc": "配置首页右上角菜单打开后的活动后继",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "活动_点击战斗菜单"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "配置活动菜单后继"
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 732,
+                "y": 12
+            }
+        }
+    },
+    "活动_入口": {
+        "desc": "活动任务入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "活动_从首页"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "开始执行活动任务"
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1282,
+                "y": 12
+            }
+        }
+    },
+    "活动_扫荡": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    906,
+                    646,
+                    108,
+                    41
+                ],
+                "expected": [
+                    "扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2814,
+                "y": 2781
+            }
+        }
+    },
+    "活动_扫荡关闭右上角": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1203,
+                    13,
+                    62,
+                    60
+                ],
+                "template": [
+                    "template_1780589182058.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "活动_选择活动页面",
+            "活动_扫荡关闭右上角_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3456,
+                "y": 3295
+            }
+        }
+    },
+    "活动_扫荡关闭右上角_Check": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1203,
+                    13,
+                    62,
+                    60
+                ],
+                "template": [
+                    "template_1780589182058.png"
+                ]
+            }
+        },
+        "next": [
+            "活动_扫荡关闭右上角"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3458,
+                "y": 2984
+            }
+        }
+    },
+    "活动_扫荡关闭弹框": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    549,
+                    10,
+                    557,
+                    703
+                ],
+                "template": [
+                    "template_1777632657324.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "next": [
+            "活动_扫荡关闭右上角",
+            "活动_扫荡关闭弹框_Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3154,
+                "y": 3262
+            }
+        }
+    },
+    "活动_扫荡关闭弹框_Check": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    549,
+                    10,
+                    557,
+                    703
+                ],
+                "template": [
+                    "template_1777632657324.png"
+                ]
+            }
+        },
+        "next": [
+            "活动_扫荡关闭弹框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3144,
+                "y": 2907
+            }
+        }
+    },
+    "活动_战斗主页": {
+        "desc": "识别到战斗主页",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    6,
+                    1,
+                    81,
+                    75
+                ],
+                "template": [
+                    "template_1777301855439.png"
+                ]
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "战斗主页"
+        },
+        "next": [
+            "活动_点击活动"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2794,
+                "y": 964
+            }
+        }
+    },
+    "活动_点击战斗菜单": {
+        "desc": "点击菜单中的战斗",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    985,
+                    409,
+                    60,
+                    29
+                ],
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "打开战斗菜单"
+        },
+        "next": [
+            "活动_战斗主页",
+            "活动_点击战斗菜单_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2472,
+                "y": 1362
+            }
+        }
+    },
+    "活动_点击战斗菜单_Check": {
+        "desc": "确认右上角菜单仍打开且战斗入口仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    985,
+                    409,
+                    60,
+                    29
+                ],
+                "expected": [
+                    "战斗"
+                ]
+            }
+        },
+        "next": [
+            "活动_点击战斗菜单"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2792,
+                "y": 1597
+            }
+        }
+    },
+    "活动_点击活动": {
+        "desc": "点击活动战斗类别",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1119,
+                    75,
+                    81,
+                    46
+                ],
+                "expected": [
+                    "活动"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "选择活动战斗类别"
+        },
+        "next": [
+            "活动_点击活动可扫荡",
+            "活动_点击活动_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1622,
+                "y": 1072
+            }
+        }
+    },
+    "活动_点击活动_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1119,
+                    75,
+                    81,
+                    46
+                ],
+                "expected": [
+                    "活动"
+                ]
+            }
+        },
+        "next": [
+            "活动_点击活动"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2152,
+                "y": 1055
+            }
+        }
+    },
+    "活动_点击活动可扫荡": {
+        "desc": "点击活动可扫荡副本",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    156,
+                    599,
+                    67,
+                    32
+                ],
+                "expected": [
+                    "可扫荡"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "进入活动可扫荡副本"
+        },
+        "next": [
+            "活动_活动扫荡页面",
+            "活动_点击活动可扫荡_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2076,
+                "y": 2012
+            }
+        }
+    },
+    "活动_点击活动可扫荡_Check": {
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    156,
+                    599,
+                    67,
+                    32
+                ],
+                "expected": [
+                    "可扫荡"
+                ]
+            }
+        },
+        "next": [
+            "活动_点击活动可扫荡"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2185,
+                "y": 1492
+            }
+        }
+    },
+    "活动_活动扫荡页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    186,
+                    32,
+                    97,
+                    43
+                ],
+                "expected": [
+                    "冒险区域"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "活动_扫荡关闭右上角": {
+                        "next": [
+                            "活动_禁用活动可扫荡",
+                            "活动_扫荡关闭右上角_Check"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "活动_一键扫荡",
+            "[JumpBack]Global_ItemObtained",
+            "[JumpBack]活动_扫荡"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2348,
+                "y": 2523
+            }
+        }
+    },
+    "活动_选择活动页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1119,
+                    75,
+                    81,
+                    46
+                ],
+                "expected": [
+                    "活动"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3813,
+                "y": 3342
+            }
+        }
+    },
+    "活动_禁用活动可扫荡": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1119,
+                    75,
+                    81,
+                    46
+                ],
+                "expected": [
+                    "活动"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "活动_点击活动可扫荡": {
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 12
+            }
+        }
+    }
+}
