@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780589941363,
+            "lastSyncTime": 1780628871041,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/副本.json",
             "savedViewport": {
-                "x": -3184,
-                "y": -398,
-                "zoom": 1.12
+                "x": -4795,
+                "y": 36,
+                "zoom": 1.11
             },
             "filename": "副本",
             "version": "v1.6.1"
@@ -31,14 +31,6 @@
             }
         }
     },
-    "$__mpe_external_NoopDone_副本": {
-        "$__mpe_code": {
-            "position": {
-                "x": 3227,
-                "y": 630
-            }
-        }
-    },
     "$__mpe_external_ReturnMain_副本": {
         "$__mpe_code": {
             "position": {
@@ -52,7 +44,13 @@
             "position": {
                 "x": 3112,
                 "y": 2053
-            }
+            },
+            "extra_positions": [
+                {
+                    "x": 4989,
+                    "y": 257
+                }
+            ]
         }
     },
     "副本_一键扫荡": {
@@ -215,6 +213,104 @@
             }
         }
     },
+    "副本_巨石阵_BOSS战斗中": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    381,
+                    26,
+                    59,
+                    65
+                ],
+                "template": [
+                    "template_1780627740283.png"
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵_BOSS战斗结束"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3412,
+                "y": 249
+            }
+        }
+    },
+    "副本_巨石阵_BOSS战斗结束": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    619,
+                    194,
+                    87,
+                    35
+                ],
+                "expected": [
+                    "自动使用"
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵_点击主菜单"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3721,
+                "y": 271
+            }
+        }
+    },
+    "副本_巨石阵_点击主菜单": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1235,
+                    36,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵_退场",
+            "副本_巨石阵_点击主菜单_Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4021,
+                "y": 168
+            }
+        }
+    },
+    "副本_巨石阵_点击主菜单_Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    932,
+                    661,
+                    62,
+                    32
+                ],
+                "expected": [
+                    "退场"
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵_点击主菜单"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4024,
+                "y": -79
+            }
+        }
+    },
     "副本_巨石阵_点击召唤领主": {
         "desc": "点击巨石阵召唤领主",
         "recognition": {
@@ -237,21 +333,20 @@
                 "custom_action": "CenterClick"
             }
         },
-        "post_delay": 5000,
         "focus": {
             "Node.Recognition.Succeeded": "召唤巨石阵领主"
         },
         "next": [
-            "副本_巨石阵_点击召唤领主_Check",
-            "NoopDone"
+            "副本_巨石阵_BOSS战斗中",
+            "副本_巨石阵_点击召唤领主_Check"
         ],
         "on_error": [
             "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 3155,
-                "y": 484
+                "x": 3121,
+                "y": 214
             }
         }
     },
@@ -276,8 +371,68 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 3156,
-                "y": 190
+                "x": 3117,
+                "y": -56
+            }
+        }
+    },
+    "副本_巨石阵_退场": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    932,
+                    661,
+                    62,
+                    32
+                ],
+                "expected": [
+                    "退场"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "副本_巨石阵_回到游戏首页",
+            "副本_巨石阵_退场_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4313,
+                "y": 172
+            }
+        }
+    },
+    "副本_巨石阵_退场_Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    932,
+                    661,
+                    62,
+                    32
+                ],
+                "expected": [
+                    "退场"
+                ]
+            }
+        },
+        "next": [
+            "副本_巨石阵_退场"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4312,
+                "y": -79
             }
         }
     },
@@ -337,8 +492,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2415,
-                "y": 555
+                "x": 2400,
+                "y": 425
             }
         }
     },
@@ -372,8 +527,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2789,
-                "y": 537
+                "x": 2790,
+                "y": 295
             }
         }
     },
@@ -398,8 +553,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2789,
-                "y": 240
+                "x": 2788,
+                "y": 56
             }
         }
     },
@@ -1124,8 +1279,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 3777,
-                "y": 3349
+                "x": 3813,
+                "y": 3342
             }
         }
     },
@@ -1170,6 +1325,31 @@
             "position": {
                 "x": 2407,
                 "y": 2157
+            }
+        }
+    },
+    "副本_巨石阵_回到游戏首页": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1096,
+                    407,
+                    151,
+                    121
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "next": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4663,
+                "y": 184
             }
         }
     }
