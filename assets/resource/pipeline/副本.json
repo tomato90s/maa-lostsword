@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780628871041,
+            "lastSyncTime": 1780629775496,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/副本.json",
             "savedViewport": {
-                "x": -4795,
-                "y": 36,
-                "zoom": 1.11
+                "x": -1763,
+                "y": -1441,
+                "zoom": 1
             },
             "filename": "副本",
             "version": "v1.6.1"
@@ -260,6 +260,31 @@
             "position": {
                 "x": 3721,
                 "y": 271
+            }
+        }
+    },
+    "副本_巨石阵_回到游戏首页": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1096,
+                    407,
+                    151,
+                    121
+                ],
+                "template": [
+                    "maoxian.png"
+                ]
+            }
+        },
+        "next": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4663,
+                "y": 184
             }
         }
     },
@@ -1325,31 +1350,6 @@
             "position": {
                 "x": 2407,
                 "y": 2157
-            }
-        }
-    },
-    "副本_巨石阵_回到游戏首页": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1096,
-                    407,
-                    151,
-                    121
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
-        "next": [
-            "StopTask"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 4663,
-                "y": 184
             }
         }
     }

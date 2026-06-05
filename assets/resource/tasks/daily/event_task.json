@@ -2,7 +2,7 @@
     "task": [
         {
             "name": "活动扫荡",
-            "entry": "Event_Entry",
+            "entry": "活动_入口",
             "group": [
                 "daily"
             ],
