@@ -1,0 +1,14 @@
+{
+    "task": [
+        {
+            "name": "好感",
+            "entry": "好感_入口",
+            "group": [
+                "daily"
+            ],
+            "label": "💬好感",
+            "default_check": true
+        }
+    ],
+    "option": {}
+}

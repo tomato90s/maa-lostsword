@@ -47,6 +47,7 @@
         "resource/tasks/daily/arena_task.json",
         "resource/tasks/daily/draw_task.json",
         "resource/tasks/daily/event_task.json",
+        "resource/tasks/daily/favor_task.json",
         "resource/tasks/daily/guild_task.json",
         "resource/tasks/daily/instance_task.json",
         "resource/tasks/daily/quest_task.json",

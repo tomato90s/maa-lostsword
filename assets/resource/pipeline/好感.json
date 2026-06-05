@@ -1,0 +1,585 @@
+{
+    "$__mpe_config_好感": {
+        "$__mpe_code": {
+            "prefix": "",
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780673030275,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/好感.json",
+            "savedViewport": {
+                "x": -3346,
+                "y": -929,
+                "zoom": 1.08
+            },
+            "filename": "好感",
+            "version": "v1.6.1"
+        }
+    },
+    "$__mpe_external_Home_OpenTopRightMenu_好感": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1052,
+                "y": 129
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_好感": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1602,
+                "y": 129
+            }
+        }
+    },
+    "好感-下拉框选择": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    703,
+                    121,
+                    57,
+                    24
+                ],
+                "expected": [
+                    "好感度"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "好感-下拉框选择-Check",
+            "好感-选择角色"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3081,
+                "y": 1177
+            }
+        }
+    },
+    "好感-下拉框选择-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    703,
+                    121,
+                    57,
+                    24
+                ],
+                "expected": [
+                    "好感度"
+                ]
+            }
+        },
+        "next": [
+            "好感-下拉框选择"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3141,
+                "y": 859
+            }
+        }
+    },
+    "好感-回到好感下拉页面": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    461,
+                    72,
+                    60,
+                    35
+                ],
+                "expected": [
+                    "好感度"
+                ]
+            }
+        },
+        "next": [
+            "好感-好感度下拉框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2465,
+                "y": 783
+            }
+        }
+    },
+    "好感-好感度下拉框": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    461,
+                    72,
+                    60,
+                    35
+                ],
+                "expected": [
+                    "好感度"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "好感-下拉框选择",
+            "好感-好感度下拉框-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2754,
+                "y": 1181
+            }
+        }
+    },
+    "好感-好感度下拉框-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    461,
+                    72,
+                    60,
+                    35
+                ],
+                "expected": [
+                    "好感度"
+                ]
+            }
+        },
+        "next": [
+            "好感-好感度下拉框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2749,
+                "y": 891
+            }
+        }
+    },
+    "好感-对话入口": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    743,
+                    626,
+                    46,
+                    29
+                ],
+                "expected": [
+                    "对话"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "好感-对话点击屏幕"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3817,
+                "y": 1302
+            }
+        }
+    },
+    "好感-对话入口关闭": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1203,
+                    13,
+                    62,
+                    60
+                ],
+                "template": [
+                    "template_1780589182058.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "好感-回到好感下拉页面",
+            "好感-对话入口关闭-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4662,
+                "y": 1012
+            }
+        }
+    },
+    "好感-对话入口关闭-Check": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    64,
+                    29,
+                    43,
+                    57
+                ],
+                "template": [
+                    "template_1780670645313.png"
+                ]
+            }
+        },
+        "next": [
+            "好感-对话入口关闭"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4669,
+                "y": 686
+            }
+        }
+    },
+    "好感-对话完成": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    745,
+                    623,
+                    92,
+                    36
+                ],
+                "expected": [
+                    "对话完成"
+                ]
+            }
+        },
+        "next": [
+            "好感-对话入口关闭"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4323,
+                "y": 1112
+            }
+        }
+    },
+    "好感-对话完成-Inverse": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    745,
+                    623,
+                    92,
+                    36
+                ],
+                "expected": [
+                    "对话完成"
+                ]
+            }
+        },
+        "inverse": true,
+        "next": [
+            "好感-对话点击屏幕"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4362,
+                "y": 1363
+            }
+        }
+    },
+    "好感-对话点击屏幕": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    264,
+                    273,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "好感-对话完成",
+            "好感-对话完成-Inverse"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 4092,
+                "y": 1324
+            }
+        }
+    },
+    "好感-角色列表": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    952,
+                    26,
+                    46,
+                    30
+                ],
+                "expected": [
+                    "对话"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "好感-好感度下拉框",
+            "好感-角色列表-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2419,
+                "y": 1179
+            }
+        }
+    },
+    "好感-角色列表-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    952,
+                    26,
+                    46,
+                    30
+                ],
+                "expected": [
+                    "对话"
+                ]
+            }
+        },
+        "next": [
+            "好感-角色列表"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2414,
+                "y": 976
+            }
+        }
+    },
+    "好感-选择角色": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    323,
+                    186,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "好感-次数清空",
+            "好感-选择角色-Check",
+            "好感-对话入口",
+            "好感-对话完成"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3445,
+                "y": 1202
+            }
+        }
+    },
+    "好感-选择角色-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    461,
+                    72,
+                    60,
+                    35
+                ],
+                "expected": [
+                    "好感度"
+                ]
+            }
+        },
+        "next": [
+            "好感-选择角色"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3440,
+                "y": 955
+            }
+        }
+    },
+    "好感_从首页": {
+        "desc": "配置首页右上角菜单打开后的好感后继",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "好感_点击角色菜单"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "配置好感菜单后继"
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1029,
+                "y": 940
+            }
+        }
+    },
+    "好感_入口": {
+        "desc": "好感任务入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "好感_从首页"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "开始执行好感任务"
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1593,
+                "y": 989
+            }
+        }
+    },
+    "好感_点击角色菜单": {
+        "desc": "点击菜单中的角色",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    780,
+                    308,
+                    54,
+                    32
+                ],
+                "expected": [
+                    "角色"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开角色菜单"
+        },
+        "next": [
+            "好感-角色列表",
+            "好感_角色菜单_Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2036,
+                "y": 1139
+            }
+        }
+    },
+    "好感_角色菜单_Check": {
+        "desc": "确认已进入角色页面",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    780,
+                    308,
+                    54,
+                    32
+                ],
+                "expected": [
+                    "角色"
+                ]
+            }
+        },
+        "next": [
+            "好感_点击角色菜单"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2046,
+                "y": 784
+            }
+        }
+    },
+    "好感-次数清空": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1041,
+                    17,
+                    65,
+                    36
+                ],
+                "expected": [
+                    "0"
+                ]
+            }
+        },
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3868,
+                "y": 997
+            }
+        }
+    }
+}
