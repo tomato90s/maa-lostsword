@@ -2,24 +2,47 @@
     "$__mpe_config_guild": {
         "$__mpe_code": {
             "prefix": "",
-            "lastSyncTime": 1777906369632,
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780756498040,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/guild.json",
             "savedViewport": {
-                "x": -684,
-                "y": -478,
-                "zoom": 0.7
+                "x": -435,
+                "y": -465,
+                "zoom": 1
             },
             "filename": "guild",
-            "version": "v1.5.1"
+            "version": "v1.6.1"
+        }
+    },
+    "$__mpe_external_Home_OpenTopRightMenu_guild": {
+        "$__mpe_code": {
+            "position": {
+                "x": 402,
+                "y": 108
+            }
         }
     },
     "$__mpe_external_ReturnMain_guild": {
         "$__mpe_code": {
             "position": {
-                "x": 572,
-                "y": 552
+                "x": 68,
+                "y": 128
             }
+        }
+    },
+    "$__mpe_external_StopTask_guild": {
+        "$__mpe_code": {
+            "position": {
+                "x": 741,
+                "y": 1074
+            },
+            "extra_positions": [
+                {
+                    "x": 1215,
+                    "y": 924
+                }
+            ]
         }
     },
     "Guild_AlreadySignedIn": {
@@ -227,96 +250,79 @@
     },
     "Guild_Entry": {
         "desc": "公会签到任务入口",
-        "max_hit": 2,
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "Guild_FromHome"
+                        ]
+                    }
+                }
+            }
+        },
         "focus": {
             "Node.Action.Starting": "开始执行公会签到任务"
         },
         "next": [
-            "[JumpBack]ReturnMain",
-            "Guild_FromHome"
+            "ReturnMain"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 148,
-                "y": 619
+                "x": 57,
+                "y": 206
             }
         }
     },
     "Guild_FromHome": {
-        "desc": "从主页右上角菜单进入",
-        "max_hit": 1,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1089,
-                    383,
-                    162,
-                    170
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
+        "desc": "配置首页右上角菜单打开后的公会后继",
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1236,
-                    36,
-                    1,
-                    1
-                ]
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "Guild_MenuClick"
+                        ]
+                    }
+                }
             }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1201,
-                21,
-                59,
-                52
-            ]
         },
         "focus": {
-            "Node.Recognition.Succeeded": "准备开始公会签到"
+            "Node.Action.Starting": "配置公会菜单后继"
         },
         "next": [
-            "Guild_MenuClick"
+            "Home_OpenTopRightMenu"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 579,
-                "y": 682
+                "x": 408,
+                "y": 216
             }
         }
     },
-    "Guild_InvestmentCoin": {
-        "max_hit": 1,
+    "Guild_GetRewards": {
         "recognition": {
             "type": "OCR",
             "param": {
                 "roi": [
-                    1196,
-                    475,
-                    48,
-                    32
+                    1026,
+                    562,
+                    140,
+                    36
                 ],
                 "expected": [
-                    "0/1"
+                    "领取奖励"
                 ]
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1137,
-                    537,
-                    1,
-                    1
-                ]
+                "custom_action": "CenterClick"
             }
         },
         "post_delay": 2000,
@@ -325,8 +331,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1529,
-                "y": 3
+                "x": 1527,
+                "y": -353
             }
         }
     },
@@ -354,8 +360,8 @@
         "post_delay": 2000,
         "$__mpe_code": {
             "position": {
-                "x": 1861,
-                "y": -108
+                "x": 1875,
+                "y": -152
             }
         }
     },
@@ -392,8 +398,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1527,
-                "y": 286
+                "x": 1644,
+                "y": 169
             }
         }
     },
@@ -447,23 +453,22 @@
             }
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "进入公会"
+        },
         "next": [
             "Guild_DonationPopup",
             "Guild_DonationMaxLimit"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1530,
-                "y": 984
+                "x": 1626,
+                "y": 870
             }
-        },
-        "focus": {
-            "Node.Recognition.Succeeded": "进入公会"
         }
     },
     "Guild_MenuClick": {
         "desc": "点击菜单中的公会图标",
-        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -490,22 +495,48 @@
             }
         },
         "post_delay": 2000,
+        "focus": {
+            "Node.Recognition.Succeeded": "打开公会菜单"
+        },
         "next": [
-            "[JumpBack]Guild_SignIn",
-            "[JumpBack]Guild_InvestmentCoin",
-            "[JumpBack]Guild_InvestmentToken",
-            "[JumpBack]Guild_Label",
-            "[JumpBack]Guild_GetRewards",
-            "Guild_TaskStop"
+            "公会页面",
+            "Guild_MenuClick_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1151,
-                "y": 347
+                "x": 810,
+                "y": 203
+            }
+        }
+    },
+    "Guild_MenuClick_Check": {
+        "desc": "确认右上角菜单仍打开且公会入口仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    882,
+                    502,
+                    52,
+                    32
+                ],
+                "expected": [
+                    "公会"
+                ]
             }
         },
-        "focus": {
-            "Node.Recognition.Succeeded": "打开公会菜单"
+        "next": [
+            "Guild_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 810,
+                "y": -176
+            }
         }
     },
     "Guild_SignIn": {
@@ -543,8 +574,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1527,
-                "y": 589
+                "x": 1643,
+                "y": 531
             }
         }
     },
@@ -571,25 +602,6 @@
             "position": {
                 "x": 1836,
                 "y": 844
-            }
-        }
-    },
-    "Guild_Stop": {
-        "$__mpe_code": {
-            "position": {
-                "x": 12,
-                "y": 12
-            }
-        }
-    },
-    "Guild_TaskStop": {
-        "action": {
-            "type": "StopTask"
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 1041,
-                "y": -32
             }
         }
     },
@@ -704,25 +716,61 @@
             }
         }
     },
-    "Guild_GetRewards": {
+    "公会页面": {
         "recognition": {
             "type": "OCR",
             "param": {
                 "roi": [
-                    1026,
-                    562,
-                    140,
-                    36
+                    73,
+                    18,
+                    63,
+                    40
                 ],
                 "expected": [
-                    "领取奖励"
+                    "公会"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]Guild_SignIn",
+            "[JumpBack]Guild_InvestmentCoin",
+            "[JumpBack]Guild_InvestmentToken",
+            "[JumpBack]Guild_Label",
+            "[JumpBack]Guild_GetRewards",
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 930,
+                "y": 539
+            }
+        }
+    },
+    "Guild_InvestmentCoin": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1196,
+                    475,
+                    48,
+                    32
+                ],
+                "expected": [
+                    "0/1"
                 ]
             }
         },
         "action": {
-            "type": "Custom",
+            "type": "Click",
             "param": {
-                "custom_action": "CenterClick"
+                "target": [
+                    1137,
+                    537,
+                    1,
+                    1
+                ]
             }
         },
         "post_delay": 2000,
@@ -731,8 +779,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1527,
-                "y": -353
+                "x": 1617,
+                "y": -23
             }
         }
     }
