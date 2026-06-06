@@ -2,8 +2,17 @@
     "$__mpe_config_common": {
         "$__mpe_code": {
             "prefix": "",
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780754352627,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/common.json",
+            "savedViewport": {
+                "x": 236,
+                "y": -414,
+                "zoom": 1
+            },
             "filename": "common",
-            "version": "v1.6.0"
+            "version": "v1.6.1"
         }
     },
     "CardReward": {
@@ -21,8 +30,8 @@
         "post_wait_freezes": 200,
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 1327
+                "x": 323,
+                "y": 1284
             }
         }
     },
@@ -76,22 +85,6 @@
             }
         }
     },
-    "Global_ItemObtained_Done": {
-        "$__mpe_code": {
-            "position": {
-                "x": 888,
-                "y": 692
-            }
-        }
-    },
-    "NoopDone": {
-        "$__mpe_code": {
-            "position": {
-                "x": 610,
-                "y": 854
-            }
-        }
-    },
     "Global_ItemObtained_Check": {
         "desc": "确认已获得道具弹框仍存在，重试关闭弹框",
         "max_hit": 2,
@@ -114,7 +107,15 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 610,
+                "x": 611,
+                "y": 702
+            }
+        }
+    },
+    "Global_ItemObtained_Done": {
+        "$__mpe_code": {
+            "position": {
+                "x": 888,
                 "y": 692
             }
         }
@@ -184,6 +185,14 @@
             }
         }
     },
+    "NoopDone": {
+        "$__mpe_code": {
+            "position": {
+                "x": 610,
+                "y": 854
+            }
+        }
+    },
     "ReturnMain": {
         "next": [
             "[JumpBack]Startup_CloseMaidPopup",
@@ -191,6 +200,7 @@
             "[JumpBack]CloseX",
             "[JumpBack]Startup_CloseTopRight",
             "[JumpBack]Global_ItemObtained",
+            "[JumpBack]全局-关闭宝藏探索弹框",
             "HomeFlagCloseReturnMain"
         ],
         "$__mpe_code": {
@@ -237,8 +247,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 1579
+                "x": 337,
+                "y": 1526
             }
         }
     },
@@ -270,8 +280,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 332,
-                "y": 340
+                "x": 349,
+                "y": 335
             }
         }
     },
@@ -286,6 +296,34 @@
             "position": {
                 "x": 610,
                 "y": 415
+            }
+        }
+    },
+    "全局-关闭宝藏探索弹框": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1066,
+                    105,
+                    56,
+                    59
+                ],
+                "template": [
+                    "template_1780754171146.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 360,
+                "y": 554
             }
         }
     }
