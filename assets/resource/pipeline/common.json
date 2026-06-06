@@ -3,12 +3,12 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780754352627,
+            "lastSyncTime": 1780755241069,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/common.json",
             "savedViewport": {
-                "x": 236,
-                "y": -414,
+                "x": 299,
+                "y": -351,
                 "zoom": 1
             },
             "filename": "common",
@@ -201,6 +201,7 @@
             "[JumpBack]Startup_CloseTopRight",
             "[JumpBack]Global_ItemObtained",
             "[JumpBack]全局-关闭宝藏探索弹框",
+            "[JumpBack]全局-关闭菜单",
             "HomeFlagCloseReturnMain"
         ],
         "$__mpe_code": {
@@ -280,8 +281,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 349,
-                "y": 335
+                "x": 368,
+                "y": 587
             }
         }
     },
@@ -324,6 +325,34 @@
             "position": {
                 "x": 360,
                 "y": 554
+            }
+        }
+    },
+    "全局-关闭菜单": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1207,
+                    16,
+                    59,
+                    60
+                ],
+                "template": [
+                    "template_1780756008587.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 343,
+                "y": 377
             }
         }
     }
