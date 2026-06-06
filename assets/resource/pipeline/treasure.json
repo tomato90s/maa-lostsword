@@ -3,12 +3,12 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780570068453,
+            "lastSyncTime": 1780755143100,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/treasure.json",
             "savedViewport": {
-                "x": -951,
-                "y": -634,
+                "x": -1603,
+                "y": -1055,
                 "zoom": 1
             },
             "filename": "treasure",
@@ -23,8 +23,8 @@
             },
             "extra_positions": [
                 {
-                    "x": 2162,
-                    "y": 1003
+                    "x": 2277,
+                    "y": 913
                 }
             ]
         }
@@ -35,6 +35,21 @@
                 "x": 332,
                 "y": 129
             }
+        }
+    },
+    "$__mpe_external_StopTask_treasure": {
+        "$__mpe_code": {
+            "position": {
+                "x": 3122,
+                "y": 1821
+            },
+            "handleDirection": "top-bottom",
+            "extra_positions": [
+                {
+                    "x": 1202,
+                    "y": 760
+                }
+            ]
         }
     },
     "Treasure_DisableGetReward": {
@@ -118,8 +133,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1842,
-                "y": 695
+                "x": 1858,
+                "y": 685
             }
         }
     },
@@ -137,8 +152,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1522,
-                "y": 742
+                "x": 1515,
+                "y": 716
             },
             "handleDirection": "top-bottom"
         }
@@ -232,8 +247,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1202,
-                "y": 399
+                "x": 1128,
+                "y": 275
             }
         }
     },
@@ -310,8 +325,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1522,
-                "y": 1063
+                "x": 1418,
+                "y": 1122
             }
         }
     },
@@ -335,8 +350,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2162,
-                "y": 1143
+                "x": 2024,
+                "y": 1412
             }
         }
     },
@@ -362,13 +377,14 @@
             }
         },
         "next": [
+            "快速探查-开始探查",
             "Treasure_QuickPopupC",
-            "Global_ItemObtained"
+            "Treasure_QuickSearch-Check"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1842,
-                "y": 1099
+                "x": 1682,
+                "y": 1246
             }
         }
     },
@@ -452,8 +468,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2482,
-                "y": 1140
+                "x": 2549,
+                "y": 1058
             },
             "handleDirection": "top-bottom"
         }
@@ -480,19 +496,61 @@
             "handleDirection": "top-bottom"
         }
     },
-    "$__mpe_external_StopTask_treasure": {
+    "Treasure_QuickSearch-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    693,
+                    562,
+                    119,
+                    40
+                ],
+                "expected": [
+                    "快速探查"
+                ]
+            }
+        },
+        "next": [
+            "Treasure_QuickSearch"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 3122,
-                "y": 1821
-            },
-            "handleDirection": "top-bottom",
-            "extra_positions": [
-                {
-                    "x": 1202,
-                    "y": 760
-                }
-            ]
+                "x": 1724,
+                "y": 931
+            }
+        }
+    },
+    "快速探查-开始探查": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    588,
+                    582,
+                    100,
+                    33
+                ],
+                "expected": [
+                    "开始探查"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Treasure_QuickPopupC",
+            "Global_ItemObtained"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2007,
+                "y": 1105
+            }
         }
     }
 }
