@@ -1,0 +1,969 @@
+{
+    "$__mpe_config_公会": {
+        "$__mpe_code": {
+            "prefix": "",
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780902547459,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/公会.json",
+            "savedViewport": {
+                "x": -2777,
+                "y": -1588,
+                "zoom": 1.13
+            },
+            "filename": "公会",
+            "version": "v1.6.1"
+        }
+    },
+    "公会-已投资信物-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "今日已进行过投资"
+                ]
+            }
+        },
+        "next": [
+            "公会-已投资信物"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2786,
+                "y": 355
+            }
+        }
+    },
+    "公会-投资金币-Override": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "DisableNode",
+                "custom_action_param": {
+                    "node_name": "公会-投资金币"
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3205,
+                "y": 55
+            }
+        }
+    },
+    "公会-捐献-金币": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    447,
+                    597,
+                    51,
+                    32
+                ],
+                "expected": [
+                    "捐献"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "公会-金币捐献-已上限"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2425,
+                "y": 1268
+            }
+        }
+    },
+    "公会-捐献-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    347,
+                    240,
+                    43,
+                    32
+                ],
+                "expected": [
+                    "简介"
+                ]
+            }
+        },
+        "next": [
+            "公会-捐献"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1984,
+                "y": 1451
+            }
+        }
+    },
+    "$__mpe_external_Global_ItemObtained_公会": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2788,
+                "y": 1127
+            },
+            "extra_positions": [
+                {
+                    "x": 2766,
+                    "y": 2012
+                },
+                {
+                    "x": 2379,
+                    "y": 1048
+                },
+                {
+                    "x": 2329,
+                    "y": -91
+                },
+                {
+                    "x": 2593,
+                    "y": -64
+                },
+                {
+                    "x": 2806,
+                    "y": 253
+                }
+            ]
+        }
+    },
+    "公会-捐献-信物": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    885,
+                    596,
+                    52,
+                    35
+                ],
+                "expected": [
+                    "捐献"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "公会-信物捐献-已上限"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2420,
+                "y": 1574
+            }
+        }
+    },
+    "公会-金币捐献-已上限": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    547,
+                    342,
+                    162,
+                    35
+                ],
+                "expected": [
+                    "今日捐献已达上限"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    243,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "公会-金币捐献-已上限-Check",
+            "公会-金币捐献-Override"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2775,
+                "y": 1299
+            }
+        }
+    },
+    "公会-金币捐献-已上限-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    547,
+                    342,
+                    162,
+                    35
+                ],
+                "expected": [
+                    "今日捐献已达上限"
+                ]
+            }
+        },
+        "next": [
+            "公会-金币捐献-已上限"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2777,
+                "y": 1207
+            }
+        }
+    },
+    "公会-金币捐献-Override": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "DisableNode",
+                "custom_action_param": {
+                    "node_name": "公会-捐献-金币"
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3080,
+                "y": 1330
+            }
+        }
+    },
+    "公会-信物捐献-已上限": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    547,
+                    342,
+                    162,
+                    35
+                ],
+                "expected": [
+                    "今日捐献已达上限"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    243,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "公会-信物捐献-已上限-Check",
+            "公会-捐献-关闭弹框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2759,
+                "y": 1675
+            }
+        }
+    },
+    "公会-信物捐献-已上限-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    547,
+                    342,
+                    162,
+                    35
+                ],
+                "expected": [
+                    "今日捐献已达上限"
+                ]
+            }
+        },
+        "next": [
+            "公会-信物捐献-已上限"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2758,
+                "y": 1473
+            }
+        }
+    },
+    "公会-信物捐献-StopTask": {
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3449,
+                "y": 1841
+            }
+        }
+    },
+    "公会-捐献-关闭弹框": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1007,
+                    67,
+                    68,
+                    63
+                ],
+                "template": [
+                    "template_1780902726333.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "公会-信物捐献-StopTask",
+            "公会-捐献-关闭弹框-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3088,
+                "y": 1769
+            }
+        }
+    },
+    "公会-捐献-关闭弹框-Check": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1007,
+                    67,
+                    68,
+                    63
+                ],
+                "template": [
+                    "template_1780902726333.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "公会-捐献-关闭弹框"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3090,
+                "y": 1499
+            }
+        }
+    },
+    "$__mpe_external_Home_OpenTopRightMenu_公会": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1718,
+                "y": 428
+            }
+        }
+    },
+    "$__mpe_external_ReturnMain_公会": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1589,
+                "y": 180
+            }
+        }
+    },
+    "$__mpe_external_StopTask_公会": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1562,
+                "y": 1491
+            }
+        }
+    },
+    "公会-已签到": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    585,
+                    345,
+                    86,
+                    32
+                ],
+                "expected": [
+                    "您已签到"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    245,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "公会-已签到-已关闭弹框",
+            "公会-已签到-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2364,
+                "y": 739
+            }
+        }
+    },
+    "公会-已签到-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    585,
+                    345,
+                    86,
+                    32
+                ],
+                "expected": [
+                    "您已签到"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "公会-已签到"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2365,
+                "y": 536
+            }
+        }
+    },
+    "公会-已签到-已关闭弹框": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    347,
+                    240,
+                    43,
+                    32
+                ],
+                "expected": [
+                    "简介"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "DisableNode",
+                "custom_action_param": {
+                    "node_name": "公会-签到"
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2780,
+                "y": 861
+            }
+        }
+    },
+    "公会-捐献": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    465,
+                    651,
+                    65,
+                    32
+                ],
+                "expected": [
+                    "捐献"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "[JumpBack]公会-捐献-金币",
+            "[JumpBack]公会-捐献-信物",
+            "公会-捐献-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1966,
+                "y": 1724
+            }
+        }
+    },
+    "公会-签到": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    703,
+                    654,
+                    73,
+                    33
+                ],
+                "expected": [
+                    "签到"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "公会-已签到"
+        ],
+        "on_error": [
+            "公会-签到"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2020,
+                "y": 872
+            }
+        }
+    },
+    "公会-领取投资奖励": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1056,
+                    564,
+                    95,
+                    30
+                ],
+                "expected": [
+                    "领取奖励"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "公会-领取投资奖励-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1970,
+                "y": -159
+            }
+        }
+    },
+    "公会-领取投资奖励-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1056,
+                    564,
+                    95,
+                    30
+                ],
+                "expected": [
+                    "领取奖励"
+                ]
+            }
+        },
+        "next": [
+            "公会-领取投资奖励"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1969,
+                "y": 74
+            }
+        }
+    },
+    "公会_从首页": {
+        "desc": "配置首页右上角菜单打开后的公会后继",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "公会_点击公会菜单"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "配置公会菜单后继"
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1280,
+                "y": 680
+            }
+        }
+    },
+    "公会_入口": {
+        "desc": "公会任务入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "公会_从首页"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "开始执行公会任务"
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1280,
+                "y": 360
+            }
+        }
+    },
+    "公会_公会页面": {
+        "desc": "确认已进入公会页面",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    73,
+                    18,
+                    63,
+                    40
+                ],
+                "expected": [
+                    "公会"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]公会-领取投资奖励",
+            "[JumpBack]公会-投资金币",
+            "[JumpBack]公会-投资信物",
+            "[JumpBack]公会-签到",
+            "[JumpBack]公会-捐献"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1650,
+                "y": 1239
+            }
+        }
+    },
+    "公会_点击公会菜单": {
+        "desc": "点击菜单中的公会",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    882,
+                    502,
+                    52,
+                    32
+                ],
+                "expected": [
+                    "公会"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开公会菜单"
+        },
+        "next": [
+            "公会_公会页面",
+            "公会_点击公会菜单_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1302,
+                "y": 1101
+            }
+        }
+    },
+    "公会_点击公会菜单_Check": {
+        "desc": "确认右上角菜单仍打开且公会入口仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    882,
+                    502,
+                    52,
+                    32
+                ],
+                "expected": [
+                    "公会"
+                ]
+            }
+        },
+        "next": [
+            "公会_点击公会菜单"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1272,
+                "y": 759
+            }
+        }
+    },
+    "公会-投资金币": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1128,
+                    523,
+                    52,
+                    32
+                ],
+                "expected": [
+                    "投资"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "公会-已投资金币"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2013,
+                "y": 288
+            }
+        }
+    },
+    "公会-投资信物": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1126,
+                    618,
+                    60,
+                    32
+                ],
+                "expected": [
+                    "投资"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "公会-已投资信物"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2027,
+                "y": 587
+            }
+        }
+    },
+    "公会-已投资金币": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    550,
+                    340,
+                    159,
+                    40
+                ],
+                "expected": [
+                    "今日已进行过投资"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    921,
+                    243,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "公会-已投资金币-Check",
+            "公会-投资金币-Override"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2794,
+                "y": -24
+            }
+        }
+    },
+    "公会-已投资金币-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    550,
+                    340,
+                    159,
+                    40
+                ],
+                "expected": [
+                    "今日已进行过投资"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "公会-已投资金币"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2861,
+                "y": -300
+            }
+        }
+    },
+    "公会-投资信物-Override": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "DisableNode",
+                "custom_action_param": {
+                    "node_name": "公会-投资信物"
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3204,
+                "y": 471
+            }
+        }
+    },
+    "公会-已投资信物": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    550,
+                    340,
+                    159,
+                    40
+                ],
+                "expected": [
+                    "今日已进行过投资"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    921,
+                    243,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "公会-已投资信物-Check",
+            "公会-投资信物-Override"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2784,
+                "y": 543
+            }
+        }
+    }
+}
