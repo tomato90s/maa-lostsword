@@ -1,12 +1,12 @@
 {
     "task": [
         {
-            "name": "公会签到",
-            "entry": "Guild_Entry",
+            "name": "公会",
+            "entry": "公会_入口",
             "group": [
                 "daily"
             ],
-            "label": "🏰公会签到",
+            "label": "🏰公会",
             "default_check": true
         }
     ],
