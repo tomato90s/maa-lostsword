@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780673030275,
+            "lastSyncTime": 1780904416857,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/好感.json",
             "savedViewport": {
-                "x": -3346,
-                "y": -929,
-                "zoom": 1.08
+                "x": -3120,
+                "y": -1053,
+                "zoom": 1
             },
             "filename": "好感",
             "version": "v1.6.1"
@@ -83,8 +83,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 3141,
-                "y": 859
+                "x": 3094,
+                "y": 888
             }
         }
     },
@@ -192,12 +192,13 @@
             }
         },
         "next": [
+            "好感-对话入口-Check",
             "好感-对话点击屏幕"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 3817,
-                "y": 1302
+                "x": 3808,
+                "y": 1469
             }
         }
     },
@@ -278,8 +279,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4323,
-                "y": 1112
+                "x": 4407,
+                "y": 1019
             }
         }
     },
@@ -304,8 +305,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4362,
-                "y": 1363
+                "x": 4090,
+                "y": 1001
             }
         }
     },
@@ -327,8 +328,33 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4092,
-                "y": 1324
+                "x": 4161,
+                "y": 1488
+            }
+        }
+    },
+    "好感-次数清空": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1041,
+                    17,
+                    65,
+                    36
+                ],
+                "expected": [
+                    "0"
+                ]
+            }
+        },
+        "action": {
+            "type": "StopTask"
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3836,
+                "y": 1007
             }
         }
     },
@@ -557,28 +583,31 @@
             }
         }
     },
-    "好感-次数清空": {
+    "好感-对话入口-Check": {
         "recognition": {
             "type": "OCR",
             "param": {
                 "roi": [
-                    1041,
-                    17,
-                    65,
-                    36
+                    743,
+                    626,
+                    46,
+                    29
                 ],
                 "expected": [
-                    "0"
+                    "对话"
                 ]
             }
         },
         "action": {
-            "type": "StopTask"
+            "type": "Click"
         },
+        "next": [
+            "好感-对话入口"
+        ],
         "$__mpe_code": {
             "position": {
-                "x": 3868,
-                "y": 997
+                "x": 3809,
+                "y": 1229
             }
         }
     }
