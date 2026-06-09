@@ -1,0 +1,3329 @@
+{
+    "$__mpe_config_商店": {
+        "$__mpe_code": {
+            "prefix": "",
+            "coordinateMode": "absolute-v1",
+            "lastSyncTime": 1780997593810,
+            "isModifiedExternally": false,
+            "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/商店.json",
+            "savedViewport": {
+                "x": -1847,
+                "y": -2744,
+                "zoom": 1.5
+            },
+            "filename": "商店",
+            "version": "v1.6.1"
+        }
+    },
+    "$__mpe_external_Global_ItemObtained_商店": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 12
+            },
+            "extra_positions": [
+                {
+                    "x": 2979,
+                    "y": 4875
+                },
+                {
+                    "x": 2975,
+                    "y": 1733
+                }
+            ]
+        }
+    },
+    "$__mpe_external_Home_OpenTopRightMenu_商店": {
+        "$__mpe_code": {
+            "position": {
+                "x": 572,
+                "y": 130
+            }
+        }
+    },
+    "$__mpe_external_NoopDone_商店": {
+        "$__mpe_code": {
+            "position": {
+                "x": 2995,
+                "y": 1270
+            },
+            "extra_positions": [
+                {
+                    "x": 3588,
+                    "y": 1992
+                },
+                {
+                    "x": 3349,
+                    "y": 5774
+                }
+            ]
+        }
+    },
+    "$__mpe_external_ReturnMain_商店": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1122,
+                "y": 130
+            }
+        }
+    },
+    "$__mpe_external_StopTask_商店": {
+        "$__mpe_code": {
+            "position": {
+                "x": 1919,
+                "y": 6570
+            },
+            "extra_positions": [
+                {
+                    "x": 1540,
+                    "y": 3070
+                }
+            ]
+        }
+    },
+    "商品-交易所-公会": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    130,
+                    341,
+                    78,
+                    46
+                ],
+                "expected": [
+                    "公会"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-公会-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1984,
+                "y": 2929
+            }
+        }
+    },
+    "商品-交易所-夏日币": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    125,
+                    615,
+                    87,
+                    25
+                ],
+                "expected": [
+                    "夏日币"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-夏日币-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1993,
+                "y": 3267
+            }
+        }
+    },
+    "商品-交易所-消耗品": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    134,
+                    156,
+                    70,
+                    48
+                ],
+                "expected": [
+                    "消耗品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1992,
+                "y": 2513
+            }
+        }
+    },
+    "商品-交易所-突袭": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    138,
+                    251,
+                    68,
+                    43
+                ],
+                "expected": [
+                    "突袭"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-突袭-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1986,
+                "y": 2744
+            }
+        }
+    },
+    "商品-交易所-竞技场": {
+        "max_hit": 1,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    121,
+                    435,
+                    97,
+                    49
+                ],
+                "expected": [
+                    "竞技场"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-竞技场-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1990,
+                "y": 3088
+            }
+        }
+    },
+    "商店-交易所": {
+        "enabled": false,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    621,
+                    82,
+                    90,
+                    32
+                ],
+                "expected": [
+                    "交易所"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-交易所-Check",
+            "[JumpBack]商品-交易所-消耗品",
+            "[JumpBack]商品-交易所-突袭",
+            "[JumpBack]商品-交易所-公会",
+            "[JumpBack]商品-交易所-竞技场",
+            "[JumpBack]商品-交易所-夏日币"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1594,
+                "y": 2570
+            }
+        }
+    },
+    "商店-交易所-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    134,
+                    156,
+                    70,
+                    48
+                ],
+                "expected": [
+                    "每日"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "商店-交易所"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1611,
+                "y": 2466
+            }
+        }
+    },
+    "商店-交易所-公会-经验值宝箱": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "经验值宝箱"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "公会经验值宝箱标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "公会经验值宝箱标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_gonghuibi.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "公会经验值宝箱标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2629,
+                "y": 6081
+            }
+        }
+    },
+    "商店-交易所-公会-褪色宝石箱": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "褪色的宝石箱"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "公会褪色宝石箱标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "公会褪色宝石箱标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_gonghuibi.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "公会褪色宝石箱标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -150,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2625,
+                "y": 5986
+            }
+        }
+    },
+    "商店-交易所-公会-金币宝箱": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "金币宝箱"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "公会金币宝箱标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "公会金币宝箱标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_gonghuibi.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "公会金币宝箱标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 6288
+            }
+        }
+    },
+    "商店-交易所-关闭购买": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "商店-交易所-关闭购买-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 1886
+            }
+        }
+    },
+    "商店-交易所-关闭购买-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-交易所-关闭购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 2036
+            }
+        }
+    },
+    "商店-交易所-初级经验书": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "初级经验书"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "初级经验书标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "初级经验书标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "template_1780926976910.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "初级经验书标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 3184
+            }
+        }
+    },
+    "商店-交易所-夏日币-BossRaidTicket": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "Boss Raid Ticket"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "夏日币BossRaidTicket标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "夏日币BossRaidTicket标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -170,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2849,
+                "y": 7899
+            }
+        }
+    },
+    "商店-交易所-夏日币-夏日票券": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "夏日票券"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "夏日币夏日票券标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "夏日币夏日票券标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 7700
+            }
+        }
+    },
+    "商店-交易所-夏日币-轮盘券": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "轮盘券"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "夏日币轮盘券标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "夏日币轮盘券标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 3405,
+                "y": 7556
+            }
+        }
+    },
+    "商店-交易所-巨石票": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "领主召唤券：巨石阵"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "巨石票标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "巨石票标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "template_1780926976910.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "巨石票标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -180,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 3824
+            }
+        }
+    },
+    "商店-交易所-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    593,
+                    614,
+                    89,
+                    30
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "商店-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2674,
+                "y": 1849
+            }
+        }
+    },
+    "商店-交易所-指南针": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "黄金指南针：巨石阵"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "指南针标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "指南针标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "template_1780926976910.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "指南针标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -180,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 2203
+            }
+        }
+    },
+    "商店-交易所-未选择商品": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    246,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-交易所-关闭购买",
+            "商店-交易所-未选择商品-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 1875
+            }
+        }
+    },
+    "商店-交易所-未选择商品-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "next": [
+            "商店-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 2025
+            }
+        }
+    },
+    "商店-交易所-稀有灵魂": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "稀有灵魂"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "稀有灵魂标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "稀有灵魂标题ROI",
+                        "roi_offset": [
+                            -170,
+                            -20,
+                            70,
+                            70
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -140,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2668,
+                "y": 1591
+            }
+        }
+    },
+    "商店-交易所-突袭-初级经验书": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "初级经验书"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "突袭初级经验书标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭初级经验书标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_xinwu.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭初级经验书标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -160,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2635,
+                "y": 5327
+            }
+        }
+    },
+    "商店-交易所-突袭-巨石票": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "领主召唤券：巨石阵"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "突袭巨石票标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭巨石票标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_xinwu.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭巨石票标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -180,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2634,
+                "y": 4131
+            }
+        }
+    },
+    "商店-交易所-突袭-梅林的特制药水": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "梅林的特制药水"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "突袭梅林的特制药水标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭梅林的特制药水标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_xinwu.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭梅林的特制药水标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -180,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2628,
+                "y": 5923
+            }
+        }
+    },
+    "商店-交易所-突袭-精灵王的信物": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "精灵王的信物"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "突袭精灵王的信物标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭精灵王的信物标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_xinwu.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭精灵王的信物标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -170,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 4464
+            }
+        }
+    },
+    "商店-交易所-突袭-银河精髓": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "银河精髓"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "突袭银河精髓标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭银河精髓标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_xinwu.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "突袭银河精髓标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 5060
+            }
+        }
+    },
+    "商店-交易所-竞技场-竞技场补给箱": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "竞技场补给箱"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "竞技场补给箱标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "竞技场补给箱标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_jingjichangbi.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "竞技场补给箱标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -140,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2630,
+                "y": 6998
+            }
+        }
+    },
+    "商店-交易所-紫色门票": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "紫色门票"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "紫色门票标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "紫色门票标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_xinwu.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "紫色门票标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 1287
+            }
+        }
+    },
+    "商店-交易所-褪色宝石箱": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "褪色的宝石箱"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "褪色宝石箱标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "褪色宝石箱标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -180,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 2857
+            }
+        }
+    },
+    "商店-交易所-金币券": {
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {
+                        "expected": [
+                            "金币券"
+                        ],
+                        "recognition": "OCR",
+                        "roi": [
+                            250,
+                            142,
+                            262,
+                            411
+                        ],
+                        "sub_name": "金币券标题ROI"
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "金币券标题ROI",
+                        "roi_offset": [
+                            300,
+                            -10,
+                            40,
+                            40
+                        ],
+                        "template": [
+                            "shop_xinwu.png"
+                        ]
+                    },
+                    {
+                        "recognition": "TemplateMatch",
+                        "roi": "金币券标题ROI",
+                        "roi_offset": [
+                            -130,
+                            -10,
+                            45,
+                            45
+                        ],
+                        "template": [
+                            "shop_exchange_unchecked.png"
+                        ],
+                        "threshold": 0.8
+                    }
+                ],
+                "box_index": 0
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "OffsetClick",
+                "custom_action_param": {
+                    "x": -130,
+                    "y": 0
+                }
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 3511
+            }
+        }
+    },
+    "商店-公会-交易所-关闭购买": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "商店-公会-交易所-关闭购买-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 2175
+            }
+        }
+    },
+    "商店-公会-交易所-关闭购买-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-公会-交易所-关闭购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 2325
+            }
+        }
+    },
+    "商店-公会-交易所-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    593,
+                    614,
+                    89,
+                    30
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Global_ItemObtained",
+            "商店-公会-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2635,
+                "y": 6801
+            }
+        }
+    },
+    "商店-公会-交易所-未选择商品": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    246,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-公会-交易所-关闭购买",
+            "商店-公会-交易所-未选择商品-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 2175
+            }
+        }
+    },
+    "商店-公会-交易所-未选择商品-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "next": [
+            "商店-公会-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 2325
+            }
+        }
+    },
+    "商店-公会-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    123,
+                    659,
+                    90,
+                    32
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "[JumpBack]商店-交易所-公会-褪色宝石箱",
+            "[JumpBack]商店-交易所-公会-经验值宝箱",
+            "[JumpBack]商店-交易所-公会-金币宝箱",
+            "[JumpBack]商店-公会-翻页",
+            "商店-公会-购买前检查钻石",
+            "商店-公会-交易所-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2149,
+                "y": 6309
+            }
+        }
+    },
+    "商店-公会-翻页": {
+        "max_hit": 2,
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    530,
+                    496,
+                    32,
+                    29
+                ],
+                "end": [
+                    [
+                        511,
+                        157,
+                        29,
+                        30
+                    ]
+                ],
+                "duration": [
+                    2000
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2642,
+                "y": 6506
+            }
+        }
+    },
+    "商店-公会-购买前检查钻石": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1142,
+                    84,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-公会-购买前检查钻石-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2970,
+                "y": 6680
+            }
+        }
+    },
+    "商店-公会-购买前检查钻石-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-公会-购买前检查钻石"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2975,
+                "y": 6320
+            }
+        }
+    },
+    "商店-关闭购买弹框": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    377,
+                    82,
+                    90,
+                    35
+                ],
+                "expected": [
+                    "商品"
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2952,
+                "y": 266
+            }
+        }
+    },
+    "商店-商品": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    377,
+                    82,
+                    90,
+                    35
+                ],
+                "expected": [
+                    "商品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-每日免费礼包",
+            "商店-商品-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1657,
+                "y": 1882
+            }
+        }
+    },
+    "商店-商品-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    134,
+                    156,
+                    70,
+                    48
+                ],
+                "expected": [
+                    "促销"
+                ]
+            }
+        },
+        "next": [
+            "商店-商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1683,
+                "y": 1552
+            }
+        }
+    },
+    "商店-夏日币-交易所-关闭购买": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "商店-夏日币-交易所-关闭购买-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 2475
+            }
+        }
+    },
+    "商店-夏日币-交易所-关闭购买-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-夏日币-交易所-关闭购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 2625
+            }
+        }
+    },
+    "商店-夏日币-交易所-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    593,
+                    614,
+                    89,
+                    30
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Global_ItemObtained",
+            "商店-夏日币-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2634,
+                "y": 7512
+            }
+        }
+    },
+    "商店-夏日币-交易所-未选择商品": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    246,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-夏日币-交易所-关闭购买",
+            "商店-夏日币-交易所-未选择商品-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 2475
+            }
+        }
+    },
+    "商店-夏日币-交易所-未选择商品-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "next": [
+            "商店-夏日币-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 2625
+            }
+        }
+    },
+    "商店-夏日币-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    123,
+                    659,
+                    90,
+                    32
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "[JumpBack]商店-交易所-夏日币-夏日票券",
+            "[JumpBack]商店-交易所-夏日币-轮盘券",
+            "[JumpBack]商店-交易所-夏日币-BossRaidTicket",
+            "[JumpBack]商店-夏日币-翻页",
+            "商店-夏日币-购买前检查钻石",
+            "商店-夏日币-交易所-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2212,
+                "y": 7700
+            }
+        }
+    },
+    "商店-夏日币-翻页": {
+        "max_hit": 2,
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    530,
+                    496,
+                    32,
+                    29
+                ],
+                "end": [
+                    [
+                        511,
+                        157,
+                        29,
+                        30
+                    ]
+                ],
+                "duration": [
+                    2000
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2624,
+                "y": 8120
+            }
+        }
+    },
+    "商店-夏日币-购买前检查钻石": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1142,
+                    84,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-夏日币-购买前检查钻石-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2970,
+                "y": 8120
+            }
+        }
+    },
+    "商店-夏日币-购买前检查钻石-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-夏日币-购买前检查钻石"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2972,
+                "y": 7980
+            }
+        }
+    },
+    "商店-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    123,
+                    659,
+                    90,
+                    32
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "[JumpBack]商店-交易所-巨石票",
+            "[JumpBack]商店-交易所-稀有灵魂",
+            "[JumpBack]商店-交易所-指南针",
+            "[JumpBack]商店-交易所-褪色宝石箱",
+            "[JumpBack]商店-交易所-金币券",
+            "[JumpBack]商店-交易所-紫色门票",
+            "[JumpBack]商店-交易所-初级经验书",
+            "[JumpBack]商店-翻页",
+            "商店-购买前检查钻石",
+            "商店-交易所-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2337,
+                "y": 699
+            }
+        }
+    },
+    "商店-每日免费礼包": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    383,
+                    151,
+                    125,
+                    32
+                ],
+                "expected": [
+                    "每日免费礼包"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "商店-购买商品-免费",
+            "商店-每日免费礼包-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1982,
+                "y": 1941
+            }
+        }
+    },
+    "商店-每日免费礼包-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    383,
+                    151,
+                    125,
+                    32
+                ],
+                "expected": [
+                    "每日免费礼包"
+                ]
+            }
+        },
+        "next": [
+            "商店-每日免费礼包"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1970,
+                "y": 1628
+            }
+        }
+    },
+    "商店-突袭-交易所-关闭购买": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "商店-突袭-交易所-关闭购买-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 2775
+            }
+        }
+    },
+    "商店-突袭-交易所-关闭购买-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-突袭-交易所-关闭购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 2925
+            }
+        }
+    },
+    "商店-突袭-交易所-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    593,
+                    614,
+                    89,
+                    30
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "商店-突袭-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 4791
+            }
+        }
+    },
+    "商店-突袭-交易所-未选择商品": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    246,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-突袭-交易所-关闭购买",
+            "商店-突袭-交易所-未选择商品-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 2775
+            }
+        }
+    },
+    "商店-突袭-交易所-未选择商品-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "next": [
+            "商店-突袭-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 2925
+            }
+        }
+    },
+    "商店-突袭-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    123,
+                    659,
+                    90,
+                    32
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "[JumpBack]商店-交易所-突袭-梅林的特制药水",
+            "[JumpBack]商店-交易所-突袭-银河精髓",
+            "[JumpBack]商店-交易所-突袭-巨石票",
+            "[JumpBack]商店-交易所-突袭-精灵王的信物",
+            "[JumpBack]商店-交易所-突袭-初级经验书",
+            "[JumpBack]商店-突袭-翻页",
+            "商店-突袭-购买前检查钻石",
+            "商店-突袭-交易所-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2135,
+                "y": 4993
+            }
+        }
+    },
+    "商店-突袭-翻页": {
+        "max_hit": 3,
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    530,
+                    496,
+                    32,
+                    29
+                ],
+                "end": [
+                    [
+                        511,
+                        157,
+                        29,
+                        30
+                    ]
+                ],
+                "duration": [
+                    2000
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2634,
+                "y": 5622
+            }
+        }
+    },
+    "商店-突袭-购买前检查钻石": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1142,
+                    84,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-突袭-购买前检查钻石-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2970,
+                "y": 5644
+            }
+        }
+    },
+    "商店-突袭-购买前检查钻石-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-突袭-购买前检查钻石"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2975,
+                "y": 5288
+            }
+        }
+    },
+    "商店-竞技场-交易所-关闭购买": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "商店-竞技场-交易所-关闭购买-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 3075
+            }
+        }
+    },
+    "商店-竞技场-交易所-关闭购买-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    1110,
+                    55,
+                    62,
+                    59
+                ],
+                "template": [
+                    "shop_guanbigoumai.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-竞技场-交易所-关闭购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3271,
+                "y": 3225
+            }
+        }
+    },
+    "商店-竞技场-交易所-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    593,
+                    614,
+                    89,
+                    30
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "Global_ItemObtained",
+            "商店-竞技场-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2613,
+                "y": 7279
+            }
+        }
+    },
+    "商店-竞技场-交易所-未选择商品": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    923,
+                    246,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-竞技场-交易所-关闭购买",
+            "商店-竞技场-交易所-未选择商品-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 3075
+            }
+        }
+    },
+    "商店-竞技场-交易所-未选择商品-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    577,
+                    343,
+                    101,
+                    36
+                ],
+                "expected": [
+                    "未选择商品"
+                ]
+            }
+        },
+        "next": [
+            "商店-竞技场-交易所-未选择商品"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2954,
+                "y": 3225
+            }
+        }
+    },
+    "商店-竞技场-批量购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    123,
+                    659,
+                    90,
+                    32
+                ],
+                "expected": [
+                    "批量购买"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "[JumpBack]商店-交易所-竞技场-竞技场补给箱",
+            "[JumpBack]商店-竞技场-翻页",
+            "商店-竞技场-购买前检查钻石",
+            "商店-竞技场-交易所-批量购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2212,
+                "y": 7109
+            }
+        }
+    },
+    "商店-竞技场-翻页": {
+        "max_hit": 2,
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    530,
+                    496,
+                    32,
+                    29
+                ],
+                "end": [
+                    [
+                        511,
+                        157,
+                        29,
+                        30
+                    ]
+                ],
+                "duration": [
+                    2000
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2636,
+                "y": 7269
+            }
+        }
+    },
+    "商店-竞技场-购买前检查钻石": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1142,
+                    84,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-竞技场-购买前检查钻石-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2970,
+                "y": 7200
+            }
+        }
+    },
+    "商店-竞技场-购买前检查钻石-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-竞技场-购买前检查钻石"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2972,
+                "y": 7080
+            }
+        }
+    },
+    "商店-翻页": {
+        "max_hit": 3,
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    530,
+                    496,
+                    32,
+                    29
+                ],
+                "end": [
+                    [
+                        511,
+                        157,
+                        29,
+                        30
+                    ]
+                ],
+                "duration": [
+                    2000
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 2516
+            }
+        }
+    },
+    "商店-购买前检查钻石": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1142,
+                    84,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-购买前检查钻石-Check",
+            "NoopDone"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2606,
+                "y": 984
+            }
+        }
+    },
+    "商店-购买前检查钻石-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "roi": [
+                    673,
+                    534,
+                    501,
+                    54
+                ],
+                "template": [
+                    "piliang_zuanshi.png"
+                ]
+            }
+        },
+        "next": [
+            "商店-购买前检查钻石"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2595,
+                "y": 1013
+            }
+        }
+    },
+    "商店-购买商品-免费": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    597,
+                    588,
+                    76,
+                    41
+                ],
+                "expected": [
+                    "免费"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "next": [
+            "Global_ItemObtained",
+            "商店-购买商品-已购买",
+            "商店-购买商品-免费-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2312,
+                "y": 183
+            }
+        }
+    },
+    "商店-购买商品-免费-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    597,
+                    588,
+                    76,
+                    41
+                ],
+                "expected": [
+                    "免费"
+                ]
+            }
+        },
+        "next": [
+            "商店-购买商品-免费"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 152
+            }
+        }
+    },
+    "商店-购买商品-已购买": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    554,
+                    589,
+                    144,
+                    35
+                ],
+                "expected": [
+                    "已购买过该商品"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    1016,
+                    105,
+                    1,
+                    1
+                ]
+            }
+        },
+        "next": [
+            "商店-关闭购买弹框",
+            "商店-购买商品-已购买-Check"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2632,
+                "y": 510
+            }
+        }
+    },
+    "商店-购买商品-已购买-Check": {
+        "max_hit": 3,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    554,
+                    589,
+                    144,
+                    35
+                ],
+                "expected": [
+                    "已购买过该商品"
+                ]
+            }
+        },
+        "next": [
+            "商店-购买商品-已购买"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 2952,
+                "y": 519
+            }
+        }
+    },
+    "商店_从首页": {
+        "desc": "配置首页右上角菜单打开后的商店后继",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "商店_点击商店菜单"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "配置商店菜单后继"
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 252,
+                "y": 12
+            }
+        }
+    },
+    "商店_入口": {
+        "desc": "商店任务入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "商店_从首页"
+                        ]
+                    }
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "开始执行商店任务"
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 802,
+                "y": 12
+            }
+        }
+    },
+    "商店_商店页面": {
+        "desc": "确认已进入商店页面",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    71,
+                    15,
+                    68,
+                    46
+                ],
+                "expected": [
+                    "商店"
+                ]
+            }
+        },
+        "next": [
+            "[JumpBack]商店-商品",
+            "[JumpBack]商店-交易所",
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1229,
+                "y": 1903
+            }
+        }
+    },
+    "商店_点击商店菜单": {
+        "desc": "点击菜单中的商店",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    784,
+                    215,
+                    43,
+                    30
+                ],
+                "expected": [
+                    "商店"
+                ]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "focus": {
+            "Node.Recognition.Succeeded": "打开商店菜单"
+        },
+        "next": [
+            "商店_商店页面",
+            "商店_点击商店菜单_Check"
+        ],
+        "on_error": [
+            "StopTask"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 708,
+                "y": 1896
+            }
+        }
+    },
+    "商店_点击商店菜单_Check": {
+        "desc": "确认右上角菜单仍打开且商店入口仍可点",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    784,
+                    215,
+                    43,
+                    30
+                ],
+                "expected": [
+                    "商店"
+                ]
+            }
+        },
+        "next": [
+            "商店_点击商店菜单"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 718,
+                "y": 1420
+            }
+        }
+    },
+    "新建节点3": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "shop_xinwu.png"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            }
+        },
+        "$__mpe_code": {
+            "position": {
+                "x": 12,
+                "y": 12
+            }
+        }
+    }
+}
