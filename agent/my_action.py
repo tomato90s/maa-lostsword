@@ -5,6 +5,11 @@ from maa.custom_action import CustomAction
 from maa.context import Context
 
 
+def _offset_center(box, offset_x=0, offset_y=0):
+    x, y, w, h = box
+    return x + w // 2 + offset_x, y + h // 2 + offset_y
+
+
 @AgentServer.custom_action("my_action_111")
 class MyCustomAction(CustomAction):
 
@@ -40,7 +45,15 @@ class NodeOverride(CustomAction):
 @AgentServer.custom_action("CenterClick")
 class CenterClick(CustomAction):
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
-        x, y, w, h = argv.box
-        cx, cy = x + w // 2, y + h // 2
+        cx, cy = _offset_center(argv.box)
+        context.tasker.controller.post_click(cx, cy).wait()
+        return CustomAction.RunResult(success=True)
+
+
+@AgentServer.custom_action("OffsetClick")
+class OffsetClick(CustomAction):
+    def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
+        param = json.loads(argv.custom_action_param or "{}")
+        cx, cy = _offset_center(argv.box, int(param.get("x", 0)), int(param.get("y", 0)))
         context.tasker.controller.post_click(cx, cy).wait()
         return CustomAction.RunResult(success=True)
