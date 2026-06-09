@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780904416857,
+            "lastSyncTime": 1781000653931,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/好感.json",
             "savedViewport": {
-                "x": -3120,
-                "y": -1053,
-                "zoom": 1
+                "x": -5436,
+                "y": -1807,
+                "zoom": 1.5
             },
             "filename": "好感",
             "version": "v1.6.1"
@@ -202,6 +202,34 @@
             }
         }
     },
+    "好感-对话入口-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    743,
+                    626,
+                    46,
+                    29
+                ],
+                "expected": [
+                    "对话"
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": [
+            "好感-对话入口"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 3816,
+                "y": 1218
+            }
+        }
+    },
     "好感-对话入口关闭": {
         "recognition": {
             "type": "TemplateMatch",
@@ -229,8 +257,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4662,
-                "y": 1012
+                "x": 4821,
+                "y": 1180
             }
         }
     },
@@ -254,8 +282,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4669,
-                "y": 686
+                "x": 4823,
+                "y": 831
             }
         }
     },
@@ -279,34 +307,33 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4407,
-                "y": 1019
+                "x": 4533,
+                "y": 1341
             }
         }
     },
-    "好感-对话完成-Inverse": {
+    "好感-对话完成中": {
         "recognition": {
             "type": "OCR",
             "param": {
                 "roi": [
-                    745,
-                    623,
-                    92,
-                    36
+                    52,
+                    14,
+                    48,
+                    49
                 ],
                 "expected": [
-                    "对话完成"
+                    "Log"
                 ]
             }
         },
-        "inverse": true,
         "next": [
             "好感-对话点击屏幕"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4090,
-                "y": 1001
+                "x": 4222,
+                "y": 1169
             }
         }
     },
@@ -322,14 +349,16 @@
                 ]
             }
         },
+        "repeat": 2,
+        "repeat_delay": 1000,
         "next": [
             "好感-对话完成",
-            "好感-对话完成-Inverse"
+            "好感-对话完成中"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 4161,
-                "y": 1488
+                "x": 4229,
+                "y": 1428
             }
         }
     },
@@ -580,34 +609,6 @@
             "position": {
                 "x": 2046,
                 "y": 784
-            }
-        }
-    },
-    "好感-对话入口-Check": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    743,
-                    626,
-                    46,
-                    29
-                ],
-                "expected": [
-                    "对话"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click"
-        },
-        "next": [
-            "好感-对话入口"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 3809,
-                "y": 1229
             }
         }
     }
