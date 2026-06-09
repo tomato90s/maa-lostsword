@@ -118,13 +118,24 @@
     },
     "Quest_Entry": {
         "desc": "领取任务奖励任务入口",
-        "max_hit": 2,
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "Quest_FromHome"
+                        ]
+                    }
+                }
+            }
+        },
         "focus": {
             "Node.Action.Starting": "开始执行领取任务奖励"
         },
         "next": [
-            "[JumpBack]ReturnMain",
-            "Quest_FromHome"
+            "ReturnMain"
         ],
         "$__mpe_code": {
             "position": {
@@ -194,47 +205,25 @@
         }
     },
     "Quest_FromHome": {
-        "desc": "从主页猫贤菜单进入（与 draw/shop 同入口）",
-        "max_hit": 1,
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1089,
-                    383,
-                    162,
-                    170
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
+        "desc": "配置首页右上角菜单打开后的任务后继",
         "action": {
-            "type": "Click",
+            "type": "Custom",
             "param": {
-                "target": [
-                    1236,
-                    36,
-                    1,
-                    1
-                ]
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "Quest_MenuClick"
+                        ]
+                    }
+                }
             }
-        },
-        "post_wait_freezes": {
-            "time": 500,
-            "target": [
-                1201,
-                21,
-                59,
-                52
-            ]
         },
         "focus": {
-            "Node.Recognition.Succeeded": "准备进入任务"
+            "Node.Action.Starting": "配置任务菜单后继"
         },
         "next": [
-            "Quest_MenuClick"
+            "Home_OpenTopRightMenu"
         ],
         "$__mpe_code": {
             "position": {
@@ -244,7 +233,8 @@
         }
     },
     "Quest_MenuClick": {
-        "desc": "点击菜单中的任务图标 - ROI/坐标待补充",
+        "desc": "点击菜单中的任务图标",
+        "max_hit": 3,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -270,11 +260,41 @@
             "[JumpBack]Quest_DailyTab",
             "[JumpBack]Quest_WeeklyTab",
             "[JumpBack]Quest_EpicTab",
-            "Quest_Stop"
+            "Quest_MenuClick_Check"
+        ],
+        "on_error": [
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 652,
+                "y": 446
+            }
+        }
+    },
+    "Quest_MenuClick_Check": {
+        "desc": "确认右上角菜单仍打开且任务入口仍可点",
+        "max_hit": 2,
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    1095,
+                    220,
+                    43,
+                    27
+                ],
+                "expected": [
+                    "任务"
+                ]
+            }
+        },
+        "next": [
+            "Quest_MenuClick"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 952,
                 "y": 446
             }
         }
