@@ -1,10 +1,10 @@
 {
     "interface_version": 2,
     "name": "maa-lostsword",
-    "title": "MAA-LostSword v0.1.33 - Lost Sword 自动化助手",
+    "title": "MAA-LostSword v0.1.34 - Lost Sword 自动化助手",
     "icon": "logo.webp",
     "description": "Lost Sword 自动化助手，基于 MaaFramework",
-    "version": "v0.1.33",
+    "version": "v0.1.34",
     "contact": "游戏交流 QQ 群: 1020907837",
     "welcome": "欢迎使用 MAA-LostSword！推荐模拟器分辨率设置为 1920x1080，DPI 设置为 280，并请确保已开启 adb 调试。正在完善功能中，如遇到任何问题，请提 issue 或加入交流群 1020907837 反馈！",
     "github": "https://github.com/tomato90s/maa-lostsword",
