@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1781060163238,
+            "lastSyncTime": 1781062307357,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/商店.json",
             "savedViewport": {
-                "x": -1387,
-                "y": 50,
-                "zoom": 0.77
+                "x": -1107,
+                "y": -2197,
+                "zoom": 1.05
             },
             "filename": "商店",
             "version": "v1.6.1"
@@ -36,8 +36,8 @@
     "$__mpe_external_Home_OpenTopRightMenu_商店": {
         "$__mpe_code": {
             "position": {
-                "x": 572,
-                "y": 130
+                "x": 526,
+                "y": 94
             }
         }
     },
@@ -242,7 +242,7 @@
         }
     },
     "商店-交易所": {
-        "enabled": false,
+        "enabled": true,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -273,8 +273,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1594,
-                "y": 2570
+                "x": 1667,
+                "y": 2381
             }
         }
     },
@@ -301,8 +301,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1611,
-                "y": 2466
+                "x": 1675,
+                "y": 2128
             }
         }
     },
@@ -1937,6 +1937,17 @@
                 ]
             }
         },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "商店-商品": {
+                        "enabled": false
+                    }
+                }
+            }
+        },
         "$__mpe_code": {
             "position": {
                 "x": 2895,
@@ -3231,7 +3242,7 @@
         "$__mpe_code": {
             "position": {
                 "x": 1121,
-                "y": 1919
+                "y": 2038
             }
         }
     },
@@ -3269,8 +3280,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 708,
-                "y": 1896
+                "x": 702,
+                "y": 1742
             }
         }
     },
@@ -3297,33 +3308,6 @@
             "position": {
                 "x": 718,
                 "y": 1420
-            }
-        }
-    },
-    "新建节点3": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "shop_xinwu.png"
-                ]
-            }
-        },
-        "action": {
-            "type": "Click",
-            "param": {
-                "target": [
-                    0,
-                    0,
-                    0,
-                    0
-                ]
-            }
-        },
-        "$__mpe_code": {
-            "position": {
-                "x": 12,
-                "y": 12
             }
         }
     }
