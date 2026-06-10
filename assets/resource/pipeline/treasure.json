@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780755143100,
+            "lastSyncTime": 1781060838833,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/treasure.json",
             "savedViewport": {
-                "x": -1603,
-                "y": -1055,
-                "zoom": 1
+                "x": -719,
+                "y": 141,
+                "zoom": 1.5
             },
             "filename": "treasure",
             "version": "v1.6.1"
@@ -46,8 +46,8 @@
             "handleDirection": "top-bottom",
             "extra_positions": [
                 {
-                    "x": 1202,
-                    "y": 760
+                    "x": 1026,
+                    "y": 845
                 }
             ]
         }
@@ -73,8 +73,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 562,
-                "y": 120
+                "x": 753,
+                "y": -152
             }
         }
     },
@@ -160,6 +160,7 @@
     },
     "Treasure_Label": {
         "desc": "识别宝藏探索入口文字",
+        "max_hit": 10,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -185,43 +186,15 @@
             "Node.Recognition.Succeeded": "进入宝藏探索"
         },
         "next": [
-            "Treasure_Page",
-            "Treasure_Label_Check"
+            "Treasure_Page"
         ],
         "on_error": [
-            "StopTask"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 882,
-                "y": 57
-            }
-        }
-    },
-    "Treasure_Label_Check": {
-        "desc": "确认仍停留在首页宝藏探索入口，重试点击宝藏探索",
-        "max_hit": 2,
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    775,
-                    660,
-                    101,
-                    32
-                ],
-                "expected": [
-                    "宝藏探索"
-                ]
-            }
-        },
-        "next": [
             "Treasure_Label"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1202,
-                "y": 12
+                "x": 739,
+                "y": 85
             }
         }
     },
@@ -247,8 +220,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1128,
-                "y": 275
+                "x": 1137,
+                "y": 65
             }
         }
     },
@@ -388,6 +361,31 @@
             }
         }
     },
+    "Treasure_QuickSearch-Check": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    693,
+                    562,
+                    119,
+                    40
+                ],
+                "expected": [
+                    "快速探查"
+                ]
+            }
+        },
+        "next": [
+            "Treasure_QuickSearch"
+        ],
+        "$__mpe_code": {
+            "position": {
+                "x": 1724,
+                "y": 931
+            }
+        }
+    },
     "关闭宝藏探索弹框": {
         "recognition": {
             "type": "TemplateMatch",
@@ -494,31 +492,6 @@
                 "y": 1059
             },
             "handleDirection": "top-bottom"
-        }
-    },
-    "Treasure_QuickSearch-Check": {
-        "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    693,
-                    562,
-                    119,
-                    40
-                ],
-                "expected": [
-                    "快速探查"
-                ]
-            }
-        },
-        "next": [
-            "Treasure_QuickSearch"
-        ],
-        "$__mpe_code": {
-            "position": {
-                "x": 1724,
-                "y": 931
-            }
         }
     },
     "快速探查-开始探查": {
