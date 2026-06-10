@@ -3,13 +3,13 @@
         "$__mpe_code": {
             "prefix": "",
             "coordinateMode": "absolute-v1",
-            "lastSyncTime": 1780997593810,
+            "lastSyncTime": 1781060163238,
             "isModifiedExternally": false,
             "filePath": "/Users/liangxianhua/projects/github/maa-lostsword/assets/resource/pipeline/商店.json",
             "savedViewport": {
-                "x": -1847,
-                "y": -2744,
-                "zoom": 1.5
+                "x": -1387,
+                "y": 50,
+                "zoom": 0.77
             },
             "filename": "商店",
             "version": "v1.6.1"
@@ -18,8 +18,8 @@
     "$__mpe_external_Global_ItemObtained_商店": {
         "$__mpe_code": {
             "position": {
-                "x": 2632,
-                "y": 12
+                "x": 2580,
+                "y": -6
             },
             "extra_positions": [
                 {
@@ -1939,8 +1939,8 @@
         },
         "$__mpe_code": {
             "position": {
-                "x": 2952,
-                "y": 266
+                "x": 2895,
+                "y": 165
             }
         }
     },
@@ -1971,8 +1971,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1657,
-                "y": 1882
+                "x": 1683,
+                "y": 1841
             }
         }
     },
@@ -2342,12 +2342,13 @@
         },
         "next": [
             "商店-购买商品-免费",
+            "商店-购买商品-已购买",
             "商店-每日免费礼包-Check"
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1982,
-                "y": 1941
+                "x": 2023,
+                "y": 341
             }
         }
     },
@@ -2372,8 +2373,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1970,
-                "y": 1628
+                "x": 1735,
+                "y": 49
             }
         }
     },
@@ -3056,8 +3057,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2312,
-                "y": 183
+                "x": 2195,
+                "y": -41
             }
         }
     },
@@ -3082,8 +3083,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2632,
-                "y": 152
+                "x": 2211,
+                "y": -204
             }
         }
     },
@@ -3119,8 +3120,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2632,
-                "y": 510
+                "x": 2552,
+                "y": 289
             }
         }
     },
@@ -3145,8 +3146,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 2952,
-                "y": 519
+                "x": 2553,
+                "y": 114
             }
         }
     },
@@ -3229,8 +3230,8 @@
         ],
         "$__mpe_code": {
             "position": {
-                "x": 1229,
-                "y": 1903
+                "x": 1121,
+                "y": 1919
             }
         }
     },
