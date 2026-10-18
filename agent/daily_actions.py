@@ -541,6 +541,60 @@ class SquadDaily(ScreenAction):
         raise RuntimeError("等待小队匹配或战斗结算超时；不会重复匹配或购买门票")
 
 
+SHOP_EXCHANGE_CATEGORIES = (
+    "商品-交易所-消耗品", "商品-交易所-突袭", "商品-交易所-公会",
+    "商品-交易所-竞技场", "商品-交易所-夏日币",
+)
+
+
+class ShopCategoryClick(CustomAction):
+    def run(self, context, argv):
+        try:
+            if argv.node_name not in SHOP_EXCHANGE_CATEGORIES or context.tasker.stopping:
+                return False
+            node = context.get_node_data(argv.node_name)
+            if not isinstance(node, dict) or node.get("enabled") is not True:
+                return False
+            x, y, w, h = argv.box
+            job = context.tasker.controller.post_click(x + w // 2, y + h // 2).wait()
+            if not job.succeeded:
+                return False
+            # Each selected category runs once. Completing one never consumes
+            # another category's purchase allowance or changes its switch.
+            return bool(context.override_pipeline({argv.node_name: {"enabled": False}}))
+        except Exception as exc:
+            print(f"[交易所] 分类入口失败: {exc}", flush=True)
+            return False
+
+
+class ShopExchangeFinish(CustomAction):
+    def run(self, context, argv):
+        try:
+            if context.tasker.stopping:
+                return False
+            pending = []
+            for name in SHOP_EXCHANGE_CATEGORIES:
+                node = context.get_node_data(name)
+                enabled = node.get("enabled") if isinstance(node, dict) else None
+                if not isinstance(enabled, bool):
+                    raise RuntimeError("无法确认交易所分类开关")
+                if enabled:
+                    pending.append(name)
+            # Summer currency is an optional event tab and can disappear.
+            missing = [name for name in pending if name != "商品-交易所-夏日币"]
+            if missing:
+                raise RuntimeError("已开启分类尚未处理: " + "、".join(missing))
+            if pending:
+                print("[交易所] 当前没有夏日币分类，跳过", flush=True)
+            if not context.override_pipeline({"商店-交易所": {"enabled": False}}):
+                return False
+            print("[交易所] 各分类已分别处理，返回大厅", flush=True)
+            return True
+        except Exception as exc:
+            print(f"[交易所] {exc}", flush=True)
+            return False
+
+
 class ShopFreeGift(ScreenAction):
     label = "每日免费礼包"
     timeout = 75
@@ -610,4 +664,6 @@ class ShopFreeGift(ScreenAction):
 ACTIONS = {"LocalGuildClaimReward": GuildClaimReward(), "LocalFavorTalk": FavorTalk(),
            "LocalArenaDaily": ArenaDaily(), "LocalGemCombine": GemCombine(),
            "LocalSquadDaily": SquadDaily(), "LocalShopFreeGift": ShopFreeGift(),
-           "LocalStonehengeGate": StonehengeGate()}
+           "LocalStonehengeGate": StonehengeGate(),
+           "LocalShopCategoryClick": ShopCategoryClick(),
+           "LocalShopExchangeFinish": ShopExchangeFinish()}

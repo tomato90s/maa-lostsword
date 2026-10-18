@@ -100,7 +100,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -112,7 +112,7 @@
                 "y": 2929
             }
         },
-        "enabled": true,
+        "enabled": false,
         "on_error": [
             "LocalCrashRecovery",
             "LocalTaskFailed"
@@ -137,7 +137,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -174,7 +174,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -186,7 +186,7 @@
                 "y": 2513
             }
         },
-        "enabled": true,
+        "enabled": false,
         "on_error": [
             "LocalCrashRecovery",
             "LocalTaskFailed"
@@ -211,7 +211,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -223,7 +223,7 @@
                 "y": 2744
             }
         },
-        "enabled": true,
+        "enabled": false,
         "on_error": [
             "LocalCrashRecovery",
             "LocalTaskFailed"
@@ -248,7 +248,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -260,7 +260,7 @@
                 "y": 3088
             }
         },
-        "enabled": true,
+        "enabled": false,
         "on_error": [
             "LocalCrashRecovery",
             "LocalTaskFailed"
@@ -290,11 +290,13 @@
         },
         "next": [
             "商店-交易所-Check",
+            "[JumpBack]商店-交易所-关闭购买",
             "[JumpBack]商品-交易所-消耗品",
             "[JumpBack]商品-交易所-突袭",
             "[JumpBack]商品-交易所-公会",
             "[JumpBack]商品-交易所-竞技场",
-            "[JumpBack]商品-交易所-夏日币"
+            "[JumpBack]商品-交易所-夏日币",
+            "Local_ShopExchangeDone"
         ],
         "$__mpe_code": {
             "position": {
@@ -550,6 +552,7 @@
         ]
     },
     "商店-交易所-关闭购买": {
+        "max_hit": 10,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -924,6 +927,7 @@
         ]
     },
     "商店-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -941,21 +945,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "LocalBudgetClick",
-                "custom_action_param": {
-                    "policy": "Local_ShopPolicy",
-                    "scope": "batches",
-                    "disable_nodes": [
-                        "商品-交易所-公会",
-                        "商品-交易所-夏日币",
-                        "商品-交易所-消耗品",
-                        "商品-交易所-突袭",
-                        "商品-交易所-竞技场"
-                    ],
-                    "on_limit": [
-                        "商店-交易所-关闭购买"
-                    ]
-                }
+                "custom_action": "CenterClick"
             }
         },
         "next": [
@@ -1852,6 +1842,7 @@
         ]
     },
     "商店-公会-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -1869,21 +1860,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "LocalBudgetClick",
-                "custom_action_param": {
-                    "policy": "Local_ShopPolicy",
-                    "scope": "batches",
-                    "disable_nodes": [
-                        "商品-交易所-公会",
-                        "商品-交易所-夏日币",
-                        "商品-交易所-消耗品",
-                        "商品-交易所-突袭",
-                        "商品-交易所-竞技场"
-                    ],
-                    "on_limit": [
-                        "商店-交易所-关闭购买"
-                    ]
-                }
+                "custom_action": "CenterClick"
             }
         },
         "next": [
@@ -2283,6 +2260,7 @@
         ]
     },
     "商店-夏日币-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -2300,21 +2278,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "LocalBudgetClick",
-                "custom_action_param": {
-                    "policy": "Local_ShopPolicy",
-                    "scope": "batches",
-                    "disable_nodes": [
-                        "商品-交易所-公会",
-                        "商品-交易所-夏日币",
-                        "商品-交易所-消耗品",
-                        "商品-交易所-突袭",
-                        "商品-交易所-竞技场"
-                    ],
-                    "on_limit": [
-                        "商店-交易所-关闭购买"
-                    ]
-                }
+                "custom_action": "CenterClick"
             }
         },
         "next": [
@@ -2724,6 +2688,7 @@
         ]
     },
     "商店-突袭-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -2741,21 +2706,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "LocalBudgetClick",
-                "custom_action_param": {
-                    "policy": "Local_ShopPolicy",
-                    "scope": "batches",
-                    "disable_nodes": [
-                        "商品-交易所-公会",
-                        "商品-交易所-夏日币",
-                        "商品-交易所-消耗品",
-                        "商品-交易所-突袭",
-                        "商品-交易所-竞技场"
-                    ],
-                    "on_limit": [
-                        "商店-交易所-关闭购买"
-                    ]
-                }
+                "custom_action": "CenterClick"
             }
         },
         "next": [
@@ -3056,6 +3007,7 @@
         ]
     },
     "商店-竞技场-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -3073,21 +3025,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "LocalBudgetClick",
-                "custom_action_param": {
-                    "policy": "Local_ShopPolicy",
-                    "scope": "batches",
-                    "disable_nodes": [
-                        "商品-交易所-公会",
-                        "商品-交易所-夏日币",
-                        "商品-交易所-消耗品",
-                        "商品-交易所-突袭",
-                        "商品-交易所-竞技场"
-                    ],
-                    "on_limit": [
-                        "商店-交易所-关闭购买"
-                    ]
-                }
+                "custom_action": "CenterClick"
             }
         },
         "next": [
@@ -3647,7 +3585,7 @@
         "next": [
             "[JumpBack]商店-商品",
             "[JumpBack]商店-交易所",
-            "StopTask"
+            "Local_ShopFinish"
         ],
         "$__mpe_code": {
             "position": {
@@ -3691,7 +3629,6 @@
         ],
         "on_error": [
             "LocalCrashRecovery",
-            "StopTask",
             "LocalTaskFailed"
         ],
         "$__mpe_code": {
@@ -3731,16 +3668,40 @@
             "LocalTaskFailed"
         ]
     },
-    "Local_ShopPolicy": {
+    "Local_ShopExchangeDone": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["^商店$"],
+                "roi": [65, 12, 100, 55]
+            }
+        },
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "my_action_111",
+                "custom_action": "LocalShopExchangeFinish"
+            }
+        },
+        "on_error": ["LocalCrashRecovery", "LocalTaskFailed"]
+    },
+    "Local_ShopFinish": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["^商店$"],
+                "roi": [65, 12, 100, 55]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
                 "custom_action_param": {
-                    "batches": 1
+                    "HomeFlagCloseReturnMain": {"next": []}
                 }
             }
         },
+        "next": ["ReturnMain"],
         "on_error": [
             "LocalCrashRecovery",
             "LocalTaskFailed"
