@@ -54,7 +54,11 @@
                 "x": 1612,
                 "y": 484
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_DailyReady": {
         "recognition": {
@@ -79,7 +83,11 @@
                 "x": 1302,
                 "y": 787
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_DailyTab": {
         "max_hit": 1,
@@ -114,7 +122,11 @@
                 "x": 965,
                 "y": 742
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_Entry": {
         "desc": "领取任务奖励任务入口",
@@ -142,7 +154,11 @@
                 "x": 12,
                 "y": 217
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_EpicReady": {
         "recognition": {
@@ -167,7 +183,11 @@
                 "x": 1292,
                 "y": 527
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_EpicTab": {
         "max_hit": 1,
@@ -202,7 +222,11 @@
                 "x": 972,
                 "y": 414
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_FromHome": {
         "desc": "配置首页右上角菜单打开后的任务后继",
@@ -230,7 +254,11 @@
                 "x": 332,
                 "y": 402
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_MenuClick": {
         "desc": "点击菜单中的任务图标",
@@ -260,10 +288,12 @@
             "[JumpBack]Quest_DailyTab",
             "[JumpBack]Quest_WeeklyTab",
             "[JumpBack]Quest_EpicTab",
-            "Quest_MenuClick_Check"
+            "Quest_MenuClick_Check",
+            "Quest_Finish"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -271,6 +301,30 @@
                 "y": 446
             }
         }
+    },
+    "Quest_Finish": {
+        "desc": "各页签检查完成后返回大厅并确认，正常结束领奖任务",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [75, 14, 100, 55],
+                "expected": ["^任务$"]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {"next": []}
+                }
+            }
+        },
+        "focus": {
+            "Node.Action.Starting": "任务奖励检查完成，返回大厅"
+        },
+        "next": ["ReturnMain"],
+        "on_error": ["LocalCrashRecovery", "LocalTaskFailed"]
     },
     "Quest_MenuClick_Check": {
         "desc": "确认右上角菜单仍打开且任务入口仍可点",
@@ -297,7 +351,11 @@
                 "x": 952,
                 "y": 446
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_RewardPopup": {
         "recognition": {
@@ -326,7 +384,11 @@
                 "x": 1920,
                 "y": 494
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_Stop": {
         "action": {
@@ -337,7 +399,11 @@
                 "x": 959,
                 "y": 1177
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_TabSkip": {
         "$__mpe_code": {
@@ -345,7 +411,11 @@
                 "x": 1292,
                 "y": 340
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_WeeklyReady": {
         "recognition": {
@@ -370,7 +440,11 @@
                 "x": 1292,
                 "y": 17
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Quest_WeeklyTab": {
         "max_hit": 1,
@@ -405,6 +479,10 @@
                 "x": 972,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

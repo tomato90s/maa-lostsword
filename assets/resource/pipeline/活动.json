@@ -38,7 +38,11 @@
                 "x": 2651,
                 "y": 2994
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "$__mpe_external_Global_ItemObtained_活动": {
         "$__mpe_code": {
@@ -98,7 +102,9 @@
             "活动_一键扫荡_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -130,7 +136,11 @@
                 "x": 2879,
                 "y": 2794
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_从首页": {
         "desc": "配置首页右上角菜单打开后的活动后继",
@@ -158,7 +168,11 @@
                 "x": 732,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_入口": {
         "desc": "活动任务入口",
@@ -186,7 +200,11 @@
                 "x": 1282,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_战斗主页": {
         "desc": "识别到战斗主页",
@@ -211,7 +229,9 @@
             "活动_点击活动"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -246,7 +266,11 @@
                 "x": 2850,
                 "y": 2538
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_扫荡关闭右上角": {
         "recognition": {
@@ -274,7 +298,9 @@
             "活动_扫荡关闭右上角_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -306,7 +332,11 @@
                 "x": 3458,
                 "y": 2984
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_扫荡关闭弹框": {
         "recognition": {
@@ -339,7 +369,11 @@
                 "x": 3154,
                 "y": 3262
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_扫荡关闭弹框_Check": {
         "recognition": {
@@ -364,7 +398,11 @@
                 "x": 3144,
                 "y": 2907
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_活动扫荡页面": {
         "recognition": {
@@ -402,7 +440,9 @@
             "活动扫荡0资源"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -442,7 +482,9 @@
             "活动_点击战斗菜单_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -476,7 +518,11 @@
                 "x": 2792,
                 "y": 1597
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_点击活动": {
         "desc": "点击活动战斗类别",
@@ -508,7 +554,9 @@
             "活动_点击活动_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -541,7 +589,11 @@
                 "x": 1829,
                 "y": 1286
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_点击活动可扫荡": {
         "desc": "点击活动可扫荡副本",
@@ -573,7 +625,9 @@
             "活动_点击活动可扫荡_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -606,7 +660,11 @@
                 "x": 2160,
                 "y": 1499
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_禁用活动可扫荡": {
         "recognition": {
@@ -639,7 +697,11 @@
                 "x": 12,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "活动_选择活动页面": {
         "recognition": {
@@ -661,6 +723,58 @@
                 "x": 3813,
                 "y": 3342
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "Local_EventEntry": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "副本_从首页"
+                        ]
+                    },
+                    "副本_点击副本": {
+                        "next": [
+                            "Local_EventSweep",
+                            "副本_点击副本_Check"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "Local_EventSweep": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalDailySweep",
+                "custom_action_param": {
+                    "categories": {
+                        "gold": false,
+                        "exp": false,
+                        "stone": false,
+                        "event": true
+                    }
+                }
+            }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

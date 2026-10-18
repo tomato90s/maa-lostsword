@@ -7,8 +7,38 @@
                 "daily"
             ],
             "label": "💬好感",
-            "default_check": true
+            "default_check": true,
+            "option": [
+                "Local_FavorLimit"
+            ],
+            "description": "每天最多7次，每个角色只对话一次；已完成角色自动跳过，不重复排序后点第一人。"
         }
     ],
-    "option": {}
+    "option": {
+        "Local_FavorLimit": {
+            "type": "input",
+            "label": "本轮最多对话人数",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "label": "人数（每日最多7人，0跳过）",
+                    "default": "7",
+                    "pipeline_type": "int",
+                    "verify": "^[0-7]$",
+                    "pattern_msg": "填写0至7"
+                }
+            ],
+            "pipeline_override": {
+                "LocalFavor_Run": {
+                    "action": {
+                        "param": {
+                            "custom_action_param": {
+                                "limit": "{limit}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

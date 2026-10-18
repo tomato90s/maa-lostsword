@@ -50,9 +50,11 @@
         "resource/tasks/daily/favor_task.json",
         "resource/tasks/daily/guild_task.json",
         "resource/tasks/daily/instance_task.json",
-        "resource/tasks/daily/quest_task.json",
         "resource/tasks/daily/raid_task.json",
         "resource/tasks/daily/shop_task.json",
-        "resource/tasks/daily/treasure_task.json"
+        "resource/tasks/daily/treasure_task.json",
+        "resource/tasks/daily/squad_task.json",
+        "resource/tasks/daily/gem_task.json",
+        "resource/tasks/daily/quest_task.json"
     ]
 }

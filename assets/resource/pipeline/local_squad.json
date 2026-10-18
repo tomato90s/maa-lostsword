@@ -1,0 +1,165 @@
+{
+    "LocalSquad_Entry": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "Arena_FromHome"
+                        ]
+                    },
+                    "Arena_HomeFlag": {
+                        "next": [
+                            "LocalSquad_Normal"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalSquad_Normal": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "普通"
+                ],
+                "roi": [
+                    120,
+                    75,
+                    110,
+                    50
+                ]
+            }
+        },
+        "timeout": 20000,
+        "next": [
+            "LocalSquad_Menu"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ],
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 1000
+    },
+    "LocalSquad_Menu": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "小队副本"
+                ],
+                "roi": [
+                    775,
+                    540,
+                    190,
+                    65
+                ]
+            }
+        },
+        "timeout": 20000,
+        "next": [
+            "LocalSquad_Ready"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ],
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 1000
+    },
+    "LocalSquad_Ready": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "开始匹配"
+                ],
+                "roi": [
+                    940,
+                    638,
+                    270,
+                    58
+                ]
+            }
+        },
+        "timeout": 20000,
+        "next": [
+            "LocalSquad_Run"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalSquad_Run": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalSquadDaily",
+                "custom_action_param": {
+                    "limit": 1
+                }
+            }
+        },
+        "next": [],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalSquad_RoomExit": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "local_squad_room_exit.png"
+                ],
+                "roi": [
+                    1200,
+                    4,
+                    78,
+                    67
+                ],
+                "threshold": 0.88
+            }
+        }
+    },
+    "LocalSquad_TicketMode": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "local_squad_ticket_mode.png"
+                ],
+                "roi": [
+                    976,
+                    642,
+                    52,
+                    50
+                ],
+                "threshold": 0.88
+            }
+        }
+    }
+}

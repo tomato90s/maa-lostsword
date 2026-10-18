@@ -55,7 +55,11 @@
                 "x": 1752,
                 "y": 1308
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_ClickChallenge": {
         "desc": "点击挑战按钮",
@@ -82,7 +86,11 @@
                 "x": 1112,
                 "y": 687
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_ClickSweep": {
         "action": {
@@ -102,7 +110,11 @@
                 "x": 2712,
                 "y": 1413
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_CloseEnter": {
         "recognition": {
@@ -137,7 +149,11 @@
                 "x": 2392,
                 "y": 460
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_CloseSweepPopup": {
         "desc": "关闭扫荡弹窗",
@@ -175,7 +191,11 @@
                 "x": 2392,
                 "y": 886
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_Entry": {
         "desc": "副本任务入口",
@@ -192,7 +212,11 @@
                 "x": 472,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_ExpBook": {
         "desc": "经验书副本",
@@ -220,7 +244,11 @@
                 "x": 1752,
                 "y": 935
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_FromHome": {
         "desc": "从主页右上角菜单进入",
@@ -270,7 +298,11 @@
                 "x": 792,
                 "y": 197
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_GoldenHound": {
         "desc": "黄金猎犬副本",
@@ -298,7 +330,11 @@
                 "x": 1752,
                 "y": 548
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_HomeFlag": {
         "desc": "识别到主页则停止循环",
@@ -325,7 +361,11 @@
                 "x": 1432,
                 "y": 162
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_ItemObtained": {
         "desc": "已获得道具提示",
@@ -358,7 +398,11 @@
                 "x": 2392,
                 "y": 1358
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_Label": {
         "desc": "识别副本入口文字",
@@ -396,7 +440,11 @@
                 "x": 1432,
                 "y": 585
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_MenuClick": {
         "desc": "点击菜单中的副本图标",
@@ -439,7 +487,11 @@
                 "x": 1112,
                 "y": 197
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_Stop": {
         "$__mpe_code": {
@@ -447,7 +499,11 @@
                 "x": 1752,
                 "y": 361
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Instance_Sweep": {
         "desc": "扫荡",
@@ -485,6 +541,10 @@
                 "x": 2072,
                 "y": 919
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

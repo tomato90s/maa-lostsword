@@ -6,8 +6,21 @@
             "group": [
                 "system"
             ],
-            "label": "🎮启动游戏"
+            "label": "🎮启动游戏",
+            "option": ["Local_AutoRecovery"],
+            "description": "启动并登录游戏；子选项控制任务运行中闪退后的自动拉起。"
         }
     ],
-    "option": {}
+    "option": {
+        "Local_AutoRecovery": {
+            "type": "select",
+            "label": "闪退后自动拉起游戏",
+            "description": "开启后在任务出错且确认游戏进程退出时重新启动，最多2次；关闭后不自动重开。",
+            "default_case": "开启",
+            "cases": [
+                {"name": "开启", "pipeline_override": {"startup": {"action": {"param": {"custom_action_param": {"enabled": true}}}}}},
+                {"name": "关闭", "pipeline_override": {"startup": {"action": {"param": {"custom_action_param": {"enabled": false}}}}}}
+            ]
+        }
+    }
 }

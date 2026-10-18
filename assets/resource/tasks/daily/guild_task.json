@@ -7,8 +7,114 @@
                 "daily"
             ],
             "label": "🏰公会",
-            "default_check": true
+            "default_check": true,
+            "description": "默认只签到和领取投资奖励；投资、捐献须在选项中开启。捐献按本轮点击次数限额。",
+            "option": [
+                "Local_GuildInvestCoin",
+                "Local_GuildInvestToken",
+                "Local_GuildCoinLimit",
+                "Local_GuildTokenLimit"
+            ]
         }
     ],
-    "option": {}
+    "option": {
+        "Local_GuildInvestCoin": {
+            "type": "select",
+            "label": "金币投资",
+            "description": "",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "公会-投资金币": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "公会-投资金币": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "Local_GuildInvestToken": {
+            "type": "select",
+            "label": "信物投资",
+            "description": "",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "公会-投资信物": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "公会-投资信物": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "Local_GuildCoinLimit": {
+            "type": "input",
+            "label": "金币捐献次数上限",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "label": "金币捐献次数上限",
+                    "default": "0",
+                    "pipeline_type": "int",
+                    "verify": "^(?:0|[1-9]\\d?)$",
+                    "pattern_msg": "填写0至99；0表示不执行"
+                }
+            ],
+            "pipeline_override": {
+                "Local_GuildPolicy": {
+                    "action": {
+                        "param": {
+                            "custom_action_param": {
+                                "coin": "{limit}"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Local_GuildTokenLimit": {
+            "type": "input",
+            "label": "信物捐献次数上限",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "label": "信物捐献次数上限",
+                    "default": "0",
+                    "pipeline_type": "int",
+                    "verify": "^(?:0|[1-9]\\d?)$",
+                    "pattern_msg": "填写0至99；0表示不执行"
+                }
+            ],
+            "pipeline_override": {
+                "Local_GuildPolicy": {
+                    "action": {
+                        "param": {
+                            "custom_action_param": {
+                                "token": "{limit}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

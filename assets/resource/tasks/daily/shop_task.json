@@ -7,8 +7,63 @@
                 "daily"
             ],
             "label": "🛒商店",
-            "default_check": true
+            "default_check": true,
+            "description": "领取每日免费礼包；买过或售罄正常结束并继续队列。代币兑换须主动开启，兑换上限仍按批量确认次数计算。",
+            "option": [
+                "Local_ShopExchange",
+                "Local_ShopBatchLimit"
+            ]
         }
     ],
-    "option": {}
+    "option": {
+        "Local_ShopExchange": {
+            "type": "select",
+            "label": "启用代币兑换",
+            "description": "",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "商店-交易所": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "商店-交易所": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "Local_ShopBatchLimit": {
+            "type": "input",
+            "label": "本轮批量兑换次数上限",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "label": "本轮批量兑换次数上限",
+                    "default": "1",
+                    "pipeline_type": "int",
+                    "verify": "^(?:0|[1-9]\\d?)$",
+                    "pattern_msg": "填写0至99；0表示不执行"
+                }
+            ],
+            "pipeline_override": {
+                "Local_ShopPolicy": {
+                    "action": {
+                        "param": {
+                            "custom_action_param": {
+                                "batches": "{limit}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

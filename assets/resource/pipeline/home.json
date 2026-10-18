@@ -25,7 +25,11 @@
                 "x": -658,
                 "y": -992
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Home_ClosePopup": {
         "max_hit": 10,
@@ -50,7 +54,11 @@
                 "x": 1690,
                 "y": -1185
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Home_ClickTopRight": {
         "action": {
@@ -73,7 +81,11 @@
                 "x": 1830,
                 "y": -1470
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Home_ExitConfirm": {
         "recognition": {
@@ -99,7 +111,10 @@
         "next": [
             "Home_Flag"
         ],
-        "on_error": [],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ],
         "$__mpe_code": {
             "position": {
                 "x": 2135,

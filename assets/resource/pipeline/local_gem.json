@@ -1,0 +1,117 @@
+{
+    "LocalGem_Entry": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {
+                        "next": [
+                            "LocalGem_FromHome"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalGem_FromHome": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "Home_OpenTopRightMenu": {
+                        "next": [
+                            "LocalGem_Menu"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": [
+            "Home_OpenTopRightMenu"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalGem_Menu": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "^宝石$"
+                ],
+                "roi": [
+                    865,
+                    597,
+                    95,
+                    36
+                ]
+            }
+        },
+        "timeout": 20000,
+        "next": [
+            "LocalGem_Ready"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ],
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
+        },
+        "post_delay": 1000
+    },
+    "LocalGem_Ready": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "宝石合成"
+                ],
+                "roi": [
+                    340,
+                    73,
+                    170,
+                    50
+                ]
+            }
+        },
+        "timeout": 20000,
+        "next": [
+            "LocalGem_Run"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalGem_Run": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalGemCombine",
+                "custom_action_param": {
+                    "limit": 1
+                }
+            }
+        },
+        "next": [],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    }
+}

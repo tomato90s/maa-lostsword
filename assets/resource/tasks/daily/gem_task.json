@@ -1,0 +1,45 @@
+{
+    "task": [
+        {
+            "name": "宝石合成",
+            "label": "宝石合成",
+            "entry": "LocalGem_Entry",
+            "group": [
+                "daily"
+            ],
+            "default_check": true,
+            "option": [
+                "Local_GemLimit"
+            ],
+            "description": "默认执行1轮以完成每日任务。每轮使用自动登录并合成本次选中的整批材料，消耗页面所示金币；选中紫色英雄或更高品质时停止。"
+        }
+    ],
+    "option": {
+        "Local_GemLimit": {
+            "type": "input",
+            "label": "本轮最多合成轮数",
+            "description": "默认1轮；1轮是一次自动登录加一次合成，游戏会处理整批选中材料。紫色英雄或更高品质不合成。",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "label": "轮数（0跳过）",
+                    "default": "1",
+                    "pipeline_type": "int",
+                    "verify": "^(?:0|[1-9]\\d?)$",
+                    "pattern_msg": "填写0至99"
+                }
+            ],
+            "pipeline_override": {
+                "LocalGem_Run": {
+                    "action": {
+                        "param": {
+                            "custom_action_param": {
+                                "limit": "{limit}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

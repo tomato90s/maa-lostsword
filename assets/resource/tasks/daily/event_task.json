@@ -2,12 +2,13 @@
     "task": [
         {
             "name": "活动扫荡",
-            "entry": "活动_入口",
+            "entry": "Local_EventEntry",
             "group": [
                 "daily"
             ],
-            "label": "🎉活动扫荡",
-            "default_check": false
+            "label": "活动免费扫荡",
+            "default_check": false,
+            "description": "只扫统一面板中的活动每日免费次数。副本任务默认已包含，无需重复勾选。"
         }
     ],
     "option": {}

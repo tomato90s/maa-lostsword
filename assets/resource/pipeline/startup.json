@@ -58,7 +58,11 @@
                 "x": 610,
                 "y": 97
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "StartApp": {
         "action": {
@@ -74,7 +78,9 @@
             "LinkStart"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -84,6 +90,13 @@
         }
     },
     "startup": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalSetRecoveryPolicy",
+                "custom_action_param": {"enabled": true}
+            }
+        },
         "next": [
             "StartApp"
         ],
@@ -92,7 +105,11 @@
                 "x": -131,
                 "y": 174
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "$__mpe_external_ReturnMain_startup": {
         "$__mpe_code": {
