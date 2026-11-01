@@ -25,6 +25,29 @@ class LobbyBounce(RuntimeError):
     """The game moved the character back to the lobby during the patrol."""
 
 
+# Template sets per village target. The Halloween woman drops 奇怪的糖果 that is
+# redeemed for diamonds; the regular chicken only drops chicken meat that stays
+# in the bag, so its patrol ends without touching the bag.
+TARGETS = {
+    "hood": {"label": "万圣节女人", "redeem": True,
+             "templates": ["local_village_hood.png","local_village_hood_right.png","local_village_hood_front.png",
+                           "local_village_hood_back.png","local_village_hood_side.png"]},
+    "chicken": {"label": "鸡", "redeem": False, "templates": []},
+}
+ROOT = Path(__file__).resolve().parents[1]
+# The release keeps images in resource/image; the source tree in assets/resource/image.
+IMAGE_DIRS = (ROOT / "resource" / "image", ROOT / "assets" / "resource" / "image")
+
+
+def chicken_templates(directories=IMAGE_DIRS):
+    """Chicken templates are captured once the event ends: local_village_chicken*.png."""
+    for directory in directories:
+        names = sorted(path.name for path in Path(directory).glob("local_village_chicken*.png"))
+        if names:
+            return names
+    return []
+
+
 class VillageHunt(SeasonalScreen):
     label = "万圣节村庄目标"
     timeout = 600
@@ -182,9 +205,7 @@ class VillageHunt(SeasonalScreen):
 
     def targets(self, player):
         result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
-            template=["local_village_hood.png","local_village_hood_right.png","local_village_hood_front.png",
-                      "local_village_hood_back.png","local_village_hood_side.png"],
-            threshold=[.7], roi=[0,230,1240,350]), self.image)
+            template=self.templates, threshold=[.7], roi=[0,230,1240,350]), self.image)
         points = []
         for hit in (result.filtered_results if result and result.hit else []):
             box = hit.box
@@ -243,6 +264,15 @@ class VillageHunt(SeasonalScreen):
             self.click(1060,400,1.2)
 
     def execute(self):
+        kind = self.param.get("target","hood")
+        if kind not in TARGETS:
+            raise RuntimeError("村庄目标类型须为万圣节女人或鸡")
+        self.kind = kind
+        self.templates = TARGETS[kind]["templates"] or chicken_templates()
+        if not self.templates:
+            raise RuntimeError("还没有鸡的识别图片，暂时不能打鸡")
+        if not TARGETS[kind]["redeem"]:
+            return self.hunt_only()
         limit = int(self.param.get("limit",12))
         steps = int(self.param.get("steps",96))
         if not 0 <= limit <= 12 or not 1 <= steps <= 96:
@@ -259,27 +289,7 @@ class VillageHunt(SeasonalScreen):
             raise RuntimeError("未确认当前角色名称")
         self.username = name.text.strip()
         self.journal({"status":"started","confirmed_today":total})
-        self.enter()
-        self.leave_spawn()
-        attacks, misses, direction, sighted, bounces = 0,0,1,0,0
-        for step in range(steps):
-            try:
-                self.capture()
-                self.guard()
-                misses, attacks, direction, sighted, stop = self.patrol_step(step, misses, attacks, direction, sighted)
-            except LobbyBounce:
-                bounces += 1
-                if bounces > 3:
-                    self.log("连续多次被送回大厅，停止巡查并结算糖果")
-                    break
-                self.log(f"被送回大厅，第{bounces}次重新进入村庄")
-                self.enter()
-                self.leave_spawn()
-                continue
-            if stop:
-                break
-            if (step+1)%12==0:
-                self.log(f"已巡查{step+1}步，攻击{attacks}轮；结束后使用糖果核对钻石")
+        attacks, sighted = self.patrol(steps)
         if not self.node("HomeFlagCloseReturnMain"):
             self.home()
         before, after, candies = self.redeem()
@@ -295,6 +305,49 @@ class VillageHunt(SeasonalScreen):
             self.log("尚未核对全部目标奖励，保留未完成状态")
             return False
         return True
+
+    def hunt_only(self):
+        """Chicken patrol: attack what is found and leave the meat in the bag."""
+        steps = int(self.param.get("steps",96))
+        if not 1 <= steps <= 96:
+            raise RuntimeError("巡查步数须为1至96")
+        self.home()
+        name = self.find(r"\S+", (120, 45, 180, 50))
+        if not name:
+            raise RuntimeError("未确认当前角色名称")
+        self.username = name.text.strip()
+        attacks, sighted = self.patrol(steps)
+        if not self.node("HomeFlagCloseReturnMain"):
+            self.home()
+        self.log(f"打鸡结束：发现目标{sighted}次，攻击{attacks}轮，鸡肉留在背包")
+        return True
+
+    def patrol(self, steps):
+        label = TARGETS[self.kind]["label"]
+        self.enter()
+        self.leave_spawn()
+        attacks, misses, direction, sighted, bounces = 0,0,1,0,0
+        for step in range(steps):
+            try:
+                self.capture()
+                self.guard()
+                misses, attacks, direction, sighted, stop = self.patrol_step(step, misses, attacks, direction, sighted)
+            except LobbyBounce:
+                bounces += 1
+                if bounces > 3:
+                    self.log("连续多次被送回大厅，停止巡查")
+                    break
+                self.log(f"被送回大厅，第{bounces}次重新进入村庄")
+                self.enter()
+                self.leave_spawn()
+                continue
+            if stop:
+                break
+            if (step+1)%12==0:
+                self.log(f"已巡查{step+1}步，攻击{attacks}轮")
+        if not sighted:
+            self.log(f"本次巡查没有发现{label}")
+        return attacks, sighted
 
     def patrol_step(self, step, misses, attacks, direction, sighted):
         """One patrol step; returns updated counters and whether to stop."""

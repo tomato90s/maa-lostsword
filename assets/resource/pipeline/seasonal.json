@@ -17,6 +17,11 @@
         "next": ["ReturnMain"],
         "on_error": ["LocalTaskFailed"]
     },
+    "LocalVillageChicken_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalVillageHunt", "custom_action_param": {"target": "chicken", "steps": 40}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
     "LocalFriendGift_Entry": {
         "action": {"type": "Custom", "param": {"custom_action": "LocalFriendGift", "custom_action_param": {}}},
         "next": ["ReturnMain"],

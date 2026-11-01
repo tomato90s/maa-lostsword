@@ -8,9 +8,28 @@
             "default_check": true,
             "option": ["Local_VillageLimit"],
             "description": "进入村庄自动寻找并攻击万圣节目标，结束后在背包使用奇怪的糖果，每颗30钻，每日最多12个。钻石到账与糖果数一致才计入当日进度。"
+        },
+        {
+            "name": "村庄打鸡",
+            "label": "村庄打鸡",
+            "entry": "LocalVillageChicken_Entry",
+            "group": ["daily"],
+            "default_check": false,
+            "option": ["Local_VillageChickenSteps"],
+            "description": "万圣节活动结束、村庄恢复成鸡后使用：进入村庄寻找并攻击鸡，鸡肉直接留在背包，不开箱也不使用。"
         }
     ],
     "option": {
+        "Local_VillageChickenSteps": {
+            "type": "input",
+            "label": "打鸡设置",
+            "inputs": [
+                {"name": "steps", "label": "巡查步数", "default": "40", "pipeline_type": "int", "verify": "^([1-9]|[1-8][0-9]|9[0-6])$", "pattern_msg": "填写1至96"}
+            ],
+            "pipeline_override": {
+                "LocalVillageChicken_Entry": {"action": {"param": {"custom_action_param": {"target": "chicken", "steps": "{steps}"}}}}
+            }
+        },
         "Local_VillageLimit": {
             "type": "input",
             "label": "村庄目标设置",
