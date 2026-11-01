@@ -296,6 +296,7 @@
             "[JumpBack]商品-交易所-公会",
             "[JumpBack]商品-交易所-竞技场",
             "[JumpBack]商品-交易所-夏日币",
+            "[JumpBack]商品-交易所-南瓜币",
             "Local_ShopExchangeDone"
         ],
         "$__mpe_code": {
@@ -1964,20 +1965,8 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-公会-褪色宝石箱",
-            "[JumpBack]商店-交易所-公会-经验值宝箱",
-            "[JumpBack]商店-交易所-公会-金币宝箱",
-            "[JumpBack]商店-公会-翻页",
-            "商店-公会-购买前检查钻石",
-            "商店-公会-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "公会"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2149,
@@ -2528,24 +2517,8 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-巨石票",
-            "[JumpBack]商店-交易所-稀有灵魂",
-            "[JumpBack]商店-交易所-指南针",
-            "[JumpBack]商店-交易所-褪色宝石箱",
-            "[JumpBack]商店-交易所-金币券",
-            "[JumpBack]商店-交易所-紫色门票",
-            "[JumpBack]商店-交易所-初级经验书",
-            "[JumpBack]商店-翻页",
-            "商店-购买前检查钻石",
-            "商店-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "消耗品"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2337,
@@ -2810,22 +2783,8 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-突袭-梅林的特制药水",
-            "[JumpBack]商店-交易所-突袭-银河精髓",
-            "[JumpBack]商店-交易所-突袭-巨石票",
-            "[JumpBack]商店-交易所-突袭-精灵王的信物",
-            "[JumpBack]商店-交易所-突袭-初级经验书",
-            "[JumpBack]商店-突袭-翻页",
-            "商店-突袭-购买前检查钻石",
-            "商店-突袭-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "突袭"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2135,
@@ -3129,18 +3088,8 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-竞技场-竞技场补给箱",
-            "[JumpBack]商店-竞技场-翻页",
-            "商店-竞技场-购买前检查钻石",
-            "商店-竞技场-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "竞技场"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2212,
@@ -3683,6 +3632,20 @@
             }
         },
         "on_error": ["LocalCrashRecovery", "LocalTaskFailed"]
+    },
+    "商品-交易所-南瓜币": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": {"type": "OCR", "param": {"expected": ["^南瓜币$"], "roi": [90, 585, 170, 65]}},
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopCategoryClick"}},
+        "next": ["Local_ShopPumpkinBatch"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "Local_ShopPumpkinBatch": {
+        "recognition": {"type": "OCR", "param": {"expected": ["批量购买"], "roi": [95, 640, 185, 65]}},
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "南瓜币"}}},
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
     },
     "Local_ShopFinish": {
         "recognition": {

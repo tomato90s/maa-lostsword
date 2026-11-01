@@ -14,7 +14,8 @@
                 "Local_ShopRaid",
                 "Local_ShopGuild",
                 "Local_ShopArena",
-                "Local_ShopSummer"
+                "Local_ShopSummer",
+                "Local_ShopPumpkin"
             ]
         }
     ],
@@ -97,6 +98,16 @@
                     "name": "关闭",
                     "pipeline_override": {"商品-交易所-竞技场": {"enabled": false}}
                 }
+            ]
+        },
+        "Local_ShopPumpkin": {
+            "type": "select",
+            "label": "南瓜币商店日常批量购买",
+            "description": "只购买批量窗口中的南瓜票券、轮盘券和突袭票；不兑换活动商店的一次性商品。",
+            "default_case": "关闭",
+            "cases": [
+                {"name": "开启", "pipeline_override": {"商店-交易所": {"enabled": true}, "商品-交易所-南瓜币": {"enabled": true}}},
+                {"name": "关闭", "pipeline_override": {"商品-交易所-南瓜币": {"enabled": false}}}
             ]
         },
         "Local_ShopSummer": {

@@ -495,6 +495,8 @@
             }
         },
         "next": [
+            "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation",
             "Draw_FreeDrawClick_Check"
         ],
@@ -806,18 +808,7 @@
     "Draw_PrepareDisableClaimPet": {
         "desc": "宠物免费抽已进入动画，切换确认结束后的禁用节点",
         "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    1128,
-                    13,
-                    62,
-                    44
-                ],
-                "expected": [
-                    "Skip"
-                ]
-            }
+            "type": "DirectHit"
         },
         "action": {
             "type": "Custom",
@@ -833,6 +824,8 @@
             }
         },
         "next": [
+            "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation"
         ],
         "$__mpe_code": {
@@ -858,7 +851,7 @@
                     44
                 ],
                 "expected": [
-                    "Skip"
+                    "[Ss][Kk][Ii][Pp]"
                 ]
             }
         },
@@ -870,6 +863,7 @@
         },
         "next": [
             "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation_Check"
         ],
         "on_error": [
@@ -886,6 +880,7 @@
         }
     },
     "Draw_SkipAnimation_Check": {
+        "desc": "动画切换期间同时等待结果页，不能只重新寻找已经消失的 Skip",
         "max_hit": 2,
         "recognition": {
             "type": "OCR",
@@ -897,11 +892,13 @@
                     44
                 ],
                 "expected": [
-                    "Skip"
+                    "[Ss][Kk][Ii][Pp]"
                 ]
             }
         },
         "next": [
+            "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation"
         ],
         "$__mpe_code": {
@@ -971,6 +968,7 @@
             }
         },
         "next": [
+            "Draw_Confirm",
             "Draw_ViewAll"
         ],
         "$__mpe_code": {

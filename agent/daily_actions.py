@@ -2,6 +2,8 @@
 import json
 import re
 import time
+from datetime import datetime
+from pathlib import Path
 
 from maa.custom_action import CustomAction
 from maa.define import Rect
@@ -23,7 +25,7 @@ class ScreenAction(CustomAction):
             self.capture()
             return self.execute()
         except Exception as exc:
-            print(f"[{self.label}] {exc}", flush=True)
+            self.log(str(exc))
             return False
 
     def check(self):
@@ -96,7 +98,7 @@ class ScreenAction(CustomAction):
         print(f"[{self.label}] {message}", flush=True)
 
     def close_reward(self):
-        if self.find(r"已获得道具|扫荡奖励|合成结果|领取成功", (350, 80, 650, 320)):
+        if self.find(r"已获得道具|扫荡奖励|合成结果|制作结果|领取成功", (350, 65, 650, 335)):
             self.click(640, 680)
             return True
         return False
@@ -124,6 +126,43 @@ class GuildClaimReward(ScreenAction):
         raise RuntimeError("领奖结果尚未确认，停止重复点击")
 
 
+class DungeonOpenMenu(ScreenAction):
+    label = "副本导航"
+    timeout = 15
+
+    def execute(self):
+        until = time.monotonic() + 12
+        clicks = 0
+        home_since = None
+        retry_after = 0
+        while time.monotonic() < until:
+            self.capture()
+            if self.find(r"载入|加载|连接中|更新中|重试|网络|维护|断开连接|是否|确认|确定|取消",
+                         (240, 160, 800, 440)) or self.node("Global_ItemObtained"):
+                raise RuntimeError("检测到加载、网络提示或弹窗，停止打开菜单")
+            if self.find(r"^战斗$", (985, 409, 60, 29)):
+                self.log(f"已确认战斗菜单展开（打开{clicks}次）")
+                return True
+            now = time.monotonic()
+            if self.node("HomeFlagCloseReturnMain"):
+                if home_since is None:
+                    home_since = now
+                # A click receipt or frozen pixels do not confirm navigation.
+                # Retry only after fresh captures still show the known home.
+                if now - home_since >= 1 and now >= retry_after:
+                    if clicks >= 2:
+                        raise RuntimeError("两次打开后仍在大厅，停止导航")
+                    clicks += 1
+                    self.log(f"确认仍在大厅，打开右上菜单（{clicks}/2）")
+                    self.click(1236, 36)
+                    retry_after = time.monotonic() + 2
+                    home_since = None
+            else:
+                home_since = None
+            self.pause(.4)
+        raise RuntimeError("未能确认战斗菜单，停止导航")
+
+
 def character_key(text):
     return re.sub(r"[\s♡♥❤⭐☆▶>]", "", text)
 
@@ -138,6 +177,24 @@ def daily_talk_count(text):
 class FavorTalk(ScreenAction):
     label = "好感"
     timeout = 420
+
+    def run(self, context, argv):
+        self.trace_path = (Path(__file__).resolve().parents[1] / "debug"
+                           / f"local-favor-{datetime.now():%Y-%m-%d}.jsonl")
+        return super().run(context, argv)
+
+    def log(self, message):
+        super().log(message)
+        path = getattr(self, "trace_path", None)
+        if path is not None:
+            try:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                record = {"time": datetime.now().astimezone().isoformat(),
+                          "node": getattr(self.argv, "node_name", ""), "message": message}
+                with path.open("a", encoding="utf-8") as stream:
+                    stream.write(json.dumps(record, ensure_ascii=False) + "\n")
+            except OSError as exc:
+                print(f"[好感] 无法保存过程记录：{exc}", flush=True)
 
     def remaining(self, detail=False):
         roi = (1020, 12, 110, 45) if detail else (24, 73, 210, 45)
@@ -155,9 +212,25 @@ class FavorTalk(ScreenAction):
         raise RuntimeError("无法确认今日剩余对话次数")
 
     def detail_name(self):
-        rows = self.ocr(r".+", (174, 10, 245, 45))
-        rows = [r for r in rows if r.score >= .7 and not re.search(r"\d|对话|角色", r.text)]
-        return character_key(max(rows, key=lambda r: r.score).text) if rows else None
+        def read_name(roi):
+            rows = [r for r in self.ocr(r".+", roi)
+                    if r.score >= .7 and re.search(r"[\u4e00-\u9fffA-Za-z]", r.text)
+                    and not re.search(r"\d|对话|角色|羁绊", r.text)]
+            if not rows:
+                return None
+            # The help icon after the top title can have a higher OCR score
+            # than the name. It is not a character identity.
+            title = min(rows, key=lambda r: (r.box.x, -r.score)).text
+            return character_key(re.sub(r"[?？]\s*$", "", title))
+
+        # The top title is white on a light background for some characters
+        # (e.g. 雪泉). Prefer the duplicate name on the dark detail card, but
+        # only after recognizing the talk controls on that same fresh frame.
+        if self.find(r"^对话\s*[>›]?$|对话完成|^[01]\s*[/／]\s*1$", (735, 575, 235, 90)):
+            name = read_name((866, 140, 335, 36))
+            if name:
+                return name
+        return read_name((174, 10, 245, 45))
 
     def list_candidates(self):
         rows = self.ocr(r".+", (218, 151, 285, 510))
@@ -173,6 +246,28 @@ class FavorTalk(ScreenAction):
             last_y = row.box.y
         return titles
 
+    def wait_detail_controls(self, name):
+        """An affection-level animation can temporarily cover the talk card."""
+        until = time.monotonic() + 12
+        dismissed = False
+        while time.monotonic() < until:
+            self.capture()
+            current = self.detail_name()
+            if current and current != name:
+                raise RuntimeError("等待对话按钮时角色发生变化，停止")
+            if self.find(r"对话完成|已完成|1\s*/\s*1", (735, 575, 235, 90)):
+                return None
+            button = self.find(r"^对话\s*[>›]?$", (738, 625, 220, 42))
+            if button:
+                return button
+            if not dismissed and self.find(r"好感度上升", (450, 285, 400, 75)):
+                self.log(f"{name}页面正在播放好感度上升，关闭提示后等待对话按钮")
+                self.click(640, 680, .8)
+                dismissed = True
+            else:
+                self.pause(.4)
+        raise RuntimeError(f"{name}的对话状态无法确认，停止")
+
     def execute(self):
         limit = max(0, min(7, int(self.param.get("limit", 7))))
         if not limit:
@@ -182,6 +277,8 @@ class FavorTalk(ScreenAction):
         self.seen_aliases = set()
         pending_candidate = None
         completed = 0
+        attempted = 0
+        unconfirmed = []
         last_bottom = None
         scrolls = 0
         talk_list_opened = False
@@ -200,7 +297,7 @@ class FavorTalk(ScreenAction):
             self.capture()
         else:
             raise RuntimeError("等待好感列表超时")
-        while completed < limit:
+        while attempted < limit:
             self.capture()
             name = self.detail_name()
             if name:
@@ -208,8 +305,7 @@ class FavorTalk(ScreenAction):
                     self.seen_aliases.add(pending_candidate)
                     pending_candidate = None
                 if not self.remaining(detail=True):
-                    self.log(f"今日次数已用完，本轮完成{completed}人")
-                    return True
+                    return self.finish_run(completed, attempted, unconfirmed, "今日次数已用完")
                 already_done = self.find(r"对话完成|已完成|1\s*/\s*1", (735, 575, 235, 90))
                 if name in self.seen or already_done:
                     self.seen.add(name)
@@ -217,15 +313,22 @@ class FavorTalk(ScreenAction):
                     continue
                 button = self.find(r"^对话\s*[>›]?$", (738, 625, 220, 42))
                 if not button:
-                    raise RuntimeError(f"{name}的对话状态无法确认，停止")
+                    button = self.wait_detail_controls(name)
+                    if button is None:
+                        continue
                 before = self.remaining(detail=True)
                 # Remember before pressing: never retry the same person on an
                 # ambiguous result, even when their affection level stays low.
                 self.seen.add(name)
+                attempted += 1
+                self.log(f"开始第{attempted}/{limit}位：{name}，剩余{before}/7")
                 self.click_row(button)
-                self.finish_conversation(name, before)
-                completed += 1
-                self.log(f"已完成{completed}/{limit}人：{name}")
+                if self.finish_conversation(name, before):
+                    completed += 1
+                    self.log(f"已确认完成{completed}人：{name}")
+                else:
+                    unconfirmed.append(name)
+                    self.log(f"{name}未确认完成，保留待确认并跳过，不再点击该角色的对话")
                 self.click(1235, 37)
                 continue
             if not self.find(r"对话次数", (22, 73, 245, 45)):
@@ -242,28 +345,76 @@ class FavorTalk(ScreenAction):
                 continue
             signature = tuple(character_key(r.text) for r in candidates)
             if signature == last_bottom or scrolls >= 18:
-                self.log(f"没有其他可对话角色，本轮完成{completed}人，正常结束")
-                return True
+                return self.finish_run(completed, attempted, unconfirmed, "没有其他可对话角色")
             last_bottom = signature
             self.swipe(405, 618, 405, 195)
             scrolls += 1
-        self.log(f"达到本轮{limit}人上限，结束；每个角色只处理一次")
+        return self.finish_run(completed, attempted, unconfirmed, f"达到本轮{limit}人上限")
+
+    def finish_run(self, completed, attempted, unconfirmed, reason):
+        self.log(f"{reason}；处理{attempted}人，确认完成{completed}人")
+        if unconfirmed:
+            self.log("以下角色仍待确认，本项未全部完成：" + "、".join(unconfirmed))
+            return False
         return True
 
     def finish_conversation(self, name, before):
         until = time.monotonic() + 55
+        unchanged_since = None
+        unchanged_frames = 0
+        last_state = None
+        saw_story = False
+        other_name = None
+        other_frames = 0
         while time.monotonic() < until:
             self.capture()
-            if self.detail_name():
+            current_name = self.detail_name()
+            if current_name:
+                if current_name != name:
+                    other_frames = other_frames + 1 if current_name == other_name else 1
+                    other_name = current_name
+                    unchanged_since = None
+                    unchanged_frames = 0
+                    if other_frames >= 3:
+                        raise RuntimeError(f"对话角色从{name}变为{current_name}，停止核对")
+                    self.pause(.4)
+                    continue
+                other_name = None
+                other_frames = 0
                 after = self.remaining(detail=True)
                 done = self.find(r"对话完成|已完成|1\s*/\s*1", (735, 575, 235, 90))
+                state = ("detail", after, bool(done))
+                if state != last_state:
+                    self.log(f"{name}返回角色页：剩余{after}/7，完成标记={bool(done)}，已进入剧情={saw_story}")
+                    last_state = state
                 if done and after == before - 1:
-                    return
-                # Do not click the talk button again after returning from a
-                # conversation; only advance actual narrative screens below.
+                    return True
+                if after > before or after < before - 1:
+                    raise RuntimeError(f"{name}对话次数异常：{before}/7 -> {after}/7，停止")
+                not_done = self.find(r"^0\s*[/／]\s*1$", (735, 575, 235, 90))
+                available = self.find(r"^对话\s*[>›]?$", (738, 625, 220, 42))
+                # This is an explicit unchanged result, not a successful talk.
+                # Leave this person pending and move on within the person cap;
+                # never replay their story or spend another attempt on them.
+                if not done and not_done and available and after == before:
+                    if unchanged_since is None:
+                        unchanged_since = time.monotonic()
+                    unchanged_frames += 1
+                    if unchanged_frames >= 3 and time.monotonic() - unchanged_since >= 6:
+                        return False
+                else:
+                    unchanged_since = None
+                    unchanged_frames = 0
                 self.pause(.4)
                 continue
+            unchanged_since = None
+            unchanged_frames = 0
+            other_name = None
+            other_frames = 0
             if self.find(r"Log|LOG", (24, 4, 115, 65)):
+                if not saw_story:
+                    self.log(f"{name}已进入剧情")
+                saw_story = True
                 self.click(264, 273, .7)
                 continue
             if self.close_reward():
@@ -427,7 +578,17 @@ class GemCombine(ScreenAction):
         if not self.find(r"宝石", (55, 10, 100, 55)):
             raise RuntimeError("没有进入宝石页面")
         self.click(450, 110)
-        if not self.find(r"自动登录", (955, 640, 300, 65)):
+        for index in range(12):
+            if self.find(r"自动登录", (955, 640, 300, 65)):
+                break
+            if index == 4:
+                tab = self.find(r"^宝石合成$", (300, 65, 235, 65))
+                if tab and self.find(r"宝石", (55, 10, 100, 55)):
+                    self.log("仍在宝石页，重新打开合成分类一次")
+                    self.click_row(tab, .8)
+            self.pause(.4)
+            self.capture()
+        else:
             raise RuntimeError("未确认宝石合成页面")
         for completed in range(limit):
             self.click(1100, 667)
@@ -543,7 +704,7 @@ class SquadDaily(ScreenAction):
 
 SHOP_EXCHANGE_CATEGORIES = (
     "商品-交易所-消耗品", "商品-交易所-突袭", "商品-交易所-公会",
-    "商品-交易所-竞技场", "商品-交易所-夏日币",
+    "商品-交易所-竞技场", "商品-交易所-夏日币", "商品-交易所-南瓜币",
 )
 
 
@@ -581,11 +742,11 @@ class ShopExchangeFinish(CustomAction):
                 if enabled:
                     pending.append(name)
             # Summer currency is an optional event tab and can disappear.
-            missing = [name for name in pending if name != "商品-交易所-夏日币"]
+            missing = [name for name in pending if name not in ("商品-交易所-夏日币", "商品-交易所-南瓜币")]
             if missing:
                 raise RuntimeError("已开启分类尚未处理: " + "、".join(missing))
             if pending:
-                print("[交易所] 当前没有夏日币分类，跳过", flush=True)
+                print("[交易所] 当前没有已选的活动货币分类，跳过：" + "、".join(pending), flush=True)
             if not context.override_pipeline({"商店-交易所": {"enabled": False}}):
                 return False
             print("[交易所] 各分类已分别处理，返回大厅", flush=True)
@@ -610,6 +771,8 @@ class ShopFreeGift(ScreenAction):
         reward_seen = False
         popup_opened = False
         products_clicked = False
+        open_attempts = 0
+        next_open = 0
         for _ in range(65):
             self.capture()
             if self.close_reward():
@@ -642,16 +805,23 @@ class ShopFreeGift(ScreenAction):
                 if reward_seen:
                     return self.finish("免费礼包领取完成，继续后续任务")
                 gift = self.find(r"每日免费礼包", (340, 140, 230, 55))
-                if gift and not popup_opened:
+                if gift and not popup_opened and not submitted:
                     # The card can already be marked sold out without a popup.
                     card_rows = self.ocr(r".+", (335, 175, 230, 40))
                     if (self.find(r"已购买|已领取|售罄|售完", (315, 195, 265, 215))
                             or any(re.search(r"1\s*[/／]\s*1", r.text) for r in card_rows)):
                         return self.finish("每日礼包已领取，正常结束并继续后续任务")
-                    self.click_row(gift)
-                    popup_opened = True
-                    continue
-                if not products_clicked and not popup_opened:
+                    free_card = self.find(r"^免费$", (315, 360, 260, 60))
+                    if free_card and time.monotonic() >= next_open:
+                        if open_attempts >= 2:
+                            raise RuntimeError("免费礼包弹窗未打开，停止当前任务")
+                        # Only the actual popup confirms that opening worked.
+                        # Clicking the card title can leave the product page unchanged.
+                        self.click_row(free_card, .8)
+                        open_attempts += 1
+                        next_open = time.monotonic() + 2
+                        continue
+                if not gift and not products_clicked and not popup_opened:
                     product = self.find(r"^商品$", (350, 75, 135, 55))
                     if product:
                         self.click_row(product)
@@ -662,6 +832,7 @@ class ShopFreeGift(ScreenAction):
 
 
 ACTIONS = {"LocalGuildClaimReward": GuildClaimReward(), "LocalFavorTalk": FavorTalk(),
+           "LocalDungeonOpenMenu": DungeonOpenMenu(),
            "LocalArenaDaily": ArenaDaily(), "LocalGemCombine": GemCombine(),
            "LocalSquadDaily": SquadDaily(), "LocalShopFreeGift": ShopFreeGift(),
            "LocalStonehengeGate": StonehengeGate(),

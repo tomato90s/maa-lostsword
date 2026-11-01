@@ -55,6 +55,11 @@
         "resource/tasks/daily/treasure_task.json",
         "resource/tasks/daily/squad_task.json",
         "resource/tasks/daily/gem_task.json",
-        "resource/tasks/daily/quest_task.json"
+        "resource/tasks/daily/quest_task.json",
+        "resource/tasks/daily/bingo_task.json",
+        "resource/tasks/daily/roulette_task.json",
+        "resource/tasks/daily/village_task.json",
+        "resource/tasks/daily/friend_task.json",
+        "resource/tasks/daily/secret_cow_task.json"
     ]
 }

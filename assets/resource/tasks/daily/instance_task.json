@@ -27,33 +27,17 @@
                 {
                     "name": "开启",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "gold": true
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_gold_Policy": {
+                                "enabled": true
                             }
-                        }
                     }
                 },
                 {
                     "name": "关闭",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "gold": false
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_gold_Policy": {
+                                "enabled": false
                             }
-                        }
                     }
                 }
             ]
@@ -66,33 +50,17 @@
                 {
                     "name": "开启",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "exp": true
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_exp_Policy": {
+                                "enabled": true
                             }
-                        }
                     }
                 },
                 {
                     "name": "关闭",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "exp": false
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_exp_Policy": {
+                                "enabled": false
                             }
-                        }
                     }
                 }
             ]
@@ -105,33 +73,17 @@
                 {
                     "name": "开启",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "stone": true
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_stone_Policy": {
+                                "enabled": true
                             }
-                        }
                     }
                 },
                 {
                     "name": "关闭",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "stone": false
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_stone_Policy": {
+                                "enabled": false
                             }
-                        }
                     }
                 }
             ]
@@ -144,33 +96,17 @@
                 {
                     "name": "开启",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "event": true
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_event_Policy": {
+                                "enabled": true
                             }
-                        }
                     }
                 },
                 {
                     "name": "关闭",
                     "pipeline_override": {
-                        "Local_DungeonSweep": {
-                            "action": {
-                                "param": {
-                                    "custom_action_param": {
-                                        "categories": {
-                                            "event": false
-                                        }
-                                    }
-                                }
+                        "Local_Dungeon_event_Policy": {
+                                "enabled": false
                             }
-                        }
                     }
                 }
             ]

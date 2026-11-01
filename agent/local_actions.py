@@ -42,14 +42,32 @@ def validate_ratios(labels, ratios):
     return selected
 
 
+DUNGEON_CATEGORIES = ("gold", "exp", "stone", "event")
+
+
+def sweep_categories(context, argv):
+    param = json.loads(argv.custom_action_param or "{}")
+    if getattr(argv, "node_name", "") == "Local_DungeonSweep":
+        if "categories" in param:
+            raise RuntimeError("副本选项仍使用旧界面配置，请关闭并重新打开助手；本次未执行扫荡")
+        selected = {}
+        for category in DUNGEON_CATEGORIES:
+            node = context.get_node_data(f"Local_Dungeon_{category}_Policy") or {}
+            enabled = node.get("enabled")
+            if not isinstance(enabled, bool):
+                raise RuntimeError(f"无法确认{category}副本开关，停止扫荡")
+            selected[category] = enabled
+        return selected
+    return param.get("categories", dict.fromkeys(DUNGEON_CATEGORIES, True))
+
+
 class DailySweep(CustomAction):
     """Use the game's unified daily-free sweep, with no retained ticket selection."""
     def run(self, context, argv):
         try:
             self.context = context
             self.deadline = time.monotonic() + 150
-            self.categories = json.loads(argv.custom_action_param or "{}").get(
-                "categories", {"gold": True, "exp": True, "stone": True, "event": True})
+            self.categories = sweep_categories(context, argv)
             if not any(self.categories.values()):
                 print("[副本] 未选择副本，跳过", flush=True)
                 return True
@@ -215,6 +233,101 @@ class DailySweep(CustomAction):
             self.click(1235, 36)
 
 
+class GuildDonation(DailySweep):
+    """Count confirmed donations; an acknowledged input is not a game receipt."""
+    def __init__(self):
+        super().__init__()
+        self.starts = {}
+
+    def run(self, context, argv):
+        try:
+            self.context, self.argv = context, argv
+            self.deadline = time.monotonic() + 30
+            return self.execute()
+        except Exception as exc:
+            print(f"[公会捐献] {exc}", flush=True)
+            return False
+
+    def quota(self, scope):
+        if not self.find(r"^公会捐献$", [480, 50, 330, 80]):
+            return None
+        roi = [360, 190, 150, 65] if scope == "coin" else [800, 190, 160, 65]
+        rows = self.ocr(r"^\d+\s*[/／]\s*\d+$", roi)
+        if len(rows) != 1:
+            return None
+        match = re.fullmatch(r"(\d+)\s*[/／]\s*(\d+)", rows[0].text)
+        if not match:
+            return None
+        used, total = int(match[1]), int(match[2])
+        if not 0 <= used <= total <= 100:
+            return None
+        return used, total
+
+    def disable(self):
+        if not self.context.override_pipeline({self.argv.node_name: {"enabled": False}}):
+            raise RuntimeError("无法停用已完成的捐献分支")
+        if not self.context.override_next(self.argv.node_name, []):
+            raise RuntimeError("无法结束已完成的捐献分支")
+        return True
+
+    def execute(self):
+        param = json.loads(self.argv.custom_action_param or "{}")
+        scope = param["scope"]
+        if scope not in ("coin", "token"):
+            raise RuntimeError("未知捐献种类")
+        limit = max(0, min(99, int(action_param(self.context.get_node_data(param["policy"])).get(scope, 0))))
+        if not limit:
+            legacy = action_param(self.context.get_node_data("Local_GuildPolicy"))
+            if any(int(legacy.get(key, 0)) > 0 for key in ("coin", "token")):
+                raise RuntimeError("公会捐献仍使用旧界面配置，请关闭并重新打开助手；本次未执行捐献")
+            return self.disable()
+        self.capture()
+        before = self.quota(scope)
+        if before is None:
+            raise RuntimeError("无法确认捐献次数，不发送点击")
+        key = self.context.get_task_job().job_id, scope
+        if len(self.starts) > 128:
+            self.starts = {item: value for item, value in self.starts.items() if item[0] == key[0]}
+        initial = self.starts.setdefault(key, before[0])
+        used = before[0] - initial
+        if used < 0:
+            raise RuntimeError("捐献次数倒退，停止")
+        if before[0] >= before[1] or used >= limit:
+            print(f"[公会捐献] {scope} 已完成 {before[0]}/{before[1]}，本轮确认 {used}/{limit}，停止该分支", flush=True)
+            return self.disable()
+        allowed = min(limit - used, before[1] - before[0])
+        button_roi = [420, 575, 110, 75] if scope == "coin" else [860, 575, 120, 75]
+        for attempt in range(2):
+            self.capture()
+            if self.quota(scope) != before:
+                raise RuntimeError("发送点击前捐献次数发生变化，停止核对")
+            button = self.find(r"^捐献$", button_roi)
+            if button is None:
+                raise RuntimeError("未确认捐献按钮，不发送点击")
+            self.click_text(button)
+            until = time.monotonic() + 6
+            current = None
+            while time.monotonic() < until:
+                self.capture()
+                if self.find(r"已获得道具|领取成功", [350, 80, 650, 320]):
+                    self.click(640, 680)
+                    continue
+                if self.find(r"资源不足|材料不足|货币不足", [350, 230, 650, 280]):
+                    raise RuntimeError("捐献资源不足，停止")
+                current = self.quota(scope)
+                if current is not None and current != before:
+                    if current[1] != before[1] or not 1 <= current[0] - before[0] <= allowed:
+                        raise RuntimeError(f"捐献次数变化异常：{before} -> {current}")
+                    print(f"[公会捐献] {scope} 已确认 {before[0]}/{before[1]} -> {current[0]}/{current[1]}", flush=True)
+                    return True
+                self.pause(.4)
+            if current != before:
+                raise RuntimeError("点击后的捐献结果不明，不重复发送")
+            if attempt == 0:
+                print(f"[公会捐献] {scope} 次数仍为 {before[0]}/{before[1]}，在捐献页重试一次", flush=True)
+        raise RuntimeError("捐献点击两次均未确认结果，停止")
+
+
 class BudgetClick(CustomAction):
     def __init__(self):
         super().__init__()
@@ -231,6 +344,10 @@ class BudgetClick(CustomAction):
         param = json.loads(argv.custom_action_param or "{}")
         policy = action_param(context.get_node_data(param["policy"]))
         limit = max(0, min(100, int(policy.get(param["scope"], 0))))
+        if param["policy"] in ("Local_GuildCoinPolicy", "Local_GuildTokenPolicy") and not limit:
+            legacy = action_param(context.get_node_data("Local_GuildPolicy"))
+            if any(int(legacy.get(scope, 0)) > 0 for scope in ("coin", "token")):
+                raise RuntimeError("公会捐献仍使用旧界面配置，请关闭并重新打开助手；本次未执行捐献")
         task_id = context.get_task_job().job_id
         key = (task_id, param["scope"])
         # Bound agent memory across many scheduled runs.
@@ -253,4 +370,5 @@ class BudgetClick(CustomAction):
         return success
 
 
-ACTIONS = {"LocalDailySweep": DailySweep(), "LocalBudgetClick": BudgetClick()}
+ACTIONS = {"LocalDailySweep": DailySweep(), "LocalBudgetClick": BudgetClick(),
+           "LocalGuildDonation": GuildDonation()}

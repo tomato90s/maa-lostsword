@@ -120,25 +120,18 @@
         ]
     },
     "副本_从首页": {
-        "desc": "配置首页右上角菜单打开后的副本后继",
+        "desc": "确认右上角菜单展开；仅在仍处于大厅时有限重试",
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "NodeOverride",
-                "custom_action_param": {
-                    "Home_OpenTopRightMenu": {
-                        "next": [
-                            "副本_点击战斗菜单"
-                        ]
-                    }
-                }
+                "custom_action": "LocalDungeonOpenMenu"
             }
         },
         "focus": {
-            "Node.Action.Starting": "配置副本菜单后继"
+            "Node.Action.Starting": "确认战斗菜单展开"
         },
         "next": [
-            "Home_OpenTopRightMenu"
+            "副本_点击战斗菜单"
         ],
         "$__mpe_code": {
             "position": {
@@ -1715,14 +1708,7 @@
             "type": "Custom",
             "param": {
                 "custom_action": "LocalDailySweep",
-                "custom_action_param": {
-                    "categories": {
-                        "gold": true,
-                        "exp": true,
-                        "stone": true,
-                        "event": true
-                    }
-                }
+                "custom_action_param": {}
             }
         },
         "next": [
@@ -1733,6 +1719,10 @@
             "LocalTaskFailed"
         ]
     },
+    "Local_Dungeon_gold_Policy": {"enabled": true},
+    "Local_Dungeon_exp_Policy": {"enabled": true},
+    "Local_Dungeon_stone_Policy": {"enabled": true},
+    "Local_Dungeon_event_Policy": {"enabled": true},
     "Local_DungeonAfter": {
         "action": {
             "type": "Custom",

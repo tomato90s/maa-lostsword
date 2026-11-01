@@ -77,17 +77,14 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "LocalBudgetClick",
+                "custom_action": "LocalGuildDonation",
                 "custom_action_param": {
-                    "policy": "Local_GuildPolicy",
+                    "policy": "Local_GuildCoinPolicy",
                     "scope": "coin"
                 }
             }
         },
-        "next": [
-            "Global_ItemObtained",
-            "公会-金币捐献-已上限"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2425,
@@ -177,17 +174,14 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "LocalBudgetClick",
+                "custom_action": "LocalGuildDonation",
                 "custom_action_param": {
-                    "policy": "Local_GuildPolicy",
+                    "policy": "Local_GuildTokenPolicy",
                     "scope": "token"
                 }
             }
         },
-        "next": [
-            "Global_ItemObtained",
-            "公会-信物捐献-已上限"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2420,
@@ -1096,12 +1090,36 @@
         ]
     },
     "Local_GuildPolicy": {
+        "desc": "仅检测运行中旧界面仍在发送的合并配置，不用于执行捐献",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {"coin": 0, "token": 0}
+            }
+        }
+    },
+    "Local_GuildCoinPolicy": {
         "action": {
             "type": "Custom",
             "param": {
                 "custom_action": "my_action_111",
                 "custom_action_param": {
-                    "coin": 0,
+                    "coin": 0
+                }
+            }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "Local_GuildTokenPolicy": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {
                     "token": 0
                 }
             }

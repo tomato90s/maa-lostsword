@@ -8,7 +8,7 @@
             ],
             "label": "🏰公会",
             "default_check": true,
-            "description": "默认只签到和领取投资奖励；投资、捐献须在选项中开启。捐献按本轮点击次数限额。",
+            "description": "默认只签到和领取投资奖励；投资、捐献须在选项中开启。捐献按本轮实际成功次数限额。",
             "option": [
                 "Local_GuildInvestCoin",
                 "Local_GuildInvestToken",
@@ -80,7 +80,7 @@
                 }
             ],
             "pipeline_override": {
-                "Local_GuildPolicy": {
+                "Local_GuildCoinPolicy": {
                     "action": {
                         "param": {
                             "custom_action_param": {
@@ -105,7 +105,7 @@
                 }
             ],
             "pipeline_override": {
-                "Local_GuildPolicy": {
+                "Local_GuildTokenPolicy": {
                     "action": {
                         "param": {
                             "custom_action_param": {

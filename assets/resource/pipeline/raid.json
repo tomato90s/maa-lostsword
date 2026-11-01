@@ -549,9 +549,7 @@
             }
         },
         "next": [
-            "突袭_一键扫荡",
-            "[JumpBack]Global_ItemObtained",
-            "[JumpBack]Raid_Sweep"
+            "LocalRaid_Run"
         ],
         "on_error": [
             "LocalCrashRecovery",
@@ -564,5 +562,13 @@
                 "y": 182
             }
         }
+    },
+    "LocalRaid_Run": {
+        "action": {
+            "type": "Custom",
+            "param": {"custom_action": "LocalRaidSweep"}
+        },
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
     }
 }

@@ -71,15 +71,21 @@
                 "package": "com.wemadeconnect.aos.lostdgl"
             }
         },
-        "timeout": 60000,
+        "timeout": 300000,
         "rate_limit": 3000,
         "next": [
             "HomeFlagCloseReturnMain",
-            "LinkStart"
+            "LinkStart",
+            "[JumpBack]LocalVillageGoLobby",
+            "[JumpBack]LocalVillageOpenMenu",
+            "[JumpBack]Startup_CloseMaidPopup",
+            "[JumpBack]Global_ItemObtained",
+            "[JumpBack]CloseX",
+            "[JumpBack]Startup_CloseTopRight",
+            "[JumpBack]全局-关闭菜单"
         ],
         "on_error": [
             "LocalCrashRecovery",
-            "StopTask",
             "LocalTaskFailed"
         ],
         "$__mpe_code": {

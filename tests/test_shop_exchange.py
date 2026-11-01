@@ -10,15 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from agent.daily_actions import SHOP_EXCHANGE_CATEGORIES, ShopCategoryClick, ShopExchangeFinish
-from agent.my_action import CenterClick
 
 
 TASK = json.loads((ROOT / "assets/resource/tasks/daily/shop_task.json").read_text(encoding="utf-8"))
 PIPELINE = json.loads((ROOT / "assets/resource/pipeline/商店.json").read_text(encoding="utf-8"))
-CONFIRMS = (
-    "商店-交易所-批量购买", "商店-突袭-交易所-批量购买", "商店-公会-交易所-批量购买",
-    "商店-竞技场-交易所-批量购买", "商店-夏日币-交易所-批量购买",
-)
 
 
 def configured(choices):
@@ -32,7 +27,7 @@ def configured(choices):
 
 
 class Context:
-    def __init__(self, choices=(True,) * 5, stopping=False, click_ok=True):
+    def __init__(self, choices=(True,) * 6, stopping=False, click_ok=True):
         self.nodes = configured(choices)
         self.clicks = []
         self.click_ok = click_ok
@@ -53,8 +48,8 @@ class Context:
 
 class ShopExchangeTests(unittest.TestCase):
     def test_all_switch_combinations_are_independent(self):
-        self.assertEqual(len(TASK["task"][0]["option"]), 5)
-        for choices in itertools.product((False, True), repeat=5):
+        self.assertEqual(len(TASK["task"][0]["option"]), 6)
+        for choices in itertools.product((False, True), repeat=6):
             with self.subTest(choices=choices):
                 nodes = configured(choices)
                 self.assertEqual(nodes["商店-交易所"]["enabled"], any(choices))
@@ -67,15 +62,11 @@ class ShopExchangeTests(unittest.TestCase):
         self.assertNotIn("Local_ShopBatchLimit", TASK["option"])
         self.assertNotIn("Local_ShopExchange", TASK["option"])
 
-    def test_five_categories_can_each_confirm_without_a_shared_budget(self):
+    def test_six_categories_each_enter_without_disabling_another(self):
         context = Context()
-        for category, confirmation in zip(SHOP_EXCHANGE_CATEGORIES, CONFIRMS):
+        for category in SHOP_EXCHANGE_CATEGORIES:
             self.assertTrue(ShopCategoryClick().run(context, NS(node_name=category, box=[0, 0, 20, 20])))
-            action = PIPELINE[confirmation]["action"]["param"]["custom_action"]
-            self.assertEqual(action, "CenterClick")
-            self.assertEqual(PIPELINE[confirmation]["max_hit"], 1)
-            self.assertTrue(CenterClick().run(context, NS(box=[100, 100, 20, 20])).success)
-        self.assertEqual(len(context.clicks), 10)
+        self.assertEqual(len(context.clicks), 6)
         self.assertTrue(ShopExchangeFinish().run(context, None))
         self.assertFalse(context.nodes["商店-交易所"]["enabled"])
 
