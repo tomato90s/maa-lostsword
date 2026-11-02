@@ -1,0 +1,25 @@
+{
+    "task": [
+        {
+            "name": "宾果票券制作",
+            "label": "宾果票券制作",
+            "entry": "LocalBingo_Entry",
+            "group": ["daily"],
+            "default_check": true,
+            "option": ["Local_BingoLimit"],
+            "description": "每天在制作的活动分类制作宾果票券，每张消耗20南瓜币，每日最多5张。建议排在活动领奖之后。"
+        }
+    ],
+    "option": {
+        "Local_BingoLimit": {
+            "type": "input",
+            "label": "本轮最多制作数量",
+            "inputs": [
+                {"name": "limit", "label": "张数（0跳过）", "default": "5", "pipeline_type": "int", "verify": "^[0-5]$", "pattern_msg": "填写0至5"}
+            ],
+            "pipeline_override": {
+                "LocalBingo_Entry": {"action": {"param": {"custom_action_param": {"limit": "{limit}"}}}}
+            }
+        }
+    }
+}

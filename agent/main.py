@@ -8,6 +8,12 @@ from maa.agent.agent_server import AgentServer
 from maa.toolkit import Toolkit
 
 from agent import my_action
+from agent import local_actions
+from agent import crash_recovery
+from agent import daily_actions
+from agent import seasonal_actions
+from agent import shop_actions
+from agent import village_actions
 from agent import my_reco
 
 
@@ -20,6 +26,15 @@ def main():
         sys.exit(1)
 
     socket_id = sys.argv[-1]
+
+    crash_recovery.configure_shell_api()
+    crash_recovery.initialize_preferences(Path(__file__).resolve().parent.parent)
+    for name, action in {**my_action.ACTIONS, **local_actions.ACTIONS,
+                         **crash_recovery.ACTIONS, **daily_actions.ACTIONS,
+                         **seasonal_actions.ACTIONS, **shop_actions.ACTIONS, **village_actions.ACTIONS}.items():
+        AgentServer.register_custom_action(name, action)
+    for name, recognition in crash_recovery.RECOGNITIONS.items():
+        AgentServer.register_custom_recognition(name, recognition)
 
     AgentServer.start_up(socket_id)
     AgentServer.join()

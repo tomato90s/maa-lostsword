@@ -1,0 +1,34 @@
+{
+    "LocalCrashRecovery": {
+        "desc": "仅在游戏进程退出时拉起并回到大厅，不重放中断项",
+        "recognition": {
+            "type": "Custom",
+            "param": {
+                "custom_recognition": "LocalGameMissing"
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalCrashRecovery"
+            }
+        },
+        "next": [
+            "LocalTaskFailed"
+        ],
+        "on_error": [],
+        "focus": {
+            "Node.Action.Starting": "检测到游戏退出，尝试自动恢复"
+        }
+    },
+    "LocalTaskFailed": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalTaskFailed"
+            }
+        },
+        "next": [],
+        "on_error": []
+    }
+}

@@ -7,8 +7,133 @@
                 "daily"
             ],
             "label": "⚔️副本",
-            "default_check": true
+            "default_check": true,
+            "description": "使用统一面板领取所选副本的每日免费扫荡，清空额外票券；巨石阵须单独开启。",
+            "option": [
+                "Local_Dungeon_gold",
+                "Local_Dungeon_exp",
+                "Local_Dungeon_stone",
+                "Local_Dungeon_event",
+                "Local_Stonehenge"
+            ]
         }
     ],
-    "option": {}
+    "option": {
+        "Local_Dungeon_gold": {
+            "type": "select",
+            "label": "金币每日免费",
+            "default_case": "开启",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "Local_Dungeon_gold_Policy": {
+                                "enabled": true
+                            }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "Local_Dungeon_gold_Policy": {
+                                "enabled": false
+                            }
+                    }
+                }
+            ]
+        },
+        "Local_Dungeon_exp": {
+            "type": "select",
+            "label": "经验书每日免费",
+            "default_case": "开启",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "Local_Dungeon_exp_Policy": {
+                                "enabled": true
+                            }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "Local_Dungeon_exp_Policy": {
+                                "enabled": false
+                            }
+                    }
+                }
+            ]
+        },
+        "Local_Dungeon_stone": {
+            "type": "select",
+            "label": "属性副本每日免费",
+            "default_case": "开启",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "Local_Dungeon_stone_Policy": {
+                                "enabled": true
+                            }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "Local_Dungeon_stone_Policy": {
+                                "enabled": false
+                            }
+                    }
+                }
+            ]
+        },
+        "Local_Dungeon_event": {
+            "type": "select",
+            "label": "活动副本每日免费",
+            "default_case": "开启",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "Local_Dungeon_event_Policy": {
+                                "enabled": true
+                            }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "Local_Dungeon_event_Policy": {
+                                "enabled": false
+                            }
+                    }
+                }
+            ]
+        },
+        "Local_Stonehenge": {
+            "type": "select",
+            "label": "巨石阵（单独挑战）",
+            "description": "开启后使用游戏当前的巨石阵编队及召唤券。",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "副本_点击巨石阵": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "副本_点击巨石阵": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        }
+    }
 }

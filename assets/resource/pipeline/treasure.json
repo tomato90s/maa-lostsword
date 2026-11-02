@@ -76,7 +76,11 @@
                 "x": 753,
                 "y": -152
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_Entry": {
         "desc": "宝藏探索任务入口",
@@ -104,7 +108,11 @@
                 "x": 12,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_GetReward": {
         "recognition": {
@@ -136,7 +144,11 @@
                 "x": 1858,
                 "y": 685
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_GetReward_Check": {
         "recognition": {
@@ -156,7 +168,11 @@
                 "y": 716
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_Label": {
         "desc": "识别宝藏探索入口文字",
@@ -189,7 +205,9 @@
             "Treasure_Page"
         ],
         "on_error": [
-            "Treasure_Label"
+            "LocalCrashRecovery",
+            "Treasure_Label",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -223,7 +241,11 @@
                 "x": 1137,
                 "y": 65
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_PrepareGetReward": {
         "desc": "准备领取获取宝藏奖励，配置公共道具弹框关闭后的后继",
@@ -262,7 +284,11 @@
                 "x": 1522,
                 "y": 323
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_PrepareQuickSearch": {
         "desc": "准备执行快速探查，配置公共道具弹框关闭后的后继",
@@ -301,7 +327,11 @@
                 "x": 1418,
                 "y": 1122
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_QuickPopupC": {
         "recognition": {
@@ -326,7 +356,11 @@
                 "x": 2024,
                 "y": 1412
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_QuickSearch": {
         "recognition": {
@@ -359,7 +393,11 @@
                 "x": 1682,
                 "y": 1246
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Treasure_QuickSearch-Check": {
         "recognition": {
@@ -384,7 +422,11 @@
                 "x": 1724,
                 "y": 931
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "关闭宝藏探索弹框": {
         "recognition": {
@@ -416,7 +458,11 @@
                 "x": 2802,
                 "y": 1467
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "关闭宝藏探索弹框_Check": {
         "desc": "确认宝藏探索弹框关闭按钮仍存在，重试关闭宝藏探索弹框",
@@ -443,7 +489,11 @@
                 "x": 3122,
                 "y": 1381
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "关闭快速探查弹框": {
         "recognition": {
@@ -470,7 +520,11 @@
                 "y": 1058
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "关闭快速探查弹框_Check": {
         "desc": "确认快速探查弹框关闭按钮仍存在，重试关闭快速探查弹框",
@@ -492,7 +546,11 @@
                 "y": 1059
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "快速探查-开始探查": {
         "recognition": {
@@ -524,6 +582,10 @@
                 "x": 2007,
                 "y": 1105
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

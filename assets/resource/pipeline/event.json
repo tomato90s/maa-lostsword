@@ -57,7 +57,11 @@
                 "x": 1612,
                 "y": 600
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_ClickSweep": {
         "action": {
@@ -77,7 +81,11 @@
                 "x": 2572,
                 "y": 1085
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_CloseEnter": {
         "recognition": {
@@ -112,7 +120,11 @@
                 "x": 2252,
                 "y": 139
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_CloseSweepPopup": {
         "desc": "关闭扫荡弹窗",
@@ -145,7 +157,11 @@
                 "x": 2252,
                 "y": 565
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_Entry": {
         "desc": "活动扫荡入口",
@@ -162,7 +178,11 @@
                 "x": 12,
                 "y": 610
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_FromHome": {
         "desc": "从主页右上角菜单进入",
@@ -209,7 +229,11 @@
                 "x": 332,
                 "y": 572
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_HomeFlag": {
         "desc": "识别到主页则停止循环",
@@ -236,7 +260,11 @@
                 "x": 972,
                 "y": 605
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_ItemObtained": {
         "desc": "已获得道具提示",
@@ -269,7 +297,11 @@
                 "x": 2252,
                 "y": 1037
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_Label": {
         "desc": "点击活动标签",
@@ -302,7 +334,11 @@
                 "x": 1292,
                 "y": 616
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_MenuClick": {
         "desc": "点击菜单中的副本图标",
@@ -341,7 +377,11 @@
                 "x": 652,
                 "y": 572
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_Stop": {
         "$__mpe_code": {
@@ -349,7 +389,11 @@
                 "x": 12,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Event_Sweep": {
         "desc": "扫荡",
@@ -387,6 +431,10 @@
                 "x": 1932,
                 "y": 598
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

@@ -77,7 +77,11 @@
                 "x": 1832,
                 "y": 566
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_CloseDonationPopup": {
         "recognition": {
@@ -111,7 +115,11 @@
                 "x": 2492,
                 "y": 1898
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_CoinDonation": {
         "max_hit": 1,
@@ -136,7 +144,11 @@
                 "x": 2517,
                 "y": 1545
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_CoinMaxLimit": {
         "recognition": {
@@ -170,7 +182,11 @@
                 "x": 2812,
                 "y": 1859
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_DisableDonation": {
         "action": {
@@ -187,7 +203,11 @@
                 "x": 2334,
                 "y": 1065
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_DonationMaxLimit": {
         "recognition": {
@@ -218,7 +238,11 @@
                 "x": 2024,
                 "y": 1060
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_DonationPopup": {
         "recognition": {
@@ -246,7 +270,11 @@
                 "x": 2001,
                 "y": 1594
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_Entry": {
         "desc": "公会签到任务入口",
@@ -274,7 +302,11 @@
                 "x": 57,
                 "y": 206
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_FromHome": {
         "desc": "配置首页右上角菜单打开后的公会后继",
@@ -302,7 +334,11 @@
                 "x": 408,
                 "y": 216
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_GetRewards": {
         "recognition": {
@@ -334,7 +370,11 @@
                 "x": 1527,
                 "y": -353
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_InvestmentReward": {
         "recognition": {
@@ -363,7 +403,11 @@
                 "x": 1875,
                 "y": -152
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_InvestmentToken": {
         "max_hit": 1,
@@ -401,7 +445,11 @@
                 "x": 1644,
                 "y": 169
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_ItemObtained": {
         "recognition": {
@@ -427,7 +475,11 @@
                 "x": 2812,
                 "y": 1550
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_Label": {
         "desc": "识别公会入口文字",
@@ -465,7 +517,11 @@
                 "x": 1626,
                 "y": 870
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_MenuClick": {
         "desc": "点击菜单中的公会图标",
@@ -503,7 +559,9 @@
             "Guild_MenuClick_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -537,7 +595,11 @@
                 "x": 810,
                 "y": -176
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_SignIn": {
         "max_hit": 1,
@@ -577,7 +639,11 @@
                 "x": 1643,
                 "y": 531
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_SignInReward": {
         "recognition": {
@@ -603,7 +669,11 @@
                 "x": 1836,
                 "y": 844
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_TokenDonation": {
         "max_hit": 3,
@@ -628,7 +698,11 @@
                 "x": 2492,
                 "y": 2306
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_TokenItemObtained": {
         "recognition": {
@@ -654,7 +728,11 @@
                 "x": 2812,
                 "y": 2200
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_TokenMaxLimit": {
         "recognition": {
@@ -688,7 +766,11 @@
                 "x": 2812,
                 "y": 2523
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_TokenReward": {
         "recognition": {
@@ -714,7 +796,11 @@
                 "x": 1840,
                 "y": 289
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会页面": {
         "recognition": {
@@ -744,7 +830,11 @@
                 "x": 930,
                 "y": 539
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Guild_InvestmentCoin": {
         "max_hit": 1,
@@ -782,6 +872,10 @@
                 "x": 1617,
                 "y": -23
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

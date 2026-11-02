@@ -1,0 +1,10 @@
+{
+    "task": [{
+        "name": "每日免费轮盘",
+        "label": "每日免费轮盘",
+        "entry": "LocalRoulette_Entry",
+        "group": ["daily"],
+        "default_check": true,
+        "description": "领取贝迪兔女郎轮盘每天一次的免费抽奖；免费次数用完后跳过，不使用持有的抽奖券。"
+    }]
+}

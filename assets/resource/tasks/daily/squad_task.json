@@ -1,0 +1,14 @@
+{
+    "task": [
+        {
+            "name": "小队副本",
+            "label": "小队副本",
+            "entry": "LocalSquad_Entry",
+            "group": [
+                "daily"
+            ],
+            "default_check": true,
+            "description": "使用当前编好的队伍进行每日1次免费匹配，自动等待战斗并返回；免费次数用完即结束，不消耗额外门票。"
+        }
+    ]
+}

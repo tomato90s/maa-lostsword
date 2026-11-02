@@ -8,6 +8,10 @@
         "next": [
             "[JumpBack]ReturnMain",
             "Shop_FromHome"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_FromHome": {
@@ -52,6 +56,10 @@
         },
         "next": [
             "Shop_MenuClick"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_MenuClick": {
@@ -71,6 +79,10 @@
         "post_delay": 2000,
         "next": [
             "Shop_Label"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Label": {
@@ -89,6 +101,10 @@
             "[JumpBack]Shop_GoodsCounter",
             "[JumpBack]Shop_TradeCounter",
             "Shop_Stop"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_GoodsCounter": {
@@ -108,6 +124,10 @@
         "post_delay": 1500,
         "next": [
             "[JumpBack]Shop_Tab_GoodsDaily"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_TradeCounter": {
@@ -129,6 +149,10 @@
             "[JumpBack]Shop_Tab_TradeConsumable",
             "[JumpBack]Shop_Tab_TradeRaid",
             "[JumpBack]Shop_Tab_TradeGuild"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Tab_GoodsDaily": {
@@ -148,6 +172,10 @@
         "post_delay": 1500,
         "next": [
             "[JumpBack]Shop_Item_DailyFreeGift"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Tab_TradeConsumable": {
@@ -167,6 +195,10 @@
         "post_delay": 1500,
         "next": [
             "[JumpBack]Shop_Item_TradeConsumableTemplate"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Tab_TradeRaid": {
@@ -186,6 +218,10 @@
         "post_delay": 1500,
         "next": [
             "[JumpBack]Shop_Item_TradeRaidTemplate"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Tab_TradeGuild": {
@@ -205,6 +241,10 @@
         "post_delay": 1500,
         "next": [
             "[JumpBack]Shop_Item_TradeGuildTemplate"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Item_DailyFreeGift": {
@@ -225,6 +265,10 @@
         "post_delay": 1500,
         "next": [
             "Shop_Confirm"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Item_TradeConsumableTemplate": {
@@ -245,6 +289,10 @@
         "post_delay": 1500,
         "next": [
             "Shop_Confirm"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Item_TradeRaidTemplate": {
@@ -265,6 +313,10 @@
         "post_delay": 1500,
         "next": [
             "Shop_Confirm"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Item_TradeGuildTemplate": {
@@ -285,6 +337,10 @@
         "post_delay": 1500,
         "next": [
             "Shop_Confirm"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ]
     },
     "Shop_Confirm": {
@@ -301,11 +357,19 @@
         "action": {
             "type": "Click"
         },
-        "post_delay": 2000
+        "post_delay": 2000,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Shop_Stop": {
         "action": {
             "type": "StopTask"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

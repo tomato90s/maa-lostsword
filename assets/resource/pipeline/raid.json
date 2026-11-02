@@ -84,7 +84,11 @@
                 "x": 3757,
                 "y": 137
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Raid_BossFlag_Check": {
         "max_hit": 2,
@@ -110,7 +114,11 @@
                 "x": 3746,
                 "y": -216
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Raid_ClickNormal": {
         "desc": "点击普通战斗类别",
@@ -142,7 +150,9 @@
             "Raid_ClickNormal_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -175,7 +185,11 @@
                 "x": 2264,
                 "y": -165
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Raid_Entry": {
         "desc": "个人突袭任务入口",
@@ -203,7 +217,11 @@
                 "x": 1022,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Raid_FromHome": {
         "desc": "配置首页右上角菜单打开后的突袭后继",
@@ -231,7 +249,11 @@
                 "x": 472,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Raid_HomeFlag": {
         "desc": "识别到战斗主页",
@@ -256,7 +278,9 @@
             "Raid_ClickNormal"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -295,7 +319,9 @@
             "Raid_LordRaidLabel_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -329,7 +355,11 @@
                 "x": 2539,
                 "y": 100
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Raid_MenuClick": {
         "desc": "点击菜单中的战斗",
@@ -362,7 +392,9 @@
             "Raid_MenuClick_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -396,7 +428,11 @@
                 "x": 1427,
                 "y": -47
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Raid_Sweep": {
         "recognition": {
@@ -424,7 +460,11 @@
                 "x": 3450,
                 "y": 551
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "突袭_一键扫荡": {
         "recognition": {
@@ -452,7 +492,9 @@
             "突袭_一键扫荡_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -485,7 +527,11 @@
                 "x": 3431,
                 "y": -237
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "突袭_扫荡页面": {
         "recognition": {
@@ -503,12 +549,12 @@
             }
         },
         "next": [
-            "突袭_一键扫荡",
-            "[JumpBack]Global_ItemObtained",
-            "[JumpBack]Raid_Sweep"
+            "LocalRaid_Run"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -516,5 +562,13 @@
                 "y": 182
             }
         }
+    },
+    "LocalRaid_Run": {
+        "action": {
+            "type": "Custom",
+            "param": {"custom_action": "LocalRaidSweep"}
+        },
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
     }
 }

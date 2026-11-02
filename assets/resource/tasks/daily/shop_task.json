@@ -7,8 +7,127 @@
                 "daily"
             ],
             "label": "🛒商店",
-            "default_check": true
+            "default_check": true,
+            "description": "领取每日免费礼包；交易所各分类独立开启，按预设商品分别完成批量购买，不共用兑换次数上限。",
+            "option": [
+                "Local_ShopConsumables",
+                "Local_ShopRaid",
+                "Local_ShopGuild",
+                "Local_ShopArena",
+                "Local_ShopSummer",
+                "Local_ShopPumpkin"
+            ]
         }
     ],
-    "option": {}
+    "option": {
+        "Local_ShopConsumables": {
+            "type": "select",
+            "label": "消耗品批量购买",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "商店-交易所": {
+                            "enabled": true
+                        },
+                        "商品-交易所-消耗品": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "商品-交易所-消耗品": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "Local_ShopRaid": {
+            "type": "select",
+            "label": "突袭批量购买",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "商店-交易所": {"enabled": true},
+                        "商品-交易所-突袭": {"enabled": true}
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {"商品-交易所-突袭": {"enabled": false}}
+                }
+            ]
+        },
+        "Local_ShopGuild": {
+            "type": "select",
+            "label": "公会批量购买",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "商店-交易所": {"enabled": true},
+                        "商品-交易所-公会": {"enabled": true}
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {"商品-交易所-公会": {"enabled": false}}
+                }
+            ]
+        },
+        "Local_ShopArena": {
+            "type": "select",
+            "label": "竞技场批量购买",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "商店-交易所": {"enabled": true},
+                        "商品-交易所-竞技场": {"enabled": true}
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {"商品-交易所-竞技场": {"enabled": false}}
+                }
+            ]
+        },
+        "Local_ShopPumpkin": {
+            "type": "select",
+            "label": "南瓜币商店日常批量购买",
+            "description": "只购买批量窗口中的南瓜票券、轮盘券和突袭票；不兑换活动商店的一次性商品。",
+            "default_case": "关闭",
+            "cases": [
+                {"name": "开启", "pipeline_override": {"商店-交易所": {"enabled": true}, "商品-交易所-南瓜币": {"enabled": true}}},
+                {"name": "关闭", "pipeline_override": {"商品-交易所-南瓜币": {"enabled": false}}}
+            ]
+        },
+        "Local_ShopSummer": {
+            "type": "select",
+            "label": "夏日币批量购买",
+            "description": "仅处理交易所中的夏日币分类；当前没有该分类时跳过。",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "商店-交易所": {"enabled": true},
+                        "商品-交易所-夏日币": {"enabled": true}
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {"商品-交易所-夏日币": {"enabled": false}}
+                }
+            ]
+        }
+    }
 }

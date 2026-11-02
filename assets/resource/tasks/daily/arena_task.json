@@ -7,8 +7,39 @@
                 "daily"
             ],
             "label": "🏆竞技场",
-            "default_check": true
+            "default_check": true,
+            "option": [
+                "Local_ArenaLimit"
+            ],
+            "description": "先用票券，再接受至多3次0钻石免费机会；机会耗尽或达到设置上限均正常结束，绝不购买付费挑战。"
         }
     ],
-    "option": {}
+    "option": {
+        "Local_ArenaLimit": {
+            "type": "input",
+            "label": "本轮最多挑战次数（上限）",
+            "inputs": [
+                {
+                    "name": "limit",
+                    "label": "次数（0表示跳过）",
+                    "default": "99",
+                    "pipeline_type": "int",
+                    "verify": "^(?:0|[1-9]\\d{0,2})$",
+                    "pattern_msg": "填写0至999，0表示跳过"
+                }
+            ],
+            "pipeline_override": {
+                "Local_ArenaPolicy": {
+                    "action": {
+                        "param": {
+                            "custom_action_param": {
+                                "attempts": "{limit}"
+                            }
+                        }
+                    }
+                }
+            },
+            "description": "不是必须打满的目标；票券和免费机会提前用尽也算正常完成。"
+        }
+    }
 }

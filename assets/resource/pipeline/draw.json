@@ -66,7 +66,11 @@
                 "y": -7
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_CharacterFreeUsed_Ticket": {
         "recognition": {
@@ -92,7 +96,11 @@
                 "y": -7
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_ClaimPet": {
         "desc": "识别并点击免费宠物召唤",
@@ -124,7 +132,9 @@
             "Draw_ClaimPet_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -165,7 +175,11 @@
                 "y": 1368
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_ClaimPetClick_Check": {
         "max_hit": 2,
@@ -192,7 +206,11 @@
                 "y": 1678
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_ClaimPet_Check": {
         "desc": "确认仍停留在领取宠物入口，重试点击领取宠物",
@@ -221,7 +239,11 @@
                 "y": 2044
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_Confirm": {
         "recognition": {
@@ -249,7 +271,9 @@
             "Draw_Confirm_Done"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -284,7 +308,11 @@
                 "y": 694
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_Confirm_Done": {
         "recognition": {
@@ -311,7 +339,11 @@
                 "y": 385
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_DisableClaimPet": {
         "desc": "本轮宠物免费抽已完成，禁用宠物分支以便回跳后结束任务",
@@ -332,7 +364,11 @@
                 "y": 1582
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_DisableFreeDraw": {
         "desc": "本轮角色免费抽已完成，禁用角色分支以便回跳后继续检查宠物",
@@ -353,7 +389,11 @@
                 "y": 391
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_Entry": {
         "desc": "免费每日一抽任务入口",
@@ -382,7 +422,11 @@
                 "y": 12
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_FreeDraw": {
         "desc": "识别并点击免费召唤",
@@ -417,7 +461,9 @@
             "Draw_FreeDraw_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -449,6 +495,8 @@
             }
         },
         "next": [
+            "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation",
             "Draw_FreeDrawClick_Check"
         ],
@@ -458,7 +506,11 @@
                 "y": 682
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_FreeDrawClick_Check": {
         "max_hit": 2,
@@ -485,7 +537,11 @@
                 "y": 682
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_FreeDraw_Check": {
         "desc": "确认还未进入角色免费召唤页，重试点击领取角色",
@@ -514,7 +570,11 @@
                 "y": 1004
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_FromHome": {
         "desc": "配置首页右上角菜单打开后的召唤后继",
@@ -546,7 +606,11 @@
                 "y": 12
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_Label": {
         "desc": "识别召唤入口文字",
@@ -600,7 +664,11 @@
                 "y": 1808
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_MenuClick": {
         "desc": "点击菜单中的召唤图标",
@@ -633,7 +701,9 @@
             "Draw_MenuClick_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -669,7 +739,11 @@
                 "y": 497
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_PetFreeUsed_Diamond": {
         "recognition": {
@@ -695,7 +769,11 @@
                 "y": 1517
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_PetFreeUsed_Ticket": {
         "recognition": {
@@ -721,23 +799,16 @@
                 "y": 1694
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_PrepareDisableClaimPet": {
         "desc": "宠物免费抽已进入动画，切换确认结束后的禁用节点",
         "recognition": {
-            "type": "OCR",
-            "param": {
-                "roi": [
-                    1128,
-                    13,
-                    62,
-                    44
-                ],
-                "expected": [
-                    "Skip"
-                ]
-            }
+            "type": "DirectHit"
         },
         "action": {
             "type": "Custom",
@@ -753,6 +824,8 @@
             }
         },
         "next": [
+            "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation"
         ],
         "$__mpe_code": {
@@ -761,7 +834,11 @@
                 "y": 1350
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_SkipAnimation": {
         "recognition": {
@@ -774,7 +851,7 @@
                     44
                 ],
                 "expected": [
-                    "Skip"
+                    "[Ss][Kk][Ii][Pp]"
                 ]
             }
         },
@@ -786,10 +863,13 @@
         },
         "next": [
             "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -800,6 +880,7 @@
         }
     },
     "Draw_SkipAnimation_Check": {
+        "desc": "动画切换期间同时等待结果页，不能只重新寻找已经消失的 Skip",
         "max_hit": 2,
         "recognition": {
             "type": "OCR",
@@ -811,11 +892,13 @@
                     44
                 ],
                 "expected": [
-                    "Skip"
+                    "[Ss][Kk][Ii][Pp]"
                 ]
             }
         },
         "next": [
+            "Draw_ViewAll",
+            "Draw_Confirm",
             "Draw_SkipAnimation"
         ],
         "$__mpe_code": {
@@ -824,7 +907,11 @@
                 "y": 1369
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Draw_ViewAll": {
         "recognition": {
@@ -852,7 +939,9 @@
             "Draw_ViewAll_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -879,6 +968,7 @@
             }
         },
         "next": [
+            "Draw_Confirm",
             "Draw_ViewAll"
         ],
         "$__mpe_code": {
@@ -887,6 +977,10 @@
                 "y": 1179
             },
             "handleDirection": "top-bottom"
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

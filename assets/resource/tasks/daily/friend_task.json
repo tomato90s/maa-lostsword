@@ -1,0 +1,12 @@
+{
+    "task": [
+        {
+            "name": "好友收礼",
+            "label": "好友收礼",
+            "entry": "LocalFriendGift_Entry",
+            "group": ["daily"],
+            "default_check": true,
+            "description": "打开好友列表，点击一次“一键收发”，领取并赠送友情点数；以游戏显示的赠送和领取数量核对结果。"
+        }
+    ]
+}

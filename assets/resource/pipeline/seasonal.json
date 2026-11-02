@@ -1,0 +1,35 @@
+{
+    "LocalBingo_Entry": {
+        "action": {
+            "type": "Custom",
+            "param": {"custom_action": "LocalBingoCraft", "custom_action_param": {"limit": 5}}
+        },
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalRoulette_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalRouletteFree", "custom_action_param": {}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalVillage_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalVillageHunt", "custom_action_param": {"limit": 12, "steps": 40}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalVillageChicken_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalVillageHunt", "custom_action_param": {"target": "chicken", "steps": 40}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalFriendGift_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalFriendGift", "custom_action_param": {}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalSecretCow_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalSecretCow", "custom_action_param": {"limit": 3}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    }
+}

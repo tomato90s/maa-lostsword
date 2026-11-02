@@ -33,7 +33,11 @@
                 "x": 323,
                 "y": 1284
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "CloseX": {
         "recognition": {
@@ -53,7 +57,11 @@
                 "x": 332,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Global_ItemObtained": {
         "recognition": {
@@ -83,7 +91,11 @@
                 "x": 332,
                 "y": 692
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Global_ItemObtained_Check": {
         "desc": "确认已获得道具弹框仍存在，重试关闭弹框",
@@ -110,7 +122,11 @@
                 "x": 611,
                 "y": 702
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Global_ItemObtained_Done": {
         "$__mpe_code": {
@@ -118,43 +134,42 @@
                 "x": 888,
                 "y": 692
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "HomeFlagCloseReturnMain": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "roi": [
-                    1096,
-                    407,
-                    151,
-                    121
-                ],
-                "template": [
-                    "maoxian.png"
-                ]
-            }
-        },
+        "recognition": {"type": "Or", "param": {"any_of": [
+            {"recognition": "TemplateMatch", "template": ["maoxian.png"], "roi": [1096, 407, 151, 121]},
+            {"recognition": "And", "all_of": [
+                {"recognition": "OCR", "expected": ["前往.*村庄"], "roi": [1060, 140, 180, 85]},
+                {"recognition": "OCR", "expected": ["宝.*藏.*探.*索"], "roi": [750, 635, 160, 75]}
+            ]}
+        ]}},
         "$__mpe_code": {
             "position": {
                 "x": 332,
                 "y": 1003
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Home_OpenTopRightMenu": {
         "desc": "识别首页并打开右上角菜单，业务后继由 NodeOverride 注入",
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "Or",
             "param": {
-                "roi": [
-                    1089,
-                    383,
-                    162,
-                    170
-                ],
-                "template": [
-                    "maoxian.png"
+                "any_of": [
+                    {"recognition": "TemplateMatch", "template": ["maoxian.png"], "roi": [1089, 383, 162, 170]},
+                    {"recognition": "And", "all_of": [
+                        {"recognition": "OCR", "expected": ["前往.*村庄"], "roi": [1060, 140, 180, 85]},
+                        {"recognition": "OCR", "expected": ["宝.*藏.*探.*索"], "roi": [750, 635, 160, 75]}
+                    ]}
                 ]
             }
         },
@@ -183,7 +198,11 @@
                 "x": 12,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "NoopDone": {
         "$__mpe_code": {
@@ -191,16 +210,41 @@
                 "x": 610,
                 "y": 854
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalVillageOpenMenu": {
+        "recognition": {"type": "And", "param": {"all_of": [
+            {"recognition": "OCR", "expected": ["^冒险$"], "roi": [1080, 80, 170, 90]},
+            {"recognition": "TemplateMatch", "template": ["local_village_attack.png"], "roi": [1030, 500, 120, 120], "threshold": 0.85}
+        ]}},
+        "action": {"type": "Click", "param": {"target": [1236, 36, 1, 1]}},
+        "post_delay": 700,
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalVillageGoLobby": {
+        "recognition": {"type": "OCR", "param": {"expected": ["^前往大厅$"], "roi": [820, 650, 260, 60]}},
+        "action": {"type": "Custom", "param": {"custom_action": "CenterClick"}},
+        "post_delay": 3000,
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
     },
     "ReturnMain": {
+        "timeout": 90000,
         "next": [
             "[JumpBack]Startup_CloseMaidPopup",
             "[JumpBack]CardReward",
+            "[JumpBack]Draw_ViewAll",
             "[JumpBack]CloseX",
             "[JumpBack]Startup_CloseTopRight",
             "[JumpBack]Global_ItemObtained",
             "[JumpBack]全局-关闭宝藏探索弹框",
+            "[JumpBack]LocalVillageGoLobby",
+            "[JumpBack]LocalVillageOpenMenu",
             "[JumpBack]全局-关闭菜单",
             "HomeFlagCloseReturnMain"
         ],
@@ -209,7 +253,11 @@
                 "x": -136,
                 "y": 814
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Startup_CloseMaidPopup": {
         "recognition": {
@@ -251,7 +299,11 @@
                 "x": 337,
                 "y": 1526
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "Startup_CloseTopRight": {
         "recognition": {
@@ -284,7 +336,11 @@
                 "x": 368,
                 "y": 587
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "StopTask": {
         "action": {
@@ -326,7 +382,11 @@
                 "x": 360,
                 "y": 554
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "全局-关闭菜单": {
         "recognition": {
@@ -354,6 +414,10 @@
                 "x": 343,
                 "y": 377
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

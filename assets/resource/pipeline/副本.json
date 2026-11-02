@@ -79,7 +79,9 @@
             "副本_一键扫荡_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -111,35 +113,36 @@
                 "x": 3152,
                 "y": 1085
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_从首页": {
-        "desc": "配置首页右上角菜单打开后的副本后继",
+        "desc": "确认右上角菜单展开；仅在仍处于大厅时有限重试",
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "NodeOverride",
-                "custom_action_param": {
-                    "Home_OpenTopRightMenu": {
-                        "next": [
-                            "副本_点击战斗菜单"
-                        ]
-                    }
-                }
+                "custom_action": "LocalDungeonOpenMenu"
             }
         },
         "focus": {
-            "Node.Action.Starting": "配置副本菜单后继"
+            "Node.Action.Starting": "确认战斗菜单展开"
         },
         "next": [
-            "Home_OpenTopRightMenu"
+            "副本_点击战斗菜单"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 732,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_入口": {
         "desc": "副本任务入口",
@@ -167,7 +170,11 @@
                 "x": 1282,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_属性石-资源不足": {
         "recognition": {
@@ -204,7 +211,11 @@
                 "x": 2812,
                 "y": 1415
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_属性石-资源不足-Check": {
         "max_hit": 3,
@@ -230,7 +241,11 @@
                 "x": 3152,
                 "y": 1387
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_属性石扫荡页面": {
         "recognition": {
@@ -268,7 +283,9 @@
             "[JumpBack]副本_扫荡"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -300,7 +317,11 @@
                 "x": 3472,
                 "y": 3965
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵_BOSS战斗结束": {
         "recognition": {
@@ -325,7 +346,11 @@
                 "x": 3792,
                 "y": 3991
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵_回到游戏首页": {
         "recognition": {
@@ -350,7 +375,11 @@
                 "x": 4752,
                 "y": 3738
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵_点击主菜单": {
         "action": {
@@ -373,7 +402,11 @@
                 "x": 4112,
                 "y": 3998
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵_点击主菜单_Check": {
         "recognition": {
@@ -398,7 +431,11 @@
                 "x": 4432,
                 "y": 4270
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵_点击召唤领主": {
         "desc": "点击巨石阵召唤领主",
@@ -430,7 +467,8 @@
             "副本_巨石阵_点击召唤领主_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -463,7 +501,11 @@
                 "x": 3472,
                 "y": 4319
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵_退场": {
         "recognition": {
@@ -491,7 +533,8 @@
             "副本_巨石阵_退场_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -523,7 +566,11 @@
                 "x": 4752,
                 "y": 4033
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵冒险区域_点击选择": {
         "recognition": {
@@ -551,7 +598,8 @@
             "副本_巨石阵冒险区域_点击选择_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -584,7 +632,11 @@
                 "x": 2812,
                 "y": 4025
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_巨石阵队伍编辑_点击出发": {
         "recognition": {
@@ -612,7 +664,8 @@
             "副本_巨石阵队伍编辑_点击出发_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -645,7 +698,11 @@
                 "x": 3152,
                 "y": 3864
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_战斗主页": {
         "desc": "识别到战斗主页",
@@ -670,7 +727,9 @@
             "副本_点击副本"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -705,7 +764,11 @@
                 "x": 2792,
                 "y": 1881
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_扫荡关闭右上角": {
         "recognition": {
@@ -733,7 +796,9 @@
             "副本_扫荡关闭右上角_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -765,7 +830,11 @@
                 "x": 3152,
                 "y": 1686
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_扫荡关闭弹框": {
         "recognition": {
@@ -798,7 +867,11 @@
                 "x": 3152,
                 "y": 338
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_扫荡关闭弹框_Check": {
         "recognition": {
@@ -823,7 +896,11 @@
                 "x": 3472,
                 "y": 339
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_点击副本": {
         "desc": "点击副本战斗类别",
@@ -851,14 +928,13 @@
             "Node.Recognition.Succeeded": "选择副本战斗类别"
         },
         "next": [
-            "[JumpBack]副本_点击属性石",
-            "[JumpBack]副本_点击经验书",
-            "[JumpBack]副本_点击黄金猎犬",
-            "[JumpBack]副本_点击巨石阵",
+            "Local_DungeonSweep",
             "副本_点击副本_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -891,7 +967,11 @@
                 "x": 2152,
                 "y": 2893
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_点击属性石": {
         "desc": "点击属性石副本",
@@ -899,10 +979,10 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    1124,
-                    535,
-                    127,
-                    59
+                    40,
+                    520,
+                    1220,
+                    130
                 ],
                 "expected": [
                     "属性石"
@@ -923,7 +1003,9 @@
             "副本_点击属性石_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -938,10 +1020,10 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    1124,
-                    535,
-                    127,
-                    59
+                    40,
+                    520,
+                    1220,
+                    130
                 ],
                 "expected": [
                     "属性石"
@@ -956,7 +1038,11 @@
                 "x": 2472,
                 "y": 2257
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_点击巨石阵": {
         "desc": "点击巨石阵副本",
@@ -988,14 +1074,16 @@
             "副本_点击巨石阵_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 2152,
                 "y": 3251
             }
-        }
+        },
+        "enabled": false
     },
     "副本_点击巨石阵_Check": {
         "max_hit": 2,
@@ -1021,7 +1109,11 @@
                 "x": 2472,
                 "y": 3251
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_点击战斗菜单": {
         "desc": "点击菜单中的战斗",
@@ -1054,7 +1146,9 @@
             "副本_点击战斗菜单_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -1088,7 +1182,11 @@
                 "x": 2152,
                 "y": 3703
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_点击经验书": {
         "desc": "点击经验书副本",
@@ -1096,10 +1194,10 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    825,
-                    549,
-                    81,
-                    40
+                    40,
+                    520,
+                    1220,
+                    130
                 ],
                 "expected": [
                     "经验书"
@@ -1120,7 +1218,9 @@
             "副本_点击经验书_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -1136,6 +1236,12 @@
             "param": {
                 "expected": [
                     "经验书"
+                ],
+                "roi": [
+                    40,
+                    520,
+                    1220,
+                    130
                 ]
             }
         },
@@ -1147,7 +1253,11 @@
                 "x": 3152,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_点击黄金猎犬": {
         "desc": "点击黄金猎犬副本",
@@ -1155,10 +1265,10 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    476,
-                    546,
-                    98,
-                    46
+                    40,
+                    520,
+                    1220,
+                    130
                 ],
                 "expected": [
                     "黄金猎犬"
@@ -1179,7 +1289,9 @@
             "副本_点击黄金猎犬_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -1195,6 +1307,12 @@
             "param": {
                 "expected": [
                     "黄金猎犬"
+                ],
+                "roi": [
+                    40,
+                    520,
+                    1220,
+                    130
                 ]
             }
         },
@@ -1206,7 +1324,11 @@
                 "x": 2472,
                 "y": 2615
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_禁用属性石": {
         "recognition": {
@@ -1239,7 +1361,11 @@
                 "x": 12,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_禁用经验书": {
         "recognition": {
@@ -1272,7 +1398,11 @@
                 "x": 252,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_禁用黄金猎犬": {
         "recognition": {
@@ -1305,7 +1435,11 @@
                 "x": 492,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_经验书-资源不足": {
         "recognition": {
@@ -1342,7 +1476,11 @@
                 "x": 2812,
                 "y": 265
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_经验书-资源不足-Check": {
         "max_hit": 3,
@@ -1368,7 +1506,11 @@
                 "x": 3152,
                 "y": 727
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_经验书扫荡页面": {
         "recognition": {
@@ -1406,7 +1548,9 @@
             "[JumpBack]副本_扫荡"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -1435,7 +1579,11 @@
                 "x": 3792,
                 "y": 1611
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_黄金猎犬-资源不足": {
         "recognition": {
@@ -1472,7 +1620,11 @@
                 "x": 2797,
                 "y": 2154
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_黄金猎犬-资源不足-Check": {
         "max_hit": 3,
@@ -1498,7 +1650,11 @@
                 "x": 3152,
                 "y": 2193
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "副本_黄金猎犬扫荡页面": {
         "recognition": {
@@ -1536,7 +1692,9 @@
             "[JumpBack]副本_扫荡"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -1544,5 +1702,38 @@
                 "y": 1943
             }
         }
+    },
+    "Local_DungeonSweep": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalDailySweep",
+                "custom_action_param": {}
+            }
+        },
+        "next": [
+            "Local_DungeonAfter"
+        ],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "Local_Dungeon_gold_Policy": {"enabled": true},
+    "Local_Dungeon_exp_Policy": {"enabled": true},
+    "Local_Dungeon_stone_Policy": {"enabled": true},
+    "Local_Dungeon_event_Policy": {"enabled": true},
+    "Local_DungeonAfter": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalStonehengeGate"
+            }
+        },
+        "next": [],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

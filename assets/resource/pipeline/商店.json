@@ -100,7 +100,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -111,7 +111,12 @@
                 "x": 1984,
                 "y": 2929
             }
-        }
+        },
+        "enabled": false,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商品-交易所-夏日币": {
         "max_hit": 1,
@@ -132,7 +137,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -143,7 +148,12 @@
                 "x": 1993,
                 "y": 3267
             }
-        }
+        },
+        "enabled": false,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商品-交易所-消耗品": {
         "max_hit": 1,
@@ -164,7 +174,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -175,7 +185,12 @@
                 "x": 1992,
                 "y": 2513
             }
-        }
+        },
+        "enabled": false,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商品-交易所-突袭": {
         "max_hit": 1,
@@ -196,7 +211,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -207,7 +222,12 @@
                 "x": 1986,
                 "y": 2744
             }
-        }
+        },
+        "enabled": false,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商品-交易所-竞技场": {
         "max_hit": 1,
@@ -228,7 +248,7 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopCategoryClick"
             }
         },
         "next": [
@@ -239,10 +259,15 @@
                 "x": 1990,
                 "y": 3088
             }
-        }
+        },
+        "enabled": false,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所": {
-        "enabled": true,
+        "enabled": false,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -265,18 +290,25 @@
         },
         "next": [
             "商店-交易所-Check",
+            "[JumpBack]商店-交易所-关闭购买",
             "[JumpBack]商品-交易所-消耗品",
             "[JumpBack]商品-交易所-突袭",
             "[JumpBack]商品-交易所-公会",
             "[JumpBack]商品-交易所-竞技场",
-            "[JumpBack]商品-交易所-夏日币"
+            "[JumpBack]商品-交易所-夏日币",
+            "[JumpBack]商品-交易所-南瓜币",
+            "Local_ShopExchangeDone"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 1667,
                 "y": 2381
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-Check": {
         "recognition": {
@@ -304,7 +336,11 @@
                 "x": 1675,
                 "y": 2128
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-公会-经验值宝箱": {
         "recognition": {
@@ -370,7 +406,11 @@
                 "x": 2629,
                 "y": 6081
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-公会-褪色宝石箱": {
         "recognition": {
@@ -436,7 +476,11 @@
                 "x": 2625,
                 "y": 5986
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-公会-金币宝箱": {
         "recognition": {
@@ -502,9 +546,14 @@
                 "x": 2632,
                 "y": 6288
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-关闭购买": {
+        "max_hit": 10,
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -531,7 +580,11 @@
                 "x": 3271,
                 "y": 1886
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-关闭购买-Check": {
         "max_hit": 3,
@@ -557,7 +610,11 @@
                 "x": 3271,
                 "y": 2036
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-初级经验书": {
         "recognition": {
@@ -623,7 +680,11 @@
                 "x": 2632,
                 "y": 3184
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-夏日币-BossRaidTicket": {
         "recognition": {
@@ -676,7 +737,11 @@
                 "x": 2849,
                 "y": 7899
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-夏日币-夏日票券": {
         "recognition": {
@@ -729,7 +794,11 @@
                 "x": 2632,
                 "y": 7700
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-夏日币-轮盘券": {
         "recognition": {
@@ -782,7 +851,11 @@
                 "x": 3405,
                 "y": 7556
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-巨石票": {
         "recognition": {
@@ -848,9 +921,14 @@
                 "x": 2632,
                 "y": 3824
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -880,7 +958,11 @@
                 "x": 2674,
                 "y": 1849
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-指南针": {
         "recognition": {
@@ -946,7 +1028,11 @@
                 "x": 2632,
                 "y": 2203
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-未选择商品": {
         "recognition": {
@@ -983,7 +1069,11 @@
                 "x": 2954,
                 "y": 1875
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-未选择商品-Check": {
         "max_hit": 3,
@@ -1009,7 +1099,11 @@
                 "x": 2954,
                 "y": 2025
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-稀有灵魂": {
         "recognition": {
@@ -1062,7 +1156,11 @@
                 "x": 2668,
                 "y": 1591
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-突袭-初级经验书": {
         "recognition": {
@@ -1128,7 +1226,11 @@
                 "x": 2635,
                 "y": 5327
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-突袭-巨石票": {
         "recognition": {
@@ -1194,7 +1296,11 @@
                 "x": 2634,
                 "y": 4131
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-突袭-梅林的特制药水": {
         "recognition": {
@@ -1260,7 +1366,11 @@
                 "x": 2628,
                 "y": 5923
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-突袭-精灵王的信物": {
         "recognition": {
@@ -1326,7 +1436,11 @@
                 "x": 2632,
                 "y": 4464
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-突袭-银河精髓": {
         "recognition": {
@@ -1392,7 +1506,11 @@
                 "x": 2632,
                 "y": 5060
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-竞技场-竞技场补给箱": {
         "recognition": {
@@ -1458,7 +1576,11 @@
                 "x": 2630,
                 "y": 6998
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-紫色门票": {
         "recognition": {
@@ -1524,7 +1646,11 @@
                 "x": 2632,
                 "y": 1287
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-褪色宝石箱": {
         "recognition": {
@@ -1577,7 +1703,11 @@
                 "x": 2632,
                 "y": 2857
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-交易所-金币券": {
         "recognition": {
@@ -1643,7 +1773,11 @@
                 "x": 2632,
                 "y": 3511
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-交易所-关闭购买": {
         "recognition": {
@@ -1672,7 +1806,11 @@
                 "x": 3271,
                 "y": 2175
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-交易所-关闭购买-Check": {
         "max_hit": 3,
@@ -1698,9 +1836,14 @@
                 "x": 3271,
                 "y": 2325
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -1716,7 +1859,10 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
         },
         "next": [
             "Global_ItemObtained",
@@ -1727,7 +1873,11 @@
                 "x": 2635,
                 "y": 6801
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-交易所-未选择商品": {
         "recognition": {
@@ -1764,7 +1914,11 @@
                 "x": 2954,
                 "y": 2175
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-交易所-未选择商品-Check": {
         "max_hit": 3,
@@ -1790,7 +1944,11 @@
                 "x": 2954,
                 "y": 2325
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-批量购买": {
         "recognition": {
@@ -1807,26 +1965,18 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-公会-褪色宝石箱",
-            "[JumpBack]商店-交易所-公会-经验值宝箱",
-            "[JumpBack]商店-交易所-公会-金币宝箱",
-            "[JumpBack]商店-公会-翻页",
-            "商店-公会-购买前检查钻石",
-            "商店-公会-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "公会"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2149,
                 "y": 6309
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-翻页": {
         "max_hit": 2,
@@ -1857,7 +2007,11 @@
                 "x": 2642,
                 "y": 6506
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-购买前检查钻石": {
         "recognition": {
@@ -1894,7 +2048,11 @@
                 "x": 2970,
                 "y": 6680
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-公会-购买前检查钻石-Check": {
         "max_hit": 3,
@@ -1920,7 +2078,11 @@
                 "x": 2975,
                 "y": 6320
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-关闭购买弹框": {
         "recognition": {
@@ -1953,7 +2115,11 @@
                 "x": 2895,
                 "y": 165
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-商品": {
         "recognition": {
@@ -1973,19 +2139,21 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalShopFreeGift",
+                "custom_action_param": {}
             }
         },
-        "next": [
-            "商店-每日免费礼包",
-            "商店-商品-Check"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 1683,
                 "y": 1841
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-商品-Check": {
         "max_hit": 3,
@@ -2011,7 +2179,11 @@
                 "x": 1683,
                 "y": 1552
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-交易所-关闭购买": {
         "recognition": {
@@ -2040,7 +2212,11 @@
                 "x": 3271,
                 "y": 2475
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-交易所-关闭购买-Check": {
         "max_hit": 3,
@@ -2066,9 +2242,14 @@
                 "x": 3271,
                 "y": 2625
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -2084,7 +2265,10 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
         },
         "next": [
             "Global_ItemObtained",
@@ -2095,7 +2279,11 @@
                 "x": 2634,
                 "y": 7512
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-交易所-未选择商品": {
         "recognition": {
@@ -2132,7 +2320,11 @@
                 "x": 2954,
                 "y": 2475
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-交易所-未选择商品-Check": {
         "max_hit": 3,
@@ -2158,7 +2350,11 @@
                 "x": 2954,
                 "y": 2625
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-批量购买": {
         "recognition": {
@@ -2194,7 +2390,11 @@
                 "x": 2212,
                 "y": 7700
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-翻页": {
         "max_hit": 2,
@@ -2225,7 +2425,11 @@
                 "x": 2624,
                 "y": 8120
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-购买前检查钻石": {
         "recognition": {
@@ -2262,7 +2466,11 @@
                 "x": 2970,
                 "y": 8120
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-夏日币-购买前检查钻石-Check": {
         "max_hit": 3,
@@ -2288,7 +2496,11 @@
                 "x": 2972,
                 "y": 7980
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-批量购买": {
         "recognition": {
@@ -2305,30 +2517,18 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-巨石票",
-            "[JumpBack]商店-交易所-稀有灵魂",
-            "[JumpBack]商店-交易所-指南针",
-            "[JumpBack]商店-交易所-褪色宝石箱",
-            "[JumpBack]商店-交易所-金币券",
-            "[JumpBack]商店-交易所-紫色门票",
-            "[JumpBack]商店-交易所-初级经验书",
-            "[JumpBack]商店-翻页",
-            "商店-购买前检查钻石",
-            "商店-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "消耗品"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2337,
                 "y": 699
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-每日免费礼包": {
         "recognition": {
@@ -2361,7 +2561,11 @@
                 "x": 2023,
                 "y": 341
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-每日免费礼包-Check": {
         "max_hit": 3,
@@ -2387,7 +2591,11 @@
                 "x": 1735,
                 "y": 49
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-交易所-关闭购买": {
         "recognition": {
@@ -2416,7 +2624,11 @@
                 "x": 3271,
                 "y": 2775
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-交易所-关闭购买-Check": {
         "max_hit": 3,
@@ -2442,9 +2654,14 @@
                 "x": 3271,
                 "y": 2925
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -2474,7 +2691,11 @@
                 "x": 2632,
                 "y": 4791
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-交易所-未选择商品": {
         "recognition": {
@@ -2511,7 +2732,11 @@
                 "x": 2954,
                 "y": 2775
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-交易所-未选择商品-Check": {
         "max_hit": 3,
@@ -2537,7 +2762,11 @@
                 "x": 2954,
                 "y": 2925
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-批量购买": {
         "recognition": {
@@ -2554,28 +2783,18 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-突袭-梅林的特制药水",
-            "[JumpBack]商店-交易所-突袭-银河精髓",
-            "[JumpBack]商店-交易所-突袭-巨石票",
-            "[JumpBack]商店-交易所-突袭-精灵王的信物",
-            "[JumpBack]商店-交易所-突袭-初级经验书",
-            "[JumpBack]商店-突袭-翻页",
-            "商店-突袭-购买前检查钻石",
-            "商店-突袭-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "突袭"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2135,
                 "y": 4993
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-翻页": {
         "max_hit": 3,
@@ -2606,7 +2825,11 @@
                 "x": 2634,
                 "y": 5622
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-购买前检查钻石": {
         "recognition": {
@@ -2643,7 +2866,11 @@
                 "x": 2970,
                 "y": 5644
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-突袭-购买前检查钻石-Check": {
         "max_hit": 3,
@@ -2669,7 +2896,11 @@
                 "x": 2975,
                 "y": 5288
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-交易所-关闭购买": {
         "recognition": {
@@ -2698,7 +2929,11 @@
                 "x": 3271,
                 "y": 3075
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-交易所-关闭购买-Check": {
         "max_hit": 3,
@@ -2724,9 +2959,14 @@
                 "x": 3271,
                 "y": 3225
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-交易所-批量购买": {
+        "max_hit": 1,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -2742,7 +2982,10 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Custom",
+            "param": {
+                "custom_action": "CenterClick"
+            }
         },
         "next": [
             "Global_ItemObtained",
@@ -2753,7 +2996,11 @@
                 "x": 2613,
                 "y": 7279
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-交易所-未选择商品": {
         "recognition": {
@@ -2790,7 +3037,11 @@
                 "x": 2954,
                 "y": 3075
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-交易所-未选择商品-Check": {
         "max_hit": 3,
@@ -2816,7 +3067,11 @@
                 "x": 2954,
                 "y": 3225
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-批量购买": {
         "recognition": {
@@ -2833,24 +3088,18 @@
                 ]
             }
         },
-        "action": {
-            "type": "Custom",
-            "param": {
-                "custom_action": "CenterClick"
-            }
-        },
-        "next": [
-            "[JumpBack]商店-交易所-竞技场-竞技场补给箱",
-            "[JumpBack]商店-竞技场-翻页",
-            "商店-竞技场-购买前检查钻石",
-            "商店-竞技场-交易所-批量购买"
-        ],
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "竞技场"}}},
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2212,
                 "y": 7109
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-翻页": {
         "max_hit": 2,
@@ -2881,7 +3130,11 @@
                 "x": 2636,
                 "y": 7269
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-购买前检查钻石": {
         "recognition": {
@@ -2918,7 +3171,11 @@
                 "x": 2970,
                 "y": 7200
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-竞技场-购买前检查钻石-Check": {
         "max_hit": 3,
@@ -2944,7 +3201,11 @@
                 "x": 2972,
                 "y": 7080
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-翻页": {
         "max_hit": 3,
@@ -2975,7 +3236,11 @@
                 "x": 2632,
                 "y": 2516
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-购买前检查钻石": {
         "recognition": {
@@ -3012,7 +3277,11 @@
                 "x": 2606,
                 "y": 984
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-购买前检查钻石-Check": {
         "max_hit": 3,
@@ -3038,7 +3307,11 @@
                 "x": 2595,
                 "y": 1013
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-购买商品-免费": {
         "recognition": {
@@ -3071,7 +3344,11 @@
                 "x": 2195,
                 "y": -41
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-购买商品-免费-Check": {
         "max_hit": 3,
@@ -3097,7 +3374,11 @@
                 "x": 2211,
                 "y": -204
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-购买商品-已购买": {
         "recognition": {
@@ -3134,7 +3415,11 @@
                 "x": 2552,
                 "y": 289
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店-购买商品-已购买-Check": {
         "max_hit": 3,
@@ -3160,7 +3445,11 @@
                 "x": 2553,
                 "y": 114
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店_从首页": {
         "desc": "配置首页右上角菜单打开后的商店后继",
@@ -3188,7 +3477,11 @@
                 "x": 252,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店_入口": {
         "desc": "商店任务入口",
@@ -3216,7 +3509,11 @@
                 "x": 802,
                 "y": 12
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店_商店页面": {
         "desc": "确认已进入商店页面",
@@ -3237,14 +3534,18 @@
         "next": [
             "[JumpBack]商店-商品",
             "[JumpBack]商店-交易所",
-            "StopTask"
+            "Local_ShopFinish"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 1121,
                 "y": 2038
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "商店_点击商店菜单": {
         "desc": "点击菜单中的商店",
@@ -3276,7 +3577,8 @@
             "商店_点击商店菜单_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -3309,6 +3611,63 @@
                 "x": 718,
                 "y": 1420
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "Local_ShopExchangeDone": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["^商店$"],
+                "roi": [65, 12, 100, 55]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalShopExchangeFinish"
+            }
+        },
+        "on_error": ["LocalCrashRecovery", "LocalTaskFailed"]
+    },
+    "商品-交易所-南瓜币": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": {"type": "OCR", "param": {"expected": ["^南瓜币$"], "roi": [90, 585, 170, 65]}},
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopCategoryClick"}},
+        "next": ["Local_ShopPumpkinBatch"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "Local_ShopPumpkinBatch": {
+        "recognition": {"type": "OCR", "param": {"expected": ["批量购买"], "roi": [95, 640, 185, 65]}},
+        "action": {"type": "Custom", "param": {"custom_action": "LocalShopBatch", "custom_action_param": {"category": "南瓜币"}}},
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "Local_ShopFinish": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["^商店$"],
+                "roi": [65, 12, 100, 55]
+            }
+        },
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "NodeOverride",
+                "custom_action_param": {
+                    "HomeFlagCloseReturnMain": {"next": []}
+                }
+            }
+        },
+        "next": ["ReturnMain"],
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }

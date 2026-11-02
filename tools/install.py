@@ -94,6 +94,14 @@ def install_deps():
             dirs_exist_ok=True,
         )
 
+        # MXU loads the framework from maafw/, which is also the framework's
+        # default location for the device-side touch and capture helpers.
+        shutil.copytree(
+            working_dir / "deps" / "share" / "MaaAgentBinary",
+            maafw_path / "MaaAgentBinary",
+            dirs_exist_ok=True,
+        )
+
 
 
 def install_resource():

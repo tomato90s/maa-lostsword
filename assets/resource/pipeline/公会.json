@@ -32,7 +32,11 @@
                 "x": 2786,
                 "y": 355
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-投资金币-Override": {
         "action": {
@@ -49,7 +53,11 @@
                 "x": 3205,
                 "y": 55
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-捐献-金币": {
         "recognition": {
@@ -69,19 +77,24 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalGuildDonation",
+                "custom_action_param": {
+                    "policy": "Local_GuildCoinPolicy",
+                    "scope": "coin"
+                }
             }
         },
-        "next": [
-            "Global_ItemObtained",
-            "公会-金币捐献-已上限"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2425,
                 "y": 1268
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-捐献-Check": {
         "max_hit": 3,
@@ -107,7 +120,11 @@
                 "x": 1984,
                 "y": 1451
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "$__mpe_external_Global_ItemObtained_公会": {
         "$__mpe_code": {
@@ -157,19 +174,24 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalGuildDonation",
+                "custom_action_param": {
+                    "policy": "Local_GuildTokenPolicy",
+                    "scope": "token"
+                }
             }
         },
-        "next": [
-            "Global_ItemObtained",
-            "公会-信物捐献-已上限"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2420,
                 "y": 1574
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-金币捐献-已上限": {
         "recognition": {
@@ -206,7 +228,11 @@
                 "x": 2775,
                 "y": 1299
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-金币捐献-已上限-Check": {
         "recognition": {
@@ -231,7 +257,11 @@
                 "x": 2777,
                 "y": 1207
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-金币捐献-Override": {
         "action": {
@@ -248,7 +278,11 @@
                 "x": 3080,
                 "y": 1330
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-信物捐献-已上限": {
         "recognition": {
@@ -285,7 +319,11 @@
                 "x": 2759,
                 "y": 1675
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-信物捐献-已上限-Check": {
         "recognition": {
@@ -310,7 +348,11 @@
                 "x": 2758,
                 "y": 1473
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-信物捐献-StopTask": {
         "action": {
@@ -321,7 +363,11 @@
                 "x": 3449,
                 "y": 1841
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-捐献-关闭弹框": {
         "recognition": {
@@ -353,7 +399,11 @@
                 "x": 3088,
                 "y": 1769
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-捐献-关闭弹框-Check": {
         "recognition": {
@@ -381,7 +431,11 @@
                 "x": 3090,
                 "y": 1499
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "$__mpe_external_Home_OpenTopRightMenu_公会": {
         "$__mpe_code": {
@@ -442,7 +496,11 @@
                 "x": 2364,
                 "y": 739
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-已签到-Check": {
         "recognition": {
@@ -470,7 +528,11 @@
                 "x": 2365,
                 "y": 536
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-已签到-已关闭弹框": {
         "recognition": {
@@ -501,7 +563,11 @@
                 "x": 2780,
                 "y": 861
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-捐献": {
         "recognition": {
@@ -527,6 +593,7 @@
         "next": [
             "[JumpBack]公会-捐献-金币",
             "[JumpBack]公会-捐献-信物",
+            "公会-捐献-关闭弹框",
             "公会-捐献-Check"
         ],
         "$__mpe_code": {
@@ -534,7 +601,11 @@
                 "x": 1966,
                 "y": 1724
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-签到": {
         "max_hit": 3,
@@ -563,7 +634,9 @@
             "公会-已签到"
         ],
         "on_error": [
-            "公会-签到"
+            "LocalCrashRecovery",
+            "公会-签到",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -590,19 +663,20 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalGuildClaimReward"
             }
         },
-        "next": [
-            "Global_ItemObtained",
-            "公会-领取投资奖励-Check"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 1970,
                 "y": -159
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-领取投资奖励-Check": {
         "max_hit": 3,
@@ -628,7 +702,11 @@
                 "x": 1969,
                 "y": 74
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会_从首页": {
         "desc": "配置首页右上角菜单打开后的公会后继",
@@ -656,7 +734,11 @@
                 "x": 1280,
                 "y": 680
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会_入口": {
         "desc": "公会任务入口",
@@ -684,7 +766,11 @@
                 "x": 1280,
                 "y": 360
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会_公会页面": {
         "desc": "确认已进入公会页面",
@@ -703,18 +789,23 @@
             }
         },
         "next": [
+            "[JumpBack]公会-签到",
             "[JumpBack]公会-领取投资奖励",
             "[JumpBack]公会-投资金币",
             "[JumpBack]公会-投资信物",
-            "[JumpBack]公会-签到",
-            "[JumpBack]公会-捐献"
+            "[JumpBack]公会-捐献",
+            "StopTask"
         ],
         "$__mpe_code": {
             "position": {
                 "x": 1650,
                 "y": 1239
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会_点击公会菜单": {
         "desc": "点击菜单中的公会",
@@ -746,7 +837,9 @@
             "公会_点击公会菜单_Check"
         ],
         "on_error": [
-            "StopTask"
+            "LocalCrashRecovery",
+            "StopTask",
+            "LocalTaskFailed"
         ],
         "$__mpe_code": {
             "position": {
@@ -780,7 +873,11 @@
                 "x": 1272,
                 "y": 759
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-投资金币": {
         "recognition": {
@@ -812,7 +909,12 @@
                 "x": 2013,
                 "y": 288
             }
-        }
+        },
+        "enabled": false,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-投资信物": {
         "recognition": {
@@ -844,7 +946,12 @@
                 "x": 2027,
                 "y": 587
             }
-        }
+        },
+        "enabled": false,
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-已投资金币": {
         "recognition": {
@@ -881,7 +988,11 @@
                 "x": 2794,
                 "y": -24
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-已投资金币-Check": {
         "max_hit": 3,
@@ -910,7 +1021,11 @@
                 "x": 2861,
                 "y": -300
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-投资信物-Override": {
         "action": {
@@ -927,7 +1042,11 @@
                 "x": 3204,
                 "y": 471
             }
-        }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     },
     "公会-已投资信物": {
         "recognition": {
@@ -964,6 +1083,50 @@
                 "x": 2784,
                 "y": 543
             }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "Local_GuildPolicy": {
+        "desc": "仅检测运行中旧界面仍在发送的合并配置，不用于执行捐献",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {"coin": 0, "token": 0}
+            }
         }
+    },
+    "Local_GuildCoinPolicy": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {
+                    "coin": 0
+                }
+            }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
+    },
+    "Local_GuildTokenPolicy": {
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {
+                    "token": 0
+                }
+            }
+        },
+        "on_error": [
+            "LocalCrashRecovery",
+            "LocalTaskFailed"
+        ]
     }
 }
