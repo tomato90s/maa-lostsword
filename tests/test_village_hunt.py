@@ -62,6 +62,45 @@ class VillageTests(unittest.TestCase):
         action.wallet = lambda:(_ for _ in ()).throw(AssertionError("Should not open the game"))
         self.assertTrue(action.execute())
 
+    def test_candy_selector_requires_the_complete_owned_quantity(self):
+        for chosen, expected in (("21", True), ("2", False), ("[T", False)):
+            with self.subTest(chosen=chosen):
+                action = VillageHunt()
+                sent = []
+                balances = iter((1000, 1630))
+                action.wallet = lambda: next(balances)
+                action.open_menu = lambda: None
+                action.find_candy = lambda: (200, 350, 100, 100)
+                action.find = lambda *args: True
+                action.ocr = lambda pattern, roi, only_rec=False: [NS(text="[21]" if roi == (760,120,90,35) else chosen)]
+                action.click = lambda x, y, delay=.5: sent.append((x,y))
+                if expected:
+                    self.assertEqual(action.redeem(), (1000,1630,21))
+                    self.assertIn((1085,666), sent)
+                else:
+                    with self.assertRaisesRegex(RuntimeError,"使用数量"):
+                        action.redeem()
+                    self.assertNotIn((1085,666), sent)
+
+    def test_stored_candy_does_not_count_as_todays_hunt(self):
+        action = VillageHunt()
+        action.param = {"limit":12, "steps":1}
+        records = [{"status":"inventory_redeemed", "gain":630}]
+        def journal(record=None):
+            if record is not None: records.append(record)
+            return records
+        action.journal = journal
+        receipts = iter(((1000,1630,21), (1630,1660,1)))
+        action.redeem = lambda: next(receipts)
+        action.home = lambda: None
+        action.find = lambda *args: NS(text="Ronot256")
+        action.node = lambda *args: True
+        action.patrol = lambda steps: (1,1)
+        action.log = lambda message: None
+        self.assertFalse(action.execute())
+        self.assertEqual(records[-1]["confirmed_today"],30)
+        self.assertEqual(records[-1]["status"],"partial")
+
     def test_chicken_without_templates_stops_before_touching_the_game(self):
         import agent.village_actions as module
         action = VillageHunt()
@@ -111,5 +150,18 @@ class VillageTests(unittest.TestCase):
         action.param = {"target":"duck"}
         with self.assertRaisesRegex(RuntimeError,"目标类型"):
             action.execute()
+
+    def test_missing_targets_do_not_turn_or_end_the_patrol_early(self):
+        action = VillageHunt()
+        action.find = lambda *args: None
+        action.player = lambda: (640,600)
+        action.targets = lambda player: []
+        action.portal = lambda: None
+        action.trace = action.log = lambda *args: None
+        action.move = action.strike = lambda *args, **kwargs: None
+        for previous_misses in (9,23):
+            result = action.patrol_step(previous_misses,previous_misses,0,1,0)
+            self.assertEqual(result[2],1)
+            self.assertFalse(result[-1])
 
 if __name__ == "__main__":unittest.main()

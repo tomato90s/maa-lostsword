@@ -117,11 +117,9 @@ def install_resource():
         working_dir / "assets" / "interface.json",
         install_path,
     )
-    if (working_dir / "assets" / "logo.webp").exists():
-        shutil.copy2(
-            working_dir / "assets" / "logo.webp",
-            install_path,
-        )
+    for icon in ("logo.webp", "logo.png"):
+        if (working_dir / "assets" / icon).exists():
+            shutil.copy2(working_dir / "assets" / icon, install_path)
 
     with open(install_path / "interface.json", "r", encoding="utf-8") as f:
         interface = jsonc.load(f)

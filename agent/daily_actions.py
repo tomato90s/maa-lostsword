@@ -21,6 +21,10 @@ class ScreenAction(CustomAction):
             self.context = context
             self.argv = argv
             self.param = json.loads(argv.custom_action_param or "{}")
+            if self.param is None:
+                self.param = {}
+            if not isinstance(self.param, dict):
+                raise RuntimeError("任务参数必须为对象")
             self.deadline = time.monotonic() + self.timeout
             self.capture()
             return self.execute()

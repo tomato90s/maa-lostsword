@@ -396,26 +396,17 @@
         ]
     },
     "Draw_Entry": {
-        "desc": "免费每日一抽任务入口",
+        "desc": "分别核对角色和宠物的每日免费召唤与余额",
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "NodeOverride",
-                "custom_action_param": {
-                    "HomeFlagCloseReturnMain": {
-                        "next": [
-                            "Draw_FromHome"
-                        ]
-                    }
-                }
+                "custom_action": "LocalDailyFreeSummon"
             }
         },
         "focus": {
             "Node.Action.Starting": "开始执行免费每日一抽任务"
         },
-        "next": [
-            "ReturnMain"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 562,

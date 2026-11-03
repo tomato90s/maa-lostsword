@@ -7,7 +7,8 @@
                 "daily"
             ],
             "label": "🎲免费每日一抽",
-            "default_check": true
+            "default_check": true,
+            "description": "领取角色和宠物各一次的每日免费召唤，自动处理召唤动画和孵蛋；已领取则跳过，不消耗钻石或召唤券。"
         }
     ],
     "option": {}

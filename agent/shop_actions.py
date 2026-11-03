@@ -210,7 +210,26 @@ class ShopBatch(ScreenAction):
 
     def category_balance(self):
         roi = (825, 12, 110, 44) if self.category == "消耗品" else ((980, 12, 90, 44) if self.category == "南瓜币" else (1110, 12, 95, 44))
-        return self.number(roi)
+        rows = self.ocr(r".+", roi)
+        values = [amount(row.text) for row in rows]
+        if len(values) == 1 and values[0] is not None:
+            return values[0]
+        if not any(re.fullmatch(r"\s*\d+(?:\.\d+)?[万亿]\+?\s*", row.text) for row in rows):
+            return self.number(roi)
+        # The top bar abbreviates large balances. The currency icon opens an
+        # item description showing the exact owned amount, including commas.
+        self.click(roi[0] - 20, 34, .8)
+        keyword = {"消耗品": "信物", "南瓜币": "南瓜", "突袭": "突袭",
+                   "公会": "公会", "竞技场": "竞技"}[self.category]
+        if (not self.find(keyword, (480, 180, 350, 70))
+                or not self.find(r"^说明$", (470, 245, 130, 55))):
+            raise RuntimeError("未确认分类代币详情，不按缩写估算余额")
+        exact = self.number((825, 195, 95, 45))
+        close = self.find(r"^确认$", (540, 550, 210, 90))
+        if not close:
+            raise RuntimeError("代币详情没有确认按钮")
+        self.click_row(close, .8)
+        return exact
 
     def ledger(self, record=None):
         path = Path(__file__).resolve().parents[1] / "debug" / f"shop-purchases-{datetime.now():%Y-%m-%d}.jsonl"

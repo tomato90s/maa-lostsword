@@ -138,7 +138,11 @@ class VillageHunt(SeasonalScreen):
         if owned > 1:
             # The quantity selector only exists when more than one candy is held.
             self.click(1180,588,.5)  # Select the maximum quantity.
-            chosen = self.number((900,528,180,35))
+            # The wide dark selector makes OCR detect only the first digit
+            # (21 was read as 2). Read the centered value without its borders.
+            selected = self.ocr(r".+", (940,528,95,35), only_rec=True)
+            values = [re.fullmatch(r"\d+", row.text.strip()) for row in selected]
+            chosen = int(values[0][0]) if len(values) == 1 and values[0] else None
             if chosen != owned:
                 raise RuntimeError("糖果使用数量与持有数量不一致")
         self.click(1085,666,1.5)
@@ -283,6 +287,14 @@ class VillageHunt(SeasonalScreen):
         if not wanted or total >= wanted:
             self.log(f"本日已核对{total}钻奖励，达到本轮上限，跳过")
             return True
+        # Old candy can remain in the bag across days. Redeem it separately so
+        # a stored stack never counts as today's twelve defeated targets.
+        before, after, stored = self.redeem()
+        stored_gain = verified_reward(before, after, stored)
+        if stored:
+            self.journal({"status":"inventory_redeemed", "before":before, "after":after,
+                          "candies":stored, "gain":stored_gain})
+            self.log(f"已领取背包原有糖果{stored}颗、{stored_gain}钻，另行核对本次巡查")
         self.home()
         name = self.find(r"\S+", (120, 45, 180, 50))
         if not name:
@@ -386,9 +398,9 @@ class VillageHunt(SeasonalScreen):
                 if misses%2==0:
                     self.strike(use_skill=misses%6==0)
                     attacks += 1
-                if misses%10==0: direction *= -1
-                if misses >= 24:
-                    return misses, attacks, direction, sighted, True
+                # Keep walking to the village edge. Turning after ten misses
+                # returned to the same streets, then stopped before the user's
+                # selected patrol budget could cover the rest of the village.
             return misses, attacks, direction, sighted, False
 
 

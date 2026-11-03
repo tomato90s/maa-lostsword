@@ -2,6 +2,7 @@
 import json
 import re
 import time
+from uuid import uuid4
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -41,10 +42,22 @@ def cow_free_state(text):
     if re.search(r"免费", clean):
         match = re.search(r"([0-3])/3", clean)
         return int(match[1]) if match else -1
-    match = re.search(r"([0-3])/3", clean)
+    match = re.fullmatch(r"进入([0-3])/3", clean)
     if match:
         return int(match[1])
-    return 0
+    return 0 if re.fullmatch(r"(?:\d+)?进入", clean) else None
+
+
+def cow_attempts(records):
+    """Submission and result are two receipts for the same entry, not two runs."""
+    attempts = {row["attempt"] for row in records if row.get("attempt")
+                and row.get("status") in ("submitted", "confirmed")}
+    cancelled = {row["attempt"] for row in records if row.get("attempt")
+                 and row.get("status") == "cancelled"}
+    legacy = [row for row in records if not row.get("attempt")]
+    return len(attempts - cancelled) + max(
+        sum(row.get("status") == "submitted" for row in legacy),
+        sum(row.get("status") == "confirmed" for row in legacy))
 
 
 def game_week(now=None):
@@ -81,6 +94,8 @@ class SeasonalScreen(ScreenAction):
         raise RuntimeError("无法确认页面数量，停止当前操作")
 
     def home(self):
+        if self.find(r"VICTORY", (50, 25, 450, 110)):
+            self.click(640, 360, 1)
         result = self.context.run_task("ReturnMain", {
             "HomeFlagCloseReturnMain": {"next": []},
             "LocalCrashRecovery": {"enabled": False}})
@@ -93,8 +108,17 @@ class SeasonalScreen(ScreenAction):
 
     def open_menu(self, label):
         self.home()
-        self.click(1236, 36, .7)
+        clicks = 0
         for _ in range(12):
+            menu_open = self.find(r"游戏专属编号", (850, 55, 350, 50))
+            if not menu_open:
+                if self.node("HomeFlagCloseReturnMain") and clicks < 2:
+                    clicks += 1
+                    self.click(1236, 36, 1)
+                    continue
+                self.pause(.4)
+                self.capture()
+                continue
             button = self.find("^" + re.escape(label) + "$", (755, 160, 420, 480))
             if button:
                 # The caption can sit below the menu button's hit area.
@@ -136,10 +160,18 @@ class BingoCraft(SeasonalScreen):
         raise RuntimeError("南瓜币用量无法确认，不制作")
 
     def daily_counter(self):
-        text = " ".join(row.text for row in self.ocr(r".+", (125, 185, 230, 40)))
+        text = " ".join(row.text for row in self.ocr(r".+", (125, 175, 230, 50)))
         match = re.search(r"([0-5])\s*[/／]\s*5", text)
         if match:
             return int(match[1])
+        # After the fifth craft the row is dimmed and a lock covers the label.
+        # Read the digits alone, away from that overlay.
+        for roi in ((248, 175, 48, 27), (248, 192, 48, 27)):
+            for only_rec in (True, False):
+                rows = self.ocr(r".+", roi, only_rec=only_rec)
+                match = re.fullmatch(r"([0-5])/5", re.sub(r"\s", "", "".join(row.text for row in rows)).replace("／", "/"))
+                if match:
+                    return int(match[1])
         raise RuntimeError("宾果每日制作次数无法确认，不制作")
 
     def selected_quantity(self):
@@ -162,7 +194,10 @@ class BingoCraft(SeasonalScreen):
         if not activity:
             raise RuntimeError("没有确认制作页面的活动分类")
         self.click_row(activity)
-        ticket = self.find(r"^宾果票券$", (115, 135, 240, 500))
+        if self.find(r"^宾果", (115, 135, 240, 55)) and self.daily_counter() == 5:
+            self.log("今日宾果票券已制作5张，跳过锁定配方")
+            return True
+        ticket = self.find(r"^宾果票(?:券)?$", (115, 135, 240, 500))
         if not ticket:
             self.log("本期没有宾果票券配方，跳过")
             return True
@@ -216,7 +251,9 @@ class BingoCraft(SeasonalScreen):
                 tickets = self.number((1000, 15, 70, 40))
                 coins = self.number((1120, 15, 90, 40))
                 if (tickets == before_tickets + quantity and coins == before_coins - required
-                        and self.daily_counter() == used + quantity):
+                        ):
+                    # Both inventory balances independently prove the craft;
+                    # the locked recipe counter can be unreadable after 5/5.
                     self.log(f"已确认票券{before_tickets}->{tickets}，南瓜币{before_coins}->{coins}")
                     return True
                 if tickets not in (before_tickets, before_tickets + quantity):
@@ -227,17 +264,22 @@ class BingoCraft(SeasonalScreen):
 
 class RaidSweep(SeasonalScreen):
     label = "个人突袭扫荡"
-    timeout = 65
+    timeout = 180
 
     def dialog(self):
         return (self.find(r"(?:一)?键扫荡", (560, 85, 180, 60))
                 and self.find(r"Boss\s*Raid\s*Ticket", (500, 285, 290, 65)))
 
     def free_remaining(self):
-        for row in self.ocr(r".+", (900, 635, 140, 65)):
-            match = re.search(r"扫荡\s*([0-3])\s*[/／]\s*3", row.text)
-            if match:
-                return int(match[1])
+        rows = self.ocr(r".+", (880, 635, 160, 65))
+        text = re.sub(r"\s", "", "".join(row.text for row in sorted(rows, key=lambda row: row.box.x))).replace("／", "/")
+        match = re.fullmatch(r"扫荡([0-3])/3", text)
+        if match:
+            return int(match[1])
+        # After the third free sweep the counter is replaced by the ticket
+        # balance and a plain Sweep caption. This is a paid button, never hit.
+        if re.fullmatch(r"\d+扫荡", text):
+            return 0
         return None
 
     def ledger(self, record=None):
@@ -250,64 +292,80 @@ class RaidSweep(SeasonalScreen):
             stream.write(json.dumps({"time": datetime.now().astimezone().isoformat(), **record}, ensure_ascii=False) + "\n")
 
     def execute(self):
-        previous = self.ledger()
-        if previous:
-            if previous["status"] == "confirmed":
-                self.log("今日1次个人突袭已有到账回执，跳过重复扫荡")
-                return True
-            raise RuntimeError("今日突袭已经提交过，结果需要核对，不重复扫荡")
-        popup = bool(self.dialog())
-        if not popup and not self.find(r"队伍编排", (65, 635, 160, 55)):
-            raise RuntimeError("未确认个人突袭扫荡页")
-        before = self.number((1140, 14, 65, 40))
-        before_free = None if popup else self.free_remaining()
-        if before < 1 and not before_free:
-            self.log("没有突袭门票，跳过")
+        limit = int(self.param.get("limit", 3))
+        if not 0 <= limit <= 3:
+            raise RuntimeError("个人突袭每日免费次数须为0至3")
+        if not limit:
+            self.log("次数为0，跳过")
             return True
-        submitted = False
-        if not popup:
+        previous = self.ledger()
+        if previous and previous["status"] not in ("confirmed", "counter_confirmed", "cancelled"):
+            remaining = self.free_remaining()
+            same_tickets = ("before_tickets" in previous
+                            and self.number((1140, 14, 65, 40)) == previous["before_tickets"])
+            decreased = (previous.get("before_free") in (1, 2, 3)
+                         and remaining == previous["before_free"] - 1)
+            if same_tickets and decreased and (previous["status"] == "reward_observed" or remaining == 0):
+                self.ledger({**previous, "status": "counter_confirmed", "after_free": remaining,
+                             "after_tickets": previous["before_tickets"],
+                             "reward_verified": previous["status"] == "reward_observed"})
+                self.log("已核对上次免费次数减少且门票未变；不会补点已用掉的次数")
+            else:
+                raise RuntimeError("今日突袭已经提交过，结果需要核对，不重复扫荡")
+        completed = 0
+        while completed < 3:
+            if self.dialog():
+                cancel = self.find(r"^取消$", (300, 550, 650, 110))
+                if not cancel:
+                    raise RuntimeError("当前是门票扫荡确认框，不消耗门票")
+                self.click_row(cancel, .8)
+                self.log("已取消门票扫荡，只执行每日免费次数")
+                return True
+            if not self.find(r"队伍编排", (65, 635, 160, 55)):
+                raise RuntimeError("未确认个人突袭扫荡页")
+            before_free = self.free_remaining()
+            if before_free is None:
+                raise RuntimeError("无法确认个人突袭免费次数，不扫荡")
+            if before_free == 0 or 3 - before_free >= limit:
+                self.log(f"今日已用{3 - before_free}/3次免费扫荡，达到设置上限{limit}次")
+                return True
+            before = self.number((1140, 14, 65, 40))
             button = self.find(r"^扫荡(?:\s*[0-3]\s*[/／]\s*3)?$", (900, 640, 130, 55))
             if not button:
                 raise RuntimeError("未找到个人突袭扫荡入口")
-            # With the game's confirmation disabled, this button commits at once.
             self.ledger({"status": "unknown", "before_tickets": before, "before_free": before_free})
-            self.log(f"已记录门票{before}、免费次数{before_free}，仅点击一次扫荡入口")
+            self.log(f"免费次数剩余{before_free}/3、门票{before}，提交一次免费扫荡")
             self.click_row(button, .8)
-        reward = False
-        until = time.monotonic() + 30
-        while time.monotonic() < until:
-            self.capture()
-            if self.close_reward():
-                reward = True
-                continue
-            if self.dialog() and not submitted:
-                if before_free:
-                    raise RuntimeError("免费次数与门票确认弹窗不一致，不消耗门票")
-                if self.number((620, 373, 45, 36)) != 1:
-                    raise RuntimeError("扫荡数量不是默认1次，不消耗额外门票")
-                confirm = self.find(r"^扫荡$", (500, 565, 290, 65))
-                if not confirm:
-                    raise RuntimeError("未确认弹窗内扫荡按钮")
-                if popup:
-                    self.ledger({"status": "unknown", "before_tickets": before})
-                submitted = True
-                self.log(f"已确认默认1次及门票{before}，提交一次扫荡")
-                self.click_row(confirm, .8)
-                continue
-            if not self.dialog() and self.find(r"队伍编排", (65, 635, 160, 55)):
-                after = self.number((1140, 14, 65, 40))
-                after_free = self.free_remaining()
-                free_receipt = bool(before_free and after_free == before_free - 1 and after == before)
-                paid_receipt = not before_free and after == before - 1
-                if reward and (free_receipt or paid_receipt):
-                    self.ledger({"status": "confirmed", "before_tickets": before, "after_tickets": after,
-                                 "before_free": before_free, "after_free": after_free})
-                    self.log(f"已确认1次扫荡及奖励，免费次数{before_free}->{after_free}，门票{before}->{after}")
-                    return True
-                if after not in (before, before - 1):
-                    raise RuntimeError("门票变化异常，不重复扫荡")
-            self.pause(.4)
-        raise RuntimeError("已提交一次扫荡，结果未确认，不再次消耗门票")
+            reward = False
+            until = time.monotonic() + 30
+            while time.monotonic() < until:
+                self.capture()
+                if self.close_reward():
+                    reward = True
+                    self.ledger({"status": "reward_observed", "before_tickets": before, "before_free": before_free})
+                    continue
+                if self.dialog():
+                    cancel = self.find(r"^取消$", (300, 550, 650, 110))
+                    if cancel:
+                        self.click_row(cancel, .8)
+                    raise RuntimeError("免费扫荡出现门票确认框，停止且不确认扣票")
+                if self.find(r"队伍编排", (65, 635, 160, 55)):
+                    after = self.number((1140, 14, 65, 40))
+                    after_free = self.free_remaining()
+                    if after != before:
+                        raise RuntimeError("免费扫荡后门票变化，停止后续操作")
+                    if reward and after_free == before_free - 1:
+                        self.ledger({"status": "confirmed", "before_tickets": before, "after_tickets": after,
+                                     "before_free": before_free, "after_free": after_free})
+                        self.log(f"已确认奖励，免费次数{before_free}->{after_free}，门票保持{after}")
+                        completed += 1
+                        break
+                    if after_free not in (None, before_free, before_free - 1):
+                        raise RuntimeError("免费次数变化异常，停止后续操作")
+                self.pause(.4)
+            else:
+                raise RuntimeError("已提交一次扫荡，结果未确认，不再次消耗门票")
+        return True
 
 
 class RouletteFree(SeasonalScreen):
@@ -376,6 +434,97 @@ ACTIONS = {"LocalBingoCraft": BingoCraft(), "LocalRaidSweep": RaidSweep(),
            "LocalRouletteFree": RouletteFree()}
 
 
+class DailyFreeSummon(SeasonalScreen):
+    label = "每日免费召唤"
+    timeout = 240
+
+    def diamond_balance(self):
+        self.home()
+        self.click(1236, 36, 1)
+        if not self.find(r"游戏专属编号", (850, 55, 350, 50)):
+            raise RuntimeError("未确认大厅菜单，无法核对召唤前后钻石")
+        value = self.number((850, 655, 105, 42))
+        self.click(1236, 36, .8)
+        return value
+
+    def select_tab(self, name):
+        for step in range(8):
+            tab = self.find("^" + name + "$", (35, 90, 190, 600))
+            if tab:
+                self.click_row(tab, 1)
+                for _ in range(8):
+                    if self.find("^" + name + "$", (270, 125, 400, 150)):
+                        return
+                    self.pause(.4)
+                    self.capture()
+                raise RuntimeError("未确认召唤分类：" + name)
+            self.swipe(125, 180, 125, 600) if step < 2 else self.swipe(125, 590, 125, 180)
+        raise RuntimeError("没有找到召唤分类：" + name)
+
+    def summon(self, name):
+        self.select_tab(name)
+        free = self.find(r"^免费$", (740, 655, 150, 45))
+        if not free:
+            used_node = "Draw_CharacterFreeUsed_Ticket" if name == "领取角色" else "Draw_PetFreeUsed_Ticket"
+            known_paid = self.node(used_node) or self.node("Draw_CharacterFreeUsed_Diamond")
+            prices = "".join(row.text for row in self.ocr(r".+", (795, 655, 70, 45), only_rec=True))
+            if not known_paid and unsigned_number(prices) is None:
+                raise RuntimeError(name + "的免费状态无法确认，不召唤")
+            self.log(name + "今日免费次数已用完，跳过")
+            return
+        tickets = self.number((1140, 14, 65, 40))
+        button = self.find(r"^召唤1次$", (735, 615, 170, 45))
+        if not button:
+            raise RuntimeError("未确认免费单次召唤按钮")
+        self.log(f"{name}已确认免费，当前召唤券{tickets}，只提交一次")
+        self.click_row(button, .8)
+        result_seen = False
+        until = time.monotonic() + 45
+        while time.monotonic() < until:
+            self.capture()
+            if self.find(r"取消", (300, 400, 650, 160)):
+                raise RuntimeError("召唤出现额外确认框，停止且不确认扣费")
+            skip = self.find(r"^[Ss][Kk][Ii][Pp]", (1080, 0, 200, 80))
+            if skip:
+                self.click_row(skip, .8)
+                continue
+            if self.find(r"蛋壳", (400, 615, 500, 100)):
+                self.click(640, 460, .8)
+                continue
+            view = self.find(r"^查看全部$", (540, 630, 210, 80))
+            if view:
+                result_seen = True
+                self.click_row(view, .8)
+                continue
+            confirm = self.find(r"^确认$", (540, 630, 210, 80))
+            if confirm:
+                result_seen = True
+                self.click_row(confirm, .8)
+                continue
+            if self.find("^" + name + "$", (270, 125, 400, 150)):
+                after = self.number((1140, 14, 65, 40))
+                if after != tickets:
+                    raise RuntimeError(name + "召唤券发生变化，停止后续召唤")
+                if result_seen and not self.find(r"^免费$", (740, 655, 150, 45)):
+                    self.log(f"{name}免费召唤结果已确认，召唤券保持{after}")
+                    return
+            self.pause(.5)
+        raise RuntimeError(name + "已提交一次免费召唤，结果未确认，不重复点击")
+
+    def execute(self):
+        before = self.diamond_balance()
+        self.open_menu("召唤")
+        if self.param.get("inspect_only"):
+            return True
+        for name in ("领取角色", "领取宠物"):
+            self.summon(name)
+        after = self.diamond_balance()
+        if after != before:
+            raise RuntimeError(f"免费召唤前后钻石变化{before}->{after}")
+        self.log(f"角色和宠物每日免费召唤已检查，钻石保持{after}")
+        return True
+
+
 class FriendGift(SeasonalScreen):
     label = "好友收礼"
     timeout = 90
@@ -432,6 +581,37 @@ class FriendGift(SeasonalScreen):
 class SecretCow(SeasonalScreen):
     label = "秘密奶牛副本"
     timeout = 900
+
+    def ensure_single_battle(self):
+        # A free first entry alone is insufficient: the game's own auto
+        # progression can continue into paid runs without another script click.
+        raise RuntimeError("自动退场尚未完成免费实测，暂停奶牛自动进入，防止消耗铃铛")
+
+    def leave_battle(self):
+        """Use the stage's upper-right exit, then confirm the exact leave dialog.
+
+        This is containment, not proof that auto-progression is disabled; the
+        entry lock stays in place until a free run validates the whole flow.
+        """
+        opened = False
+        for _ in range(16):
+            self.capture()
+            if self.node("HomeFlagCloseReturnMain") or (
+                    self.title() and self.find(r"进入|^选择$", (890,630,310,65))):
+                return True
+            if self.find(r"是否确定退场", (450,310,400,100)):
+                leave = self.find(r"^退场$", (500,430,300,85))
+                if not leave:
+                    raise RuntimeError("已打开退场提示，但没有确认退场按钮")
+                self.click_row(leave, .8)
+                continue
+            stage = self.find(r"秘密奶牛副本.*第\d+层", (960,75,300,55))
+            if stage and not opened:
+                self.click(1236,100,.3)
+                opened = True
+                continue
+            self.pause(.4)
+        raise RuntimeError("未能确认已退出奶牛副本，请从右上角手动退场")
 
     def ledger(self, record=None):
         path = Path(__file__).resolve().parents[1] / "debug" / "secret-cow-weekly.jsonl"
@@ -493,8 +673,17 @@ class SecretCow(SeasonalScreen):
         limit = int(self.param.get("limit", 3))
         if not 0 <= limit <= 5:
             raise RuntimeError("秘密奶牛副本次数须为0至5")
+        if self.param.get("inspect_only"):
+            self.open_dungeon()
+            if not self.to_team():
+                raise RuntimeError("未确认奶牛副本队伍页")
+            state = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890, 635, 310, 55))))
+            self.log(f"只核对未进入：免费次数{state}，铃铛{self.bells()}")
+            return True
         records = self.ledger()
-        used = sum(1 for row in records if row.get("status") in ("submitted", "confirmed"))
+        used = cow_attempts(records)
+        if records and records[-1].get("status") == "submitted":
+            raise RuntimeError("上次奶牛副本进入结果尚未核对，不重复进入")
         if used >= limit:
             self.log(f"本周已由脚本进入{used}次，达到设置{limit}次，跳过")
             return True
@@ -504,26 +693,40 @@ class SecretCow(SeasonalScreen):
                 raise RuntimeError("未确认奶牛副本的进入按钮")
             floor = self.title().text
             state = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890, 635, 310, 55))))
+            if state is None:
+                raise RuntimeError("未确认奶牛副本进入次数，不进入")
             if state == 0:
                 self.log("本周免费次数已用完（进入需要消耗铃铛），不使用铃铛，正常结束")
                 return True
+            self.ensure_single_battle()
             before = self.bells()
             enter = self.find(r"进入", (1000, 635, 200, 60))
-            self.ledger({"status": "submitted", "floor": floor, "bells": before})
-            self.log(f"确认免费进入，挑战{floor}（本周脚本第{used + 1}/{limit}次），铃铛{before}")
+            attempt = uuid4().hex
+            self.ledger({"status": "submitted", "attempt": attempt, "floor": floor, "bells": before,
+                         "before_free": state})
+            self.log(f"确认免费进入{state}/3，挑战{floor}（本周脚本第{used + 1}/{limit}次），铃铛{before}")
             self.click_row(enter, 1)
             used += 1
-            if not self.battle(before):
+            if not self.battle(before, state):
+                self.ledger({"status": "cancelled", "attempt": attempt, "floor": floor, "bells": before})
                 return True
-            self.ledger({"status": "confirmed", "floor": floor, "bells": before})
+            self.ledger({"status": "confirmed", "attempt": attempt, "floor": floor, "bells": before,
+                         "before_free": state, "after_free": self.last_cow_free})
         self.log(f"已完成设置的{limit}次，正常结束")
         return True
 
-    def battle(self, bells):
+    def battle(self, bells, before_free):
         last = time.monotonic()
         seen_battle = False
-        while time.monotonic() - last < 90:
+        seen_result = False
+        failed = False
+        while time.monotonic() - last < 300:
             self.capture()
+            if self.find(r"HOT\s*DEAL|牛仔女王的提议", (80, 90, 1110, 480)):
+                self.log("关闭奶牛副本战后的限时礼包弹窗")
+                self.click(1236, 36, 1)
+                last = time.monotonic()
+                continue
             dialog = self.find(r"取消", (360, 430, 300, 110))
             if dialog:
                 if not self.find(r"免费", (330, 220, 640, 220)):
@@ -537,6 +740,8 @@ class SecretCow(SeasonalScreen):
                 last = time.monotonic()
                 continue
             if self.close_reward():
+                seen_result = True
+                self.leave_battle()
                 last = time.monotonic()
                 continue
             if (skip := self.find(r"^(?:Skip|SKIP)$", (1080, 0, 200, 75))):
@@ -550,9 +755,17 @@ class SecretCow(SeasonalScreen):
                 last = time.monotonic()
                 continue
             back = self.find(r"^(?:返回|离开|退出|确认)$", (850, 600, 430, 120))
-            if back and self.find(r"CLEAR|FAIL|DEFEAT|胜利|失败|通关|结算", (200, 40, 880, 260)):
+            result = self.find(r"CLEAR|FAIL|DEFEAT|胜利|失败|通关|结算", (200, 40, 880, 260))
+            if result:
+                seen_result = True
+                failed = bool(re.search(r"FAIL|DEFEAT|失败", result.text, re.I))
+            if back and result:
                 seen_battle = True
                 self.click_row(back, 1)
+                last = time.monotonic()
+                continue
+            if result and not back:
+                self.leave_battle()
                 last = time.monotonic()
                 continue
             if self.title() and (self.find(r"进入", (1000, 635, 200, 60))
@@ -563,12 +776,21 @@ class SecretCow(SeasonalScreen):
                 after = self.bells()
                 if after != bells:
                     raise RuntimeError(f"铃铛数量变化{bells}->{after}，立即停止")
-                self.log("本次挑战已结束，铃铛未消耗")
+                if not self.to_team():
+                    raise RuntimeError("战斗后未确认奶牛副本的进入界面")
+                after_free = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890, 635, 310, 55))))
+                if failed:
+                    raise RuntimeError("奶牛副本挑战失败，已停止后续进入")
+                if not seen_result or after_free is None or (before_free > 0 and after_free != before_free - 1):
+                    raise RuntimeError("奶牛副本奖励或剩余免费次数未确认，不再次进入")
+                self.last_cow_free = after_free
+                self.log(f"本次挑战与奖励已确认，免费次数{before_free}->{after_free}，铃铛保持{after}")
                 return True
             if self.find(r"Lv\.?\d+|HP|自动|AUTO|x[12]", (0, 0, 1280, 120)) and not self.title():
                 seen_battle = True
             self.pause(.8)
-        raise RuntimeError("奶牛副本战斗结果等待超时，不再次进入")
+        self.leave_battle()
+        raise RuntimeError("奶牛副本战斗结果等待超时，已退场，不再次进入")
 
 
-ACTIONS.update({"LocalFriendGift": FriendGift(), "LocalSecretCow": SecretCow()})
+ACTIONS.update({"LocalDailyFreeSummon": DailyFreeSummon(), "LocalFriendGift": FriendGift(), "LocalSecretCow": SecretCow()})
