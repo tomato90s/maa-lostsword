@@ -102,6 +102,8 @@ class VillageTests(unittest.TestCase):
                 sent = []
                 balances = iter((1000, 1630))
                 action.wallet = lambda: next(balances)
+                action.username = 'Player'
+                action.journal = lambda *args: None
                 action.open_menu = lambda: None
                 action.find_candy = lambda: (200, 350, 100, 100)
                 action.find = lambda *args: True
@@ -245,5 +247,20 @@ class VillageTests(unittest.TestCase):
         self.assertTrue(action.execute())
         self.assertEqual(records[-1]["attempt"],"pending")
         self.assertEqual(records[-1]["gain"],30)
+
+    def test_candy_used_before_a_wallet_failure_is_recovered_without_using_it_again(self):
+        action = VillageHunt()
+        action.param = {"limit":1,"steps":1}
+        records = [{"status":"started","attempt":"pending","inventory_empty":True,"username":"Player"},
+                   {"status":"redemption_reward","attempt":"pending","username":"Player",
+                    "redemption":"one-candy","before":1000,"candies":1}]
+        action.journal = lambda record=None: records.append(record) if record is not None else records
+        action.username = 'Player'
+        action.wallet = lambda: 1030
+        action.redeem = lambda: self.fail('The candy was already consumed')
+        action.log = lambda *args: None
+        self.assertTrue(action.execute())
+        self.assertEqual(records[-1]['gain'],30)
+        self.assertEqual(records[-1]['redemption'],'one-candy')
 
 if __name__ == "__main__":unittest.main()

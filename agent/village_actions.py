@@ -122,6 +122,7 @@ class VillageHunt(SeasonalScreen):
 
     def redeem(self):
         """Use every 奇怪的糖果 in the bag and verify the 30-diamond payout."""
+        self._redemption_id = None
         before = self.wallet()
         self.open_menu()
         self.click(910,195,1.5)
@@ -156,6 +157,10 @@ class VillageHunt(SeasonalScreen):
         self.click(1085,666,1.5)
         if not self.find(r"已获得道具", (500,260,280,60)):
             raise RuntimeError("未确认糖果使用结果")
+        self._redemption_id = uuid4().hex
+        self.journal({"status":"redemption_reward","redemption":self._redemption_id,
+                      "attempt":getattr(self,"attempt",None),"username":self.username,
+                      "before":before,"candies":owned})
         self.click(640,640,1)
         self.click(1233,38,.8)
         after = self.wallet()
@@ -283,6 +288,7 @@ class VillageHunt(SeasonalScreen):
             self.click(1060,400,1.2)
 
     def execute(self):
+        self.attempt = None
         kind = self.param.get("target","hood")
         if kind not in TARGETS:
             raise RuntimeError("村庄目标类型须为万圣节女人或鸡")
@@ -310,11 +316,24 @@ class VillageHunt(SeasonalScreen):
                             row.get("attempt") == item["attempt"]
                             and row.get("status") in ("partial", "complete") for row in previous)), None)
         if pending:
-            self.wallet()
+            balance = self.wallet()
             if pending.get("username") != self.username:
                 raise RuntimeError("待结算巡查属于其他角色，停止领取")
             self.attempt = pending["attempt"]
-            self.collect_patrol_reward(0,0,total,wanted)
+            reward = next((row for row in reversed(previous)
+                           if row.get("status") == "redemption_reward" and row.get("attempt") == self.attempt
+                           and not any(done.get("redemption") == row.get("redemption")
+                                       and done.get("status") in ("partial","complete") for done in previous)), None)
+            if reward:
+                gain = verified_reward(reward["before"],balance,reward["candies"])
+                total += gain
+                self.journal({"status":"complete" if total>=wanted else "partial", "attempt":self.attempt,
+                              "redemption":reward["redemption"],"username":self.username,
+                              "before":reward["before"],"after":balance,"candies":reward["candies"],
+                              "gain":gain,"confirmed_today":total,"recovered":True})
+                self.log(f"已恢复上次糖果到账确认：{gain}钻，本日共{total}钻")
+            else:
+                self.collect_patrol_reward(0,0,total,wanted)
             previous = self.journal()
             total = sum(item.get("gain",0) for item in previous if item.get("status") in ("partial","complete"))
             if total >= wanted:
@@ -346,6 +365,7 @@ class VillageHunt(SeasonalScreen):
         total += gain
         self.journal({"status":"complete" if total>=wanted else "partial", "before":before,"after":after,
                       "attempt":getattr(self,"attempt",None),"username":getattr(self,"username",None),
+                      "redemption":getattr(self,"_redemption_id",None),
                       "candies":candies,"gain":gain,"confirmed_today":total,"attacks":attacks,"sighted":sighted})
         self.log(f"使用糖果{candies}颗，钻石{before}->{after}，实收{gain}钻；本日已核对{total}钻")
         if candies == 0 and not sighted:
