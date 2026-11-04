@@ -189,6 +189,13 @@ class VillageHunt(SeasonalScreen):
 
     def leave_spawn(self):
         """Walk well below the lobby circle in front of the INN door."""
+        player = self.player()
+        if player and player[1] >= self.SAFE_Y+20:
+            # Village entry keeps the last location. Repeatedly moving down
+            # on every visit eventually pushes the character against the HUD.
+            if player[1] > self.SAFE_Y+80:
+                self.move(0,-1,min(300,max(80,int((player[1]-(self.SAFE_Y+40))/.65))))
+            return
         for _ in range(4):
             self.move(0,1,400)
             player = self.player()
@@ -399,6 +406,7 @@ class VillageHunt(SeasonalScreen):
                 return misses, attacks, direction, sighted, True
             player = self.player()
             if not player:
+                self.trace(step, None, [])
                 misses += 1
                 self.pause(.3)
                 return misses, attacks, direction, sighted, misses >= 5
@@ -411,6 +419,12 @@ class VillageHunt(SeasonalScreen):
                 self.log(f"巡查{step+1}：人物({player[0]:.0f},{player[1]:.0f})，目标({target[0]:.0f},{target[1]:.0f})")
                 if abs(dy)>60 or abs(dx)>170:
                     self.move(dx,dy,min(250,max(80,int(max(abs(dx),abs(dy))*1.2))))
+                    if abs(dx) <= 330 and abs(dy) <= 150:
+                        # A turning target can disappear from the template
+                        # immediately after approach. Attack while still close
+                        # instead of walking away on the next missing frame.
+                        self.strike(use_skill=attacks%3==0)
+                        attacks += 1
                 else:
                     self.move(1 if dx>=0 else -1,0,65)
                     self.strike(use_skill=attacks%3==0)

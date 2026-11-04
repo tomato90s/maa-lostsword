@@ -25,6 +25,20 @@ class VillageTests(unittest.TestCase):
             action.move(1,0)
         self.assertEqual(sent,[])
 
+    def test_reentering_the_village_does_not_keep_pushing_the_player_down(self):
+        action = VillageHunt()
+        action.player = lambda: (640,600)
+        action.move = lambda *args: self.fail("Already below the lobby portal")
+        action.leave_spawn()
+
+    def test_player_at_the_bottom_returns_to_the_safe_patrol_lane(self):
+        action = VillageHunt()
+        action.player = lambda: (640,716)
+        sent = []
+        action.move = lambda *args: sent.append(args)
+        action.leave_spawn()
+        self.assertEqual(sent,[(0,-1,178)])
+
     def test_candy_below_the_first_bag_page_is_found(self):
         import numpy as np
         action = VillageHunt()
@@ -179,6 +193,19 @@ class VillageTests(unittest.TestCase):
             result = action.patrol_step(step,step,0,direction,0)
             direction = result[2]
         self.assertEqual(direction,-1)
+
+    def test_a_nearby_target_is_attacked_immediately_after_approach(self):
+        action = VillageHunt()
+        action.find = lambda *args: None
+        action.player = lambda: (644,599)
+        action.targets = lambda player: [(396,638)]
+        action.trace = action.log = lambda *args: None
+        calls = []
+        action.move = lambda *args: calls.append('approach')
+        action.strike = lambda **kwargs: calls.append('attack')
+        result = action.patrol_step(1,0,0,1,0)
+        self.assertEqual(calls,['approach','attack'])
+        self.assertEqual(result[1],1)
 
     def test_an_empty_patrol_does_not_claim_the_unverified_daily_reward(self):
         action = VillageHunt()
