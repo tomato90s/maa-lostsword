@@ -14,6 +14,7 @@ from agent import daily_actions
 from agent import seasonal_actions
 from agent import shop_actions
 from agent import village_actions
+from agent import maze_actions
 from agent import my_reco
 
 
@@ -31,7 +32,8 @@ def main():
     crash_recovery.initialize_preferences(Path(__file__).resolve().parent.parent)
     for name, action in {**my_action.ACTIONS, **local_actions.ACTIONS,
                          **crash_recovery.ACTIONS, **daily_actions.ACTIONS,
-                         **seasonal_actions.ACTIONS, **shop_actions.ACTIONS, **village_actions.ACTIONS}.items():
+                         **seasonal_actions.ACTIONS, **shop_actions.ACTIONS,
+                         **village_actions.ACTIONS, **maze_actions.ACTIONS}.items():
         AgentServer.register_custom_action(name, action)
     for name, recognition in crash_recovery.RECOGNITIONS.items():
         AgentServer.register_custom_recognition(name, recognition)

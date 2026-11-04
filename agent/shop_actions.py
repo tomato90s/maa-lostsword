@@ -83,6 +83,23 @@ class ShopBatch(ScreenAction):
     def popup(self):
         return self.find(r"^批量购买$", (530, 60, 220, 55)) and self.find(r"总购买金额", (670, 535, 170, 45))
 
+    def open_batch(self):
+        until = time.monotonic() + 10
+        clicks, retry_after = 0, 0
+        while time.monotonic() < until:
+            self.capture()
+            if self.popup():
+                return
+            button = self.find(r"^批量购买$", (95, 640, 185, 65))
+            shop = self.find(r"^商店$", (45, 10, 120, 55))
+            if button and shop and clicks < 2 and time.monotonic() >= retry_after:
+                self.click_row(button, .5)
+                clicks += 1
+                retry_after = time.monotonic() + 2
+            else:
+                self.pause(.3)
+        raise RuntimeError("未确认批量购买窗口已经打开，本次没有提交购买")
+
     def scroll(self, top=False):
         self.check()
         if not self.popup():
@@ -210,7 +227,26 @@ class ShopBatch(ScreenAction):
 
     def category_balance(self):
         roi = (825, 12, 110, 44) if self.category == "消耗品" else ((980, 12, 90, 44) if self.category == "南瓜币" else (1110, 12, 95, 44))
-        return self.number(roi)
+        rows = self.ocr(r".+", roi)
+        values = [amount(row.text) for row in rows]
+        if len(values) == 1 and values[0] is not None:
+            return values[0]
+        if not any(re.fullmatch(r"\s*\d+(?:\.\d+)?[万亿]\+?\s*", row.text) for row in rows):
+            return self.number(roi)
+        # The top bar abbreviates large balances. The currency icon opens an
+        # item description showing the exact owned amount, including commas.
+        self.click(roi[0] - 20, 34, .8)
+        keyword = {"消耗品": "信物", "南瓜币": "南瓜", "突袭": "突袭",
+                   "公会": "公会", "竞技场": "竞技"}[self.category]
+        if (not self.find(keyword, (480, 180, 350, 70))
+                or not self.find(r"^说明$", (470, 245, 130, 55))):
+            raise RuntimeError("未确认分类代币详情，不按缩写估算余额")
+        exact = self.number((825, 195, 95, 45))
+        close = self.find(r"^确认$", (540, 550, 210, 90))
+        if not close:
+            raise RuntimeError("代币详情没有确认按钮")
+        self.click_row(close, .8)
+        return exact
 
     def ledger(self, record=None):
         path = Path(__file__).resolve().parents[1] / "debug" / f"shop-purchases-{datetime.now():%Y-%m-%d}.jsonl"
@@ -239,7 +275,7 @@ class ShopBatch(ScreenAction):
         button = self.find(r"^批量购买$", (95, 640, 185, 65))
         if not button:
             raise RuntimeError("未能重新核对商品剩余上限")
-        self.click_row(button, .8)
+        self.open_batch()
         items = self.walk(configure=False)
         fields = ("name", "currency", "quantity", "maximum", "price")
         signature = lambda rows: sorted(tuple(item[key] for key in fields) for item in rows if item["selected"] and item["quantity"])
@@ -274,11 +310,7 @@ class ShopBatch(ScreenAction):
             before = self.wallet()
             self.open_category()
             before["分类代币"] = self.category_balance()
-        if not self.popup():
-            button = self.find(r"^批量购买$", (95, 640, 185, 65))
-            if not button or not self.find(r"^商店$", (45, 10, 120, 55)):
-                raise RuntimeError("未确认商店分类页")
-            self.click_row(button, .8)
+        self.open_batch()
         items = self.walk(configure=not self.param.get("inspect_only", False))
         expected = totals(items)
         actual = self.summary()

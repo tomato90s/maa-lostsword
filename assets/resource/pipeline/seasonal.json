@@ -27,9 +27,23 @@
         "next": ["ReturnMain"],
         "on_error": ["LocalTaskFailed"]
     },
-    "LocalSecretCow_Entry": {
-        "action": {"type": "Custom", "param": {"custom_action": "LocalSecretCow", "custom_action_param": {"limit": 3}}},
+    "LocalMaze_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalMazeDaily", "custom_action_param": {"priorities": ["石头", "经验宝箱", "金币宝箱"], "allow_other": true}}},
         "next": ["ReturnMain"],
         "on_error": ["LocalTaskFailed"]
+    },
+    "LocalSecretCow_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalSecretCow", "custom_action_param": {"use_custom_count": false, "limit": 10}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalSecretCow_BellEntry": {
+        "recognition": {"type": "TemplateMatch", "param": {"template": ["local_cow_bell_entry.png"], "roi": [945,645,45,40], "threshold": [0.9]}}
+    },
+    "LocalSecretCow_BellBalance": {
+        "recognition": {"type": "TemplateMatch", "param": {"template": ["local_cow_bell_balance.png"], "roi": [865,8,340,50], "threshold": [0.9]}}
+    },
+    "LocalSecretCow_AutoRepeatChecked": {
+        "recognition": {"type": "TemplateMatch", "param": {"template": ["local_cow_repeat_checked.png"], "roi": [535,230,65,65], "threshold": [0.9]}}
     }
 }

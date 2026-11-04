@@ -57,6 +57,36 @@ class ShopReceiptTests(unittest.TestCase):
         with patch("agent.shop_actions.time.monotonic", lambda: model.clock):
             return model.execute()
 
+    def test_opening_waits_for_the_popup_and_only_retries_a_missed_navigation_tap(self):
+        for missed_first, expected_clicks in ((False, 1), (True, 2)):
+            model = ShopBatch()
+            clock, clicks, opens_at = [0], [], [None]
+            model.capture = lambda: None
+            model.pause = lambda seconds=.4: clock.__setitem__(0, clock[0] + seconds)
+            model.popup = lambda: opens_at[0] is not None and clock[0] >= opens_at[0]
+            model.find = lambda pattern, roi: NS(text="page button")
+            def click(row, delay):
+                clicks.append(row)
+                if not missed_first or len(clicks) > 1: opens_at[0] = clock[0] + 1.8
+                clock[0] += delay
+            model.click_row = click
+            with patch("agent.shop_actions.time.monotonic", lambda: clock[0]):
+                model.open_batch()
+            self.assertEqual(len(clicks), expected_clicks)
+
+    def test_unknown_page_does_not_receive_a_batch_open_tap(self):
+        model = ShopBatch()
+        clock, clicks = [0], []
+        model.capture = lambda: None
+        model.pause = lambda seconds=.4: clock.__setitem__(0, clock[0] + seconds)
+        model.popup = lambda: False
+        model.find = lambda *args: None
+        model.click_row = lambda *args: clicks.append(args)
+        with patch("agent.shop_actions.time.monotonic", lambda: clock[0]):
+            with self.assertRaisesRegex(RuntimeError, "没有提交购买"):
+                model.open_batch()
+        self.assertEqual(clicks, [])
+
     def test_thousands_and_quantity_do_not_accept_compacted_or_joined_text(self):
         self.assertEqual(amount("3.400.000"), 3400000)
         self.assertEqual(quantity("1000/1000"), (1000, 1000))

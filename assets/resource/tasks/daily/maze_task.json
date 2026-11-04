@@ -1,0 +1,30 @@
+{
+    "task": [{
+        "name": "迷宫", "label": "迷宫", "entry": "LocalMaze_Entry",
+        "group": ["weekly"], "default_check": false,
+        "option": ["Local_MazeResourceOrder", "Local_MazeOtherResource"],
+        "description": "每周一次，检测到本周已完成时自动跳过。战斗→普通最右侧迷宫，保留当前难度和路线设置；按资源优先级选卡，不自动购买次数。"
+    }],
+    "option": {
+        "Local_MazeResourceOrder": {
+            "label": "资源优先顺序", "type": "select",
+            "cases": [
+                {"name": "石头优先经验", "label": "石头 → 经验宝箱 → 金币宝箱", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"priorities": ["石头", "经验宝箱", "金币宝箱"]}}}}}},
+                {"name": "石头优先金币", "label": "石头 → 金币宝箱 → 经验宝箱", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"priorities": ["石头", "金币宝箱", "经验宝箱"]}}}}}},
+                {"name": "经验优先石头", "label": "经验宝箱 → 石头 → 金币宝箱", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"priorities": ["经验宝箱", "石头", "金币宝箱"]}}}}}},
+                {"name": "经验优先金币", "label": "经验宝箱 → 金币宝箱 → 石头", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"priorities": ["经验宝箱", "金币宝箱", "石头"]}}}}}},
+                {"name": "金币优先石头", "label": "金币宝箱 → 石头 → 经验宝箱", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"priorities": ["金币宝箱", "石头", "经验宝箱"]}}}}}},
+                {"name": "金币优先经验", "label": "金币宝箱 → 经验宝箱 → 石头", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"priorities": ["金币宝箱", "经验宝箱", "石头"]}}}}}}
+            ],
+            "default_case": "石头优先经验"
+        },
+        "Local_MazeOtherResource": {
+            "label": "三种首选都没有时", "type": "select",
+            "cases": [
+                {"name": "选择其他资源", "label": "选择其他资源或增益", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"allow_other": true}}}}}},
+                {"name": "停止等待", "label": "停止，保留当前选择", "pipeline_override": {"LocalMaze_Entry": {"action": {"param": {"custom_action_param": {"allow_other": false}}}}}}
+            ],
+            "default_case": "选择其他资源"
+        }
+    }
+}

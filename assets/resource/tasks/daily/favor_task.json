@@ -11,17 +11,17 @@
             "option": [
                 "Local_FavorLimit"
             ],
-            "description": "每天最多7次，每个角色只对话一次；已完成角色自动跳过，不重复排序后点第一人。"
+            "description": "每天最多7次，已完成角色自动跳过；遇到只播放好感剧情、未消耗每日次数的角色，会换其他角色继续完成。"
         }
     ],
     "option": {
         "Local_FavorLimit": {
             "type": "input",
-            "label": "本轮最多对话人数",
+            "label": "本轮完成对话次数",
             "inputs": [
                 {
                     "name": "limit",
-                    "label": "人数（每日最多7人，0跳过）",
+                    "label": "完成次数（每日最多7次，0跳过）",
                     "default": "7",
                     "pipeline_type": "int",
                     "verify": "^[0-7]$",

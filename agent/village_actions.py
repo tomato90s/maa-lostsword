@@ -8,6 +8,7 @@ import zlib
 from datetime import datetime
 from difflib import SequenceMatcher
 from pathlib import Path
+from uuid import uuid4
 
 from maa.pipeline import JTemplateMatch
 from agent.seasonal_actions import SeasonalScreen
@@ -50,7 +51,7 @@ def chicken_templates(directories=IMAGE_DIRS):
 
 class VillageHunt(SeasonalScreen):
     label = "万圣节村庄目标"
-    timeout = 600
+    timeout = 1200
 
     def trace(self, step, player, targets):
         directory = self.param.get("trace_dir")
@@ -93,11 +94,18 @@ class VillageHunt(SeasonalScreen):
 
     def open_menu(self):
         """Open the lobby menu and wait for its slide-in animation to settle."""
-        self.click(1236,36,.6)
-        for _ in range(5):
+        clicks, retry_after = 0, 0
+        until = time.monotonic()+10
+        while time.monotonic() < until:
             if self.find(r"游戏专属编号", (850,55,350,50)):
                 return
-            self.pause(.5)
+            if (self.node("HomeFlagCloseReturnMain") and clicks < 2
+                    and time.monotonic() >= retry_after):
+                self.click(1236,36,.6)
+                clicks += 1
+                retry_after = time.monotonic()+2
+                continue
+            self.pause(.3)
             self.capture()
         raise RuntimeError("未确认大厅菜单")
 
@@ -114,6 +122,7 @@ class VillageHunt(SeasonalScreen):
 
     def redeem(self):
         """Use every 奇怪的糖果 in the bag and verify the 30-diamond payout."""
+        self._redemption_id = None
         before = self.wallet()
         self.open_menu()
         self.click(910,195,1.5)
@@ -138,12 +147,20 @@ class VillageHunt(SeasonalScreen):
         if owned > 1:
             # The quantity selector only exists when more than one candy is held.
             self.click(1180,588,.5)  # Select the maximum quantity.
-            chosen = self.number((900,528,180,35))
+            # The wide dark selector makes OCR detect only the first digit
+            # (21 was read as 2). Read the centered value without its borders.
+            selected = self.ocr(r".+", (940,528,95,35), only_rec=True)
+            values = [re.fullmatch(r"\d+", row.text.strip()) for row in selected]
+            chosen = int(values[0][0]) if len(values) == 1 and values[0] else None
             if chosen != owned:
                 raise RuntimeError("糖果使用数量与持有数量不一致")
         self.click(1085,666,1.5)
         if not self.find(r"已获得道具", (500,260,280,60)):
             raise RuntimeError("未确认糖果使用结果")
+        self._redemption_id = uuid4().hex
+        self.journal({"status":"redemption_reward","redemption":self._redemption_id,
+                      "attempt":getattr(self,"attempt",None),"username":self.username,
+                      "before":before,"candies":owned})
         self.click(640,640,1)
         self.click(1233,38,.8)
         after = self.wallet()
@@ -184,6 +201,13 @@ class VillageHunt(SeasonalScreen):
 
     def leave_spawn(self):
         """Walk well below the lobby circle in front of the INN door."""
+        player = self.player()
+        if player and player[1] >= self.SAFE_Y+20:
+            # Village entry keeps the last location. Repeatedly moving down
+            # on every visit eventually pushes the character against the HUD.
+            if player[1] > self.SAFE_Y+80:
+                self.move(0,-1,min(300,max(80,int((player[1]-(self.SAFE_Y+40))/.65))))
+            return
         for _ in range(4):
             self.move(0,1,400)
             player = self.player()
@@ -264,6 +288,7 @@ class VillageHunt(SeasonalScreen):
             self.click(1060,400,1.2)
 
     def execute(self):
+        self.attempt = None
         kind = self.param.get("target","hood")
         if kind not in TARGETS:
             raise RuntimeError("村庄目标类型须为万圣节女人或鸡")
@@ -283,24 +308,68 @@ class VillageHunt(SeasonalScreen):
         if not wanted or total >= wanted:
             self.log(f"本日已核对{total}钻奖励，达到本轮上限，跳过")
             return True
+        # Old candy can remain in the bag across days. Redeem it separately so
+        # a stored stack never counts as today's twelve defeated targets.
+        pending = next((item for item in reversed(previous)
+                        if item.get("status") == "started" and item.get("inventory_empty")
+                        and item.get("attempt") and not any(
+                            row.get("attempt") == item["attempt"]
+                            and row.get("status") in ("partial", "complete") for row in previous)), None)
+        if pending:
+            balance = self.wallet()
+            if pending.get("username") != self.username:
+                raise RuntimeError("待结算巡查属于其他角色，停止领取")
+            self.attempt = pending["attempt"]
+            reward = next((row for row in reversed(previous)
+                           if row.get("status") == "redemption_reward" and row.get("attempt") == self.attempt
+                           and not any(done.get("redemption") == row.get("redemption")
+                                       and done.get("status") in ("partial","complete") for done in previous)), None)
+            if reward:
+                gain = verified_reward(reward["before"],balance,reward["candies"])
+                total += gain
+                self.journal({"status":"complete" if total>=wanted else "partial", "attempt":self.attempt,
+                              "redemption":reward["redemption"],"username":self.username,
+                              "before":reward["before"],"after":balance,"candies":reward["candies"],
+                              "gain":gain,"confirmed_today":total,"recovered":True})
+                self.log(f"已恢复上次糖果到账确认：{gain}钻，本日共{total}钻")
+            else:
+                self.collect_patrol_reward(0,0,total,wanted)
+            previous = self.journal()
+            total = sum(item.get("gain",0) for item in previous if item.get("status") in ("partial","complete"))
+            if total >= wanted:
+                return True
+        before, after, stored = self.redeem()
+        stored_gain = verified_reward(before, after, stored)
+        if stored:
+            self.journal({"status":"inventory_redeemed", "before":before, "after":after,
+                          "candies":stored, "gain":stored_gain})
+            self.log(f"已领取背包原有糖果{stored}颗、{stored_gain}钻，另行核对本次巡查")
         self.home()
         name = self.find(r"\S+", (120, 45, 180, 50))
         if not name:
             raise RuntimeError("未确认当前角色名称")
         self.username = name.text.strip()
-        self.journal({"status":"started","confirmed_today":total})
+        self.attempt = uuid4().hex
+        last_start = next((item for item in reversed(previous) if item.get("status") == "started"), None)
+        self.patrol_direction = -last_start.get("direction",1) if last_start else 1
+        self.journal({"status":"started","attempt":self.attempt,"username":self.username,
+                      "confirmed_today":total,"inventory_empty":True,"steps":steps,"direction":self.patrol_direction})
         attacks, sighted = self.patrol(steps)
         if not self.node("HomeFlagCloseReturnMain"):
             self.home()
+        return self.collect_patrol_reward(attacks, sighted, total, wanted)
+
+    def collect_patrol_reward(self, attacks, sighted, total, wanted):
         before, after, candies = self.redeem()
         gain = verified_reward(before,after,candies)
         total += gain
         self.journal({"status":"complete" if total>=wanted else "partial", "before":before,"after":after,
+                      "attempt":getattr(self,"attempt",None),"username":getattr(self,"username",None),
+                      "redemption":getattr(self,"_redemption_id",None),
                       "candies":candies,"gain":gain,"confirmed_today":total,"attacks":attacks,"sighted":sighted})
         self.log(f"使用糖果{candies}颗，钻石{before}->{after}，实收{gain}钻；本日已核对{total}钻")
-        if candies == 0 and not sighted and steps >= 24:
-            self.log("村庄内未再发现目标，视为今日目标已清空")
-            return True
+        if candies == 0 and not sighted:
+            self.log("本次没有发现新目标，按实际到账奖励保留进度")
         if total < wanted:
             self.log("尚未核对全部目标奖励，保留未完成状态")
             return False
@@ -326,8 +395,14 @@ class VillageHunt(SeasonalScreen):
         label = TARGETS[self.kind]["label"]
         self.enter()
         self.leave_spawn()
-        attacks, misses, direction, sighted, bounces = 0,0,1,0,0
+        attacks, misses, direction, sighted, bounces = 0,0,getattr(self,"patrol_direction",1),0,0
+        self._last_patrol_view = None
+        self._last_patrol_player = None
+        self._still_patrol_frames = 0
         for step in range(steps):
+            if time.monotonic() + 120 >= self.deadline:
+                self.log("预留回大厅和领取糖果的时间，结束本次巡查")
+                break
             try:
                 self.capture()
                 self.guard()
@@ -358,6 +433,7 @@ class VillageHunt(SeasonalScreen):
                 return misses, attacks, direction, sighted, True
             player = self.player()
             if not player:
+                self.trace(step, None, [])
                 misses += 1
                 self.pause(.3)
                 return misses, attacks, direction, sighted, misses >= 5
@@ -370,12 +446,35 @@ class VillageHunt(SeasonalScreen):
                 self.log(f"巡查{step+1}：人物({player[0]:.0f},{player[1]:.0f})，目标({target[0]:.0f},{target[1]:.0f})")
                 if abs(dy)>60 or abs(dx)>170:
                     self.move(dx,dy,min(250,max(80,int(max(abs(dx),abs(dy))*1.2))))
+                    if abs(dx) <= 330 and abs(dy) <= 150:
+                        # A turning target can disappear from the template
+                        # immediately after approach. Attack while still close
+                        # instead of walking away on the next missing frame.
+                        self.strike(use_skill=attacks%3==0)
+                        attacks += 1
                 else:
                     self.move(1 if dx>=0 else -1,0,65)
                     self.strike(use_skill=attacks%3==0)
                     attacks += 1
             else:
                 misses += 1
+                image = getattr(self, "image", None)
+                if image is not None:
+                    view = image[200:400:8,300:1000:8].copy()
+                    previous = getattr(self, "_last_patrol_view", None)
+                    position = getattr(self, "_last_patrol_player", None)
+                    stalled = False
+                    if previous is not None and position is not None:
+                        difference = abs(view.astype("int16") - previous.astype("int16"))
+                        stalled = (float(difference.mean()) < 2
+                                   and float((difference < 5).mean()) > .95
+                                   and math.hypot(player[0]-position[0],player[1]-position[1]) < 20)
+                    self._still_patrol_frames = getattr(self,"_still_patrol_frames",0) + 1 if stalled else 0
+                    if self._still_patrol_frames >= 2:
+                        direction = -direction
+                        self._still_patrol_frames = 0
+                        self.log("人物与背景连续未移动，换向继续巡查")
+                    self._last_patrol_view, self._last_patrol_player = view, player
                 portal = self.portal()
                 if portal and abs(player[0]-portal[0])<190 and player[1]>portal[1]+90:
                     self.move(direction,0,400)
@@ -386,9 +485,9 @@ class VillageHunt(SeasonalScreen):
                 if misses%2==0:
                     self.strike(use_skill=misses%6==0)
                     attacks += 1
-                if misses%10==0: direction *= -1
-                if misses >= 24:
-                    return misses, attacks, direction, sighted, True
+                # Keep walking to the village edge. Turning after ten misses
+                # returned to the same streets, then stopped before the user's
+                # selected patrol budget could cover the rest of the village.
             return misses, attacks, direction, sighted, False
 
 
