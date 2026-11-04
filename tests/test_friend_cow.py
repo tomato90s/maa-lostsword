@@ -68,13 +68,20 @@ class CowFreeStateTest(unittest.TestCase):
         action.click_row = lambda *args: self.fail("Exhausted task must not enter")
         self.assertTrue(action.execute())
 
-    def test_three_confirmed_entries_also_cap_legacy_five_entry_settings(self):
+    def test_custom_five_entry_setting_is_kept_and_exhaustion_is_checked(self):
         action = seasonal.SecretCow()
         action.param = {"limit":5}
         action.ledger = lambda: [{"attempt":str(i), "status":"confirmed"} for i in range(3)]
         action.log = lambda *args: None
-        action.open_dungeon = lambda: self.fail("Weekly cap already reached")
+        visits = []
+        action.open_dungeon = lambda: visits.append(True)
+        action.to_team = lambda: True
+        action.title = lambda: NS(text="秘密奶牛副本第16层")
+        action.find = lambda *args: NS(text="进入")
+        action.ocr = lambda *args: [NS(text="1 进入")]
+        action.click_row = lambda *args: self.fail("Free entries are exhausted")
         self.assertTrue(action.execute())
+        self.assertEqual(visits,[True])
 
     def test_an_unreadable_counter_is_not_reported_as_an_exhausted_skip(self):
         action = seasonal.SecretCow()
