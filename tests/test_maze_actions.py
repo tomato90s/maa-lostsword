@@ -72,6 +72,32 @@ class MazePreferenceTests(unittest.TestCase):
         action.find = lambda pattern, roi: NS(text="matched")
         self.assertTrue(action.completed())
 
+    def test_completed_weekly_maze_never_starts_another_challenge(self):
+        action = MazeDaily()
+        action.param = {}
+        action.completed = lambda: True
+        records = []
+        action.journal = lambda **record: records.append(record)
+        action.log = lambda *args: None
+        action.open_maze = action.start_auto = action.depart_final = lambda: self.fail("Must skip")
+        self.assertTrue(action.execute())
+        self.assertEqual(records[-1]['status'],'skipped')
+
+    def test_completed_maze_found_after_navigation_is_an_explicit_skip(self):
+        action = MazeDaily()
+        action.param = {}
+        arrived = [False]
+        action.completed = lambda: arrived[0]
+        action.page = action.story = action.cards = action.final_team = action.in_battle = lambda: False
+        action.find = lambda *args: None
+        action.open_maze = lambda: arrived.__setitem__(0,True)
+        action.start_auto = action.depart_final = lambda: self.fail("No new challenge after completion")
+        records = []
+        action.journal = lambda **record: records.append(record)
+        action.log = lambda *args: None
+        self.assertTrue(action.execute())
+        self.assertEqual(records[-1]['reason'],'weekly_completed')
+
     def test_actual_auto_settings_caption_is_used_without_changing_difficulty(self):
         action = MazeDaily()
         action.priorities, action.allow_other = list(("石头","经验宝箱","金币宝箱")), True

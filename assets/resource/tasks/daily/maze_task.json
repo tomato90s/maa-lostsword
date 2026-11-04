@@ -1,9 +1,9 @@
 {
     "task": [{
         "name": "迷宫", "label": "迷宫", "entry": "LocalMaze_Entry",
-        "group": ["daily"], "default_check": false,
+        "group": ["weekly"], "default_check": false,
         "option": ["Local_MazeResourceOrder", "Local_MazeOtherResource"],
-        "description": "战斗→普通最右侧迷宫，保留当前难度并自动进行。按资源优先级选卡；遇到未知选项停止，不自动购买次数。"
+        "description": "每周一次，检测到本周已完成时自动跳过。战斗→普通最右侧迷宫，保留当前难度和路线设置；按资源优先级选卡，不自动购买次数。"
     }],
     "option": {
         "Local_MazeResourceOrder": {

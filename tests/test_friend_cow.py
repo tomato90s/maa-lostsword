@@ -53,6 +53,42 @@ class CowFreeStateTest(unittest.TestCase):
     def test_old_weekly_receipts_do_not_double_count(self):
         self.assertEqual(seasonal.cow_attempts([{"status": "submitted"}, {"status": "confirmed"}]), 1)
 
+    def test_exhausted_free_entries_skip_the_normal_task_without_entering(self):
+        action = seasonal.SecretCow()
+        action.param = {"limit":3}
+        action.ledger = lambda: [{"attempt":"old", "status":"submitted"},
+                                 {"attempt":"old", "status":"safety_stopped"}]
+        action.open_dungeon = lambda: None
+        action.to_team = lambda: True
+        action.title = lambda: NS(text="秘密奶牛副本第16层")
+        action.ocr = lambda *args: [NS(text="1 进入")]
+        action.find = lambda *args: NS(text="进入")
+        action.log = lambda *args: None
+        action.ensure_single_battle = lambda: self.fail("Paid entry must not be prepared")
+        action.click_row = lambda *args: self.fail("Exhausted task must not enter")
+        self.assertTrue(action.execute())
+
+    def test_three_confirmed_entries_also_cap_legacy_five_entry_settings(self):
+        action = seasonal.SecretCow()
+        action.param = {"limit":5}
+        action.ledger = lambda: [{"attempt":str(i), "status":"confirmed"} for i in range(3)]
+        action.log = lambda *args: None
+        action.open_dungeon = lambda: self.fail("Weekly cap already reached")
+        self.assertTrue(action.execute())
+
+    def test_an_unreadable_counter_is_not_reported_as_an_exhausted_skip(self):
+        action = seasonal.SecretCow()
+        action.param = {"limit":3}
+        action.ledger = lambda: []
+        action.open_dungeon = lambda: None
+        action.to_team = lambda: True
+        action.title = lambda: NS(text="秘密奶牛副本第16层")
+        action.find = lambda *args: NS(text="进入")
+        action.ocr = lambda *args: [NS(text="剩余次数未知")]
+        action.click_row = lambda *args: self.fail("Unknown counter must not enter")
+        with self.assertRaisesRegex(RuntimeError,"未确认"):
+            action.execute()
+
     def test_three_runs_survive_restart_after_the_first_confirmed_run(self):
         class Replay(seasonal.SecretCow):
             def __init__(self):

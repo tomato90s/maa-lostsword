@@ -745,7 +745,10 @@ class SecretCow(SeasonalScreen):
     def execute(self):
         limit = int(self.param.get("limit", 3))
         if not 0 <= limit <= 5:
-            raise RuntimeError("秘密奶牛副本次数须为0至5")
+            raise RuntimeError("秘密奶牛副本每周免费次数须为0至3")
+        # Older saved configurations allowed 4/5. Keep them compatible while
+        # enforcing the game's three-entry weekly cap.
+        limit = min(limit, 3)
         if self.param.get("inspect_only"):
             self.open_dungeon()
             if not self.to_team():

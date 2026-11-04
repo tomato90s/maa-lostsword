@@ -184,12 +184,16 @@ class MazeDaily(SeasonalScreen):
         if not isinstance(self.allow_other, bool):
             raise RuntimeError("缺少首选时更换资源须为开关值")
         if self.completed():
-            self.journal(status="completed", evidence="完成标题和最终Boss路线")
-            self.log("已确认迷宫完成，本次不重复挑战")
+            self.journal(status="skipped", reason="weekly_completed", evidence="完成标题和最终Boss路线")
+            self.log("本周迷宫已完成，自动跳过")
             return True
         if not (self.page() or self.story() or self.cards() or self.final_team() or self.in_battle()
                 or self.find(r"VICTORY", (40,20,470,150))):
             self.open_maze()
+        if self.completed():
+            self.journal(status="skipped", reason="weekly_completed", evidence="完成标题和最终Boss路线")
+            self.log("本周迷宫已完成，自动跳过")
+            return True
         if self.param.get("inspect_only"):
             self.log("已打开迷宫，尚未提交挑战")
             return True
