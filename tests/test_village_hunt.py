@@ -31,6 +31,25 @@ class VillageTests(unittest.TestCase):
         action.move = lambda *args: self.fail("Already below the lobby portal")
         action.leave_spawn()
 
+    def test_already_open_lobby_menu_is_not_toggled_closed(self):
+        action = VillageHunt()
+        action.find = lambda *args: True
+        action.click = lambda *args: self.fail("Menu already open")
+        action.open_menu()
+
+    def test_ignored_menu_click_retries_only_after_confirming_the_lobby(self):
+        from unittest.mock import patch
+        action = VillageHunt()
+        clock, clicks = [0], []
+        action.find = lambda *args: len(clicks) == 2
+        action.node = lambda *args: True
+        action.pause = lambda seconds: clock.__setitem__(0,clock[0]+seconds)
+        action.capture = lambda: None
+        action.click = lambda *args: clicks.append(args[:2])
+        with patch('agent.village_actions.time.monotonic',lambda:clock[0]):
+            action.open_menu()
+        self.assertEqual(clicks,[(1236,36),(1236,36)])
+
     def test_player_at_the_bottom_returns_to_the_safe_patrol_lane(self):
         action = VillageHunt()
         action.player = lambda: (640,716)

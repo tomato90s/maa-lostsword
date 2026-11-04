@@ -94,11 +94,18 @@ class VillageHunt(SeasonalScreen):
 
     def open_menu(self):
         """Open the lobby menu and wait for its slide-in animation to settle."""
-        self.click(1236,36,.6)
-        for _ in range(5):
+        clicks, retry_after = 0, 0
+        until = time.monotonic()+10
+        while time.monotonic() < until:
             if self.find(r"游戏专属编号", (850,55,350,50)):
                 return
-            self.pause(.5)
+            if (self.node("HomeFlagCloseReturnMain") and clicks < 2
+                    and time.monotonic() >= retry_after):
+                self.click(1236,36,.6)
+                clicks += 1
+                retry_after = time.monotonic()+2
+                continue
+            self.pause(.3)
             self.capture()
         raise RuntimeError("未确认大厅菜单")
 
