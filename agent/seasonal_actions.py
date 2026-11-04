@@ -583,32 +583,105 @@ class SecretCow(SeasonalScreen):
     timeout = 900
 
     def ensure_single_battle(self):
-        # A free first entry alone is insufficient: the game's own auto
-        # progression can continue into paid runs without another script click.
-        raise RuntimeError("自动退场尚未完成免费实测，暂停奶牛自动进入，防止消耗铃铛")
+        self.capture()
+        state = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890,635,310,55))))
+        if (not self.title() or not self.find(r"^队伍编排$", (65,635,160,55))
+                or state not in (1,2,3)):
+            raise RuntimeError("未确认每周免费次数和队伍页，不进入奶牛副本")
+
+    def battle_active(self):
+        # The team page carries a similar stage title. It must have disappeared
+        # before an entry can be treated as an observed battle.
+        return (self.find(r"秘密奶牛副本.*第\s*\d+\s*层", (960, 75, 300, 55))
+                and not self.find(r"^队伍编排$", (65, 635, 160, 55))
+                and not self.find(r"^进入(?:\s*[0-3]\s*[/／]\s*3)?$", (1000, 635, 200, 60)))
+
+    def wait_battle_start(self):
+        until = time.monotonic() + 15
+        while time.monotonic() < until:
+            self.capture()
+            if self.battle_active():
+                self.log("已确认奶牛战斗画面，队伍编排和进入按钮已消失")
+                return True
+            self.pause(.25)
+        raise RuntimeError("点击进入后未确认奶牛战斗，停止追加进入")
+
+    def wait_first_reward(self, bells):
+        until = time.monotonic() + 150
+        while time.monotonic() < until:
+            self.capture()
+            reward = self.find(r"(?:传说|英雄|稀有)\s*(?:武器|防具|饰品|符文|辅助道具)", (600,70,400,95))
+            if reward or self.find(r"已获得道具|CLEAR|VICTORY", (350,60,650,300)):
+                self.log("已确认奶牛战利品，立即退场，停止游戏继续重复挑战")
+                return True
+            if self.find(r"秘密奶牛副本", (960,75,300,55)):
+                try:
+                    current = self.number((925,15,75,40))
+                except RuntimeError:
+                    current = None
+                if current is not None and current < bells:
+                    self.log(f"检测到本次结算后铃铛{bells}->{current}，立即退场")
+                    return True
+            self.pause(.2)
+        self.leave_battle()
+        raise RuntimeError("奶牛战利品未能确认，已退场，不再进入")
 
     def leave_battle(self):
-        """Use the stage's upper-right exit, then confirm the exact leave dialog.
+        """Leave through the menu's 退场 button and verify the village/lobby.
 
-        This is containment, not proof that auto-progression is disabled; the
-        entry lock stays in place until a free run validates the whole flow.
+        The pin below the menu opens stage details while combat continues.
+        Neither that team panel nor its floor list proves the battle stopped.
         """
-        opened = False
-        for _ in range(16):
+        attempts, retry_after = 0, 0
+        exit_submitted = False
+        until = time.monotonic() + 60
+        while time.monotonic() < until:
             self.capture()
-            if self.node("HomeFlagCloseReturnMain") or (
-                    self.title() and self.find(r"进入|^选择$", (890,630,310,65))):
-                return True
-            if self.find(r"是否确定退场", (450,310,400,100)):
-                leave = self.find(r"^退场$", (500,430,300,85))
+            if self.find(r"是否.*(?:退场|退出|离开)", (330,250,650,200)):
+                leave = self.find(r"^(?:退场|退出|确认|确定)$", (500,400,420,140))
                 if not leave:
                     raise RuntimeError("已打开退场提示，但没有确认退场按钮")
                 self.click_row(leave, .8)
+                self.log("已确认退场，核对是否离开奶牛战斗")
                 continue
-            stage = self.find(r"秘密奶牛副本.*第\d+层", (960,75,300,55))
-            if stage and not opened:
-                self.click(1236,100,.3)
-                opened = True
+            exit_button = self.find(r"^退场$", (875,640,185,65))
+            if exit_button and not exit_submitted:
+                self.click_row(exit_button, .3)
+                exit_submitted = True
+                self.log("已点击右上菜单中的退场，等待回到村庄")
+                continue
+            if self.find(r"HOT\s*DEAL|牛仔女王的提议", (80,90,1110,480)):
+                self.click(1236,36,.3)
+                continue
+            if self.find(r"传说\s*(?:武器|防具|饰品|符文|辅助道具)", (600,70,330,70)):
+                self.click(640,600,.3)
+                continue
+            if self.find(r"^背包$", (125,5,90,45)):
+                raise RuntimeError("退场期间出现背包，停止其他导航并保留画面供检查")
+            stage_panel = self.title() and (
+                self.find(r"^队伍编排$", (65,635,160,55))
+                or self.find(r"^选择$", (890,630,310,50)))
+            if stage_panel:
+                # This panel can be opened over a live battle by the map icon.
+                # Closing it is not an exit receipt.
+                self.click(1236, 36, .2)
+                continue
+            stage = self.find(r"秘密奶牛副本", (960,75,300,55))
+            # The general home template can also match during combat. Require
+            # the real lobby's three bottom navigation labels and no Cow HUD.
+            if not stage:
+                village = (self.find(r"^冒险$", (1080,80,170,90))
+                           and self.node("LocalVillageOpenMenu"))
+                lobby = all(self.find(pattern,roi) for pattern,roi in (
+                    (r"^战斗$",(900,640,100,65)), (r"^角色$",(1030,640,100,65)),
+                    (r"^召唤$",(1150,640,125,65))))
+                if village or lobby:
+                    self.log("已确认离开奶牛副本，当前在村庄" if village else "已确认离开奶牛副本，当前在大厅")
+                    return True
+            if stage and not exit_submitted and attempts < 2 and time.monotonic() >= retry_after:
+                self.click(1236,36,.3)
+                attempts += 1
+                retry_after = time.monotonic() + 1.5
                 continue
             self.pause(.4)
         raise RuntimeError("未能确认已退出奶牛副本，请从右上角手动退场")
@@ -627,7 +700,7 @@ class SecretCow(SeasonalScreen):
                                     ensure_ascii=False) + "\n")
 
     def title(self):
-        return self.find(r"秘密奶牛副本.*第\d+层", (900, 110, 300, 50))
+        return self.find(r"秘密奶牛副本.*第\s*\d+\s*层", (900, 110, 300, 50))
 
     def bells(self):
         return self.number((1105, 15, 100, 40))
@@ -693,7 +766,7 @@ class SecretCow(SeasonalScreen):
                 raise RuntimeError("未确认奶牛副本的进入按钮")
             floor = self.title().text
             state = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890, 635, 310, 55))))
-            if state is None:
+            if state is None or state == -1:
                 raise RuntimeError("未确认奶牛副本进入次数，不进入")
             if state == 0:
                 self.log("本周免费次数已用完（进入需要消耗铃铛），不使用铃铛，正常结束")
@@ -716,81 +789,35 @@ class SecretCow(SeasonalScreen):
         return True
 
     def battle(self, bells, before_free):
-        last = time.monotonic()
-        seen_battle = False
-        seen_result = False
-        failed = False
-        while time.monotonic() - last < 300:
-            self.capture()
-            if self.find(r"HOT\s*DEAL|牛仔女王的提议", (80, 90, 1110, 480)):
-                self.log("关闭奶牛副本战后的限时礼包弹窗")
-                self.click(1236, 36, 1)
-                last = time.monotonic()
-                continue
-            dialog = self.find(r"取消", (360, 430, 300, 110))
-            if dialog:
-                if not self.find(r"免费", (330, 220, 640, 220)):
-                    self.click_row(dialog)
-                    self.log("进入时弹出了非免费确认框，已取消，不消耗铃铛")
-                    return False
-                confirm = self.find(r"确认|确定", (640, 430, 300, 110))
-                if not confirm:
-                    raise RuntimeError("免费确认框没有确认按钮")
-                self.click_row(confirm, .8)
-                last = time.monotonic()
-                continue
-            if self.close_reward():
-                seen_result = True
-                self.leave_battle()
-                last = time.monotonic()
-                continue
-            if (skip := self.find(r"^(?:Skip|SKIP)$", (1080, 0, 200, 75))):
-                seen_battle = True
-                self.click_row(skip, .8)
-                last = time.monotonic()
-                continue
-            if self.find(r"请点击屏幕|点击继续|点击屏幕", (300, 450, 980, 270)):
-                seen_battle = True
-                self.click(1120, 540, .8)
-                last = time.monotonic()
-                continue
-            back = self.find(r"^(?:返回|离开|退出|确认)$", (850, 600, 430, 120))
-            result = self.find(r"CLEAR|FAIL|DEFEAT|胜利|失败|通关|结算", (200, 40, 880, 260))
-            if result:
-                seen_result = True
-                failed = bool(re.search(r"FAIL|DEFEAT|失败", result.text, re.I))
-            if back and result:
-                seen_battle = True
-                self.click_row(back, 1)
-                last = time.monotonic()
-                continue
-            if result and not back:
-                self.leave_battle()
-                last = time.monotonic()
-                continue
-            if self.title() and (self.find(r"进入", (1000, 635, 200, 60))
-                                 or self.find(r"^选择$", (890, 630, 310, 50))):
-                if not seen_battle:
-                    self.pause(1)
-                    continue
-                after = self.bells()
-                if after != bells:
-                    raise RuntimeError(f"铃铛数量变化{bells}->{after}，立即停止")
-                if not self.to_team():
-                    raise RuntimeError("战斗后未确认奶牛副本的进入界面")
-                after_free = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890, 635, 310, 55))))
-                if failed:
-                    raise RuntimeError("奶牛副本挑战失败，已停止后续进入")
-                if not seen_result or after_free is None or (before_free > 0 and after_free != before_free - 1):
-                    raise RuntimeError("奶牛副本奖励或剩余免费次数未确认，不再次进入")
-                self.last_cow_free = after_free
-                self.log(f"本次挑战与奖励已确认，免费次数{before_free}->{after_free}，铃铛保持{after}")
-                return True
-            if self.find(r"Lv\.?\d+|HP|自动|AUTO|x[12]", (0, 0, 1280, 120)) and not self.title():
-                seen_battle = True
-            self.pause(.8)
-        self.leave_battle()
-        raise RuntimeError("奶牛副本战斗结果等待超时，已退场，不再次进入")
+        try:
+            self.wait_battle_start()
+            self.wait_first_reward(bells)
+            self.leave_battle()
+        except Exception:
+            # A delayed transition may enter combat after a recognition
+            # timeout. Always attempt containment before returning failure.
+            self.leave_battle()
+            raise
+        self.open_dungeon()
+        if not self.to_team():
+            raise RuntimeError("退场后未确认奶牛副本队伍页，不再次进入")
+        after = self.bells()
+        if after != bells:
+            raise RuntimeError(f"铃铛数量变化{bells}->{after}，已退场并停止后续挑战")
+        after_free = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890,635,310,55))))
+        if before_free not in (1,2,3) or after_free != before_free - 1:
+            raise RuntimeError("退场后剩余免费次数未确认，不再次进入")
+        self.last_cow_free = after_free
+        self.log(f"本次战利品与退场已确认，免费次数{before_free}->{after_free}，铃铛保持{after}")
+        return True
 
 
-ACTIONS.update({"LocalDailyFreeSummon": DailyFreeSummon(), "LocalFriendGift": FriendGift(), "LocalSecretCow": SecretCow()})
+class CowLeave(SecretCow):
+    timeout = 90
+
+    def execute(self):
+        return self.leave_battle()
+
+
+ACTIONS.update({"LocalDailyFreeSummon": DailyFreeSummon(), "LocalFriendGift": FriendGift(),
+                "LocalSecretCow": SecretCow(), "LocalSecretCowExit": CowLeave()})

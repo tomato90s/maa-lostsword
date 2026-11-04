@@ -164,4 +164,40 @@ class VillageTests(unittest.TestCase):
             self.assertEqual(result[2],1)
             self.assertFalse(result[-1])
 
+    def test_a_stationary_player_and_background_turn_the_patrol_around(self):
+        import numpy as np
+        action = VillageHunt()
+        action.image = np.zeros((720,1280,3),dtype=np.uint8)
+        action.find = lambda *args: None
+        action.player = lambda: (640,600)
+        action.targets = lambda player: []
+        action.portal = lambda: None
+        action.trace = action.log = lambda *args: None
+        action.move = action.strike = lambda *args, **kwargs: None
+        direction = 1
+        for step in range(3):
+            result = action.patrol_step(step,step,0,direction,0)
+            direction = result[2]
+        self.assertEqual(direction,-1)
+
+    def test_an_empty_patrol_does_not_claim_the_unverified_daily_reward(self):
+        action = VillageHunt()
+        action.redeem = lambda: (1000,1000,0)
+        action.journal = action.log = lambda *args: None
+        self.assertFalse(action.collect_patrol_reward(12,0,0,360))
+
+    def test_interrupted_patrol_settles_before_treating_candy_as_old_stock(self):
+        action = VillageHunt()
+        action.param = {"limit":1,"steps":1}
+        records = [{"status":"started","attempt":"pending","inventory_empty":True,"username":"Player"}]
+        action.journal = lambda record=None: records.append(record) if record is not None else records
+        action.username = "Player"
+        action.wallet = lambda: 1000
+        action.redeem = lambda: (1000,1030,1)
+        action.log = lambda *args: None
+        action.patrol = lambda *args: self.fail("Reward already meets today's cap")
+        self.assertTrue(action.execute())
+        self.assertEqual(records[-1]["attempt"],"pending")
+        self.assertEqual(records[-1]["gain"],30)
+
 if __name__ == "__main__":unittest.main()

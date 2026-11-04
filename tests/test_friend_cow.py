@@ -83,10 +83,43 @@ class CowFreeStateTest(unittest.TestCase):
         self.assertTrue(replay.execute())
         self.assertEqual(replay.entries, 3)
 
-    def test_unverified_auto_progress_never_allows_an_entry(self):
+    def test_entry_requires_a_current_team_page_with_explicit_free_attempts(self):
         action = seasonal.SecretCow()
-        with self.assertRaisesRegex(RuntimeError, "暂停奶牛自动进入"):
+        action.capture = lambda: None
+        action.title = lambda: True
+        action.find = lambda *args: NS(text="队伍编排")
+        action.ocr = lambda *args: [NS(text="1 进入")]
+        with self.assertRaisesRegex(RuntimeError, "未确认每周免费次数"):
             action.ensure_single_battle()
+        action.ocr = lambda *args: [NS(text="进入3/3")]
+        action.ensure_single_battle()
+
+    def test_team_page_never_counts_as_an_observed_battle(self):
+        action = seasonal.SecretCow()
+        action.find = lambda pattern, roi: NS(text="matched")
+        self.assertFalse(action.battle_active())
+
+    def test_failed_battle_start_still_attempts_to_exit(self):
+        action = seasonal.SecretCow()
+        action.wait_battle_start = lambda: (_ for _ in ()).throw(RuntimeError("entry delayed"))
+        exits = []
+        action.leave_battle = lambda: exits.append(True)
+        with self.assertRaisesRegex(RuntimeError, "entry delayed"):
+            action.battle(196,3)
+        self.assertEqual(exits,[True])
+
+    def test_battle_start_waits_until_the_entry_controls_disappear(self):
+        class EnterReplay(seasonal.SecretCow):
+            def __init__(self): self.frames = 0
+            def capture(self): self.frames += 1
+            def pause(self, *args): pass
+            def log(self, *args): pass
+            def find(self, pattern, roi):
+                if roi == (960, 75, 300, 55): return NS(text="秘密奶牛副本第16层")
+                return NS(text="队伍编排") if self.frames < 3 else None
+        action = EnterReplay()
+        self.assertTrue(action.wait_battle_start())
+        self.assertEqual(action.frames, 3)
 
     def test_cow_exit_uses_the_stage_exit_and_exact_confirmation(self):
         class ExitReplay(seasonal.SecretCow):
@@ -94,11 +127,13 @@ class CowFreeStateTest(unittest.TestCase):
             def __init__(self): self.sent = []
             def capture(self): pass
             def pause(self, *args): pass
-            def node(self, name): return self.phase == "home"
+            # The old generic home template can falsely match combat.
+            def node(self, name): return True
             def title(self): return None
             def find(self, pattern, roi):
                 choices = {"battle":["秘密奶牛副本第16层"],
-                           "prompt":["是否确定退场？","退场"], "home":[]}[self.phase]
+                           "prompt":["是否确定退场？","退场"],
+                           "home":["战斗","角色","召唤"]}[self.phase]
                 return next((NS(text=text) for text in choices if re.search(pattern,text)),None)
             def click(self,x,y,delay):
                 self.sent.append((x,y))
@@ -108,18 +143,65 @@ class CowFreeStateTest(unittest.TestCase):
                 self.phase = "home"
         replay = ExitReplay()
         self.assertTrue(replay.leave_battle())
-        self.assertEqual(replay.sent,[(1236,100),"退场"])
+        self.assertEqual(replay.sent,[(1236,36),"退场"])
 
     def test_cow_exit_never_clicks_in_an_unknown_screen(self):
         action = seasonal.SecretCow()
-        action.capture = action.pause = lambda *args: None
+        from unittest.mock import patch
+        clock = [0]
+        action.capture = lambda: None
+        action.pause = lambda *args: clock.__setitem__(0,clock[0]+1)
         action.node = action.title = lambda *args: None
         action.find = lambda *args: None
         sent = []
         action.click = action.click_row = lambda *args: sent.append(args)
-        with self.assertRaisesRegex(RuntimeError,"手动退场"):
-            action.leave_battle()
+        with patch("agent.seasonal_actions.time.monotonic",lambda:clock[0]):
+            with self.assertRaisesRegex(RuntimeError,"手动退场"):
+                action.leave_battle()
         self.assertEqual(sent,[])
+
+    def test_team_overlay_is_closed_instead_of_being_reported_as_an_exit(self):
+        class PanelReplay(seasonal.SecretCow):
+            def __init__(self): self.phase, self.sent = "panel", []
+            def capture(self): pass
+            def pause(self, *args): pass
+            def log(self, *args): pass
+            def title(self): return self.phase == "panel"
+            def node(self, name): return True
+            def find(self, pattern, roi):
+                texts = {"panel":["队伍编排","进入"],
+                         "battle":["秘密奶牛副本第16层"],
+                         "menu":["退场"],"village":["冒险"]}[self.phase]
+                return next((NS(text=text) for text in texts if re.search(pattern,text)),None)
+            def click(self,x,y,delay):
+                self.sent.append((x,y))
+                self.phase = "battle" if self.phase == "panel" else "menu"
+            def click_row(self,row,delay):
+                self.sent.append(row.text)
+                self.phase = "village"
+        action = PanelReplay()
+        self.assertTrue(action.leave_battle())
+        self.assertEqual(action.sent, [(1236,36),(1236,36),"退场"])
+
+    def test_next_free_entry_requires_a_reward_exit_and_unchanged_bells(self):
+        for after_bells, after_free, succeeds in ((263,2,True),(262,2,False),(263,3,False)):
+            action = seasonal.SecretCow()
+            events = []
+            action.wait_battle_start = lambda: events.append("battle")
+            action.wait_first_reward = lambda bells: events.append("reward")
+            action.leave_battle = lambda: events.append("exit")
+            action.open_dungeon = lambda: events.append("reopen")
+            action.to_team = lambda: True
+            action.bells = lambda: after_bells
+            action.ocr = lambda *args: [NS(text=f"进入{after_free}/3")]
+            action.log = lambda *args: None
+            if succeeds:
+                self.assertTrue(action.battle(263,3))
+                self.assertEqual(action.last_cow_free,2)
+            else:
+                with self.assertRaises(RuntimeError): action.battle(263,3)
+                self.assertFalse(hasattr(action,"last_cow_free"))
+            self.assertEqual(events,["battle","reward","exit","reopen"])
 
     def test_week_uses_game_reset_timezone(self):
         # Sunday 15:30 UTC is already Monday in UTC+9.

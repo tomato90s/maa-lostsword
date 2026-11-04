@@ -301,7 +301,8 @@ class FavorTalk(ScreenAction):
             self.capture()
         else:
             raise RuntimeError("等待好感列表超时")
-        while attempted < limit:
+        max_attempts = min(21, limit * 3)
+        while completed < limit and attempted < max_attempts:
             self.capture()
             name = self.detail_name()
             if name:
@@ -325,14 +326,14 @@ class FavorTalk(ScreenAction):
                 # ambiguous result, even when their affection level stays low.
                 self.seen.add(name)
                 attempted += 1
-                self.log(f"开始第{attempted}/{limit}位：{name}，剩余{before}/7")
+                self.log(f"检查第{attempted}位：{name}，已完成{completed}/{limit}，剩余{before}/7")
                 self.click_row(button)
                 if self.finish_conversation(name, before):
                     completed += 1
                     self.log(f"已确认完成{completed}人：{name}")
                 else:
                     unconfirmed.append(name)
-                    self.log(f"{name}未确认完成，保留待确认并跳过，不再点击该角色的对话")
+                    self.log(f"{name}剧情返回后次数未变化，跳过该角色，继续寻找可完成每日对话的角色")
                 self.click(1235, 37)
                 continue
             if not self.find(r"对话次数", (22, 73, 245, 45)):
@@ -353,11 +354,12 @@ class FavorTalk(ScreenAction):
             last_bottom = signature
             self.swipe(405, 618, 405, 195)
             scrolls += 1
-        return self.finish_run(completed, attempted, unconfirmed, f"达到本轮{limit}人上限")
+        reason = f"已完成本轮{limit}次对话" if completed >= limit else "达到角色检查上限"
+        return self.finish_run(completed, attempted, unconfirmed, reason)
 
     def finish_run(self, completed, attempted, unconfirmed, reason):
         self.log(f"{reason}；处理{attempted}人，确认完成{completed}人")
-        if unconfirmed:
+        if unconfirmed and reason != "今日次数已用完" and not reason.startswith("已完成本轮"):
             self.log("以下角色仍待确认，本项未全部完成：" + "、".join(unconfirmed))
             return False
         return True
@@ -398,7 +400,7 @@ class FavorTalk(ScreenAction):
                 not_done = self.find(r"^0\s*[/／]\s*1$", (735, 575, 235, 90))
                 available = self.find(r"^对话\s*[>›]?$", (738, 625, 220, 42))
                 # This is an explicit unchanged result, not a successful talk.
-                # Leave this person pending and move on within the person cap;
+                # Leave this person pending and inspect another distinct person;
                 # never replay their story or spend another attempt on them.
                 if not done and not_done and available and after == before:
                     if unchanged_since is None:

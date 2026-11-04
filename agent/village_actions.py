@@ -8,6 +8,7 @@ import zlib
 from datetime import datetime
 from difflib import SequenceMatcher
 from pathlib import Path
+from uuid import uuid4
 
 from maa.pipeline import JTemplateMatch
 from agent.seasonal_actions import SeasonalScreen
@@ -50,7 +51,7 @@ def chicken_templates(directories=IMAGE_DIRS):
 
 class VillageHunt(SeasonalScreen):
     label = "万圣节村庄目标"
-    timeout = 600
+    timeout = 1200
 
     def trace(self, step, player, targets):
         directory = self.param.get("trace_dir")
@@ -289,6 +290,21 @@ class VillageHunt(SeasonalScreen):
             return True
         # Old candy can remain in the bag across days. Redeem it separately so
         # a stored stack never counts as today's twelve defeated targets.
+        pending = next((item for item in reversed(previous)
+                        if item.get("status") == "started" and item.get("inventory_empty")
+                        and item.get("attempt") and not any(
+                            row.get("attempt") == item["attempt"]
+                            and row.get("status") in ("partial", "complete") for row in previous)), None)
+        if pending:
+            self.wallet()
+            if pending.get("username") != self.username:
+                raise RuntimeError("待结算巡查属于其他角色，停止领取")
+            self.attempt = pending["attempt"]
+            self.collect_patrol_reward(0,0,total,wanted)
+            previous = self.journal()
+            total = sum(item.get("gain",0) for item in previous if item.get("status") in ("partial","complete"))
+            if total >= wanted:
+                return True
         before, after, stored = self.redeem()
         stored_gain = verified_reward(before, after, stored)
         if stored:
@@ -300,19 +316,26 @@ class VillageHunt(SeasonalScreen):
         if not name:
             raise RuntimeError("未确认当前角色名称")
         self.username = name.text.strip()
-        self.journal({"status":"started","confirmed_today":total})
+        self.attempt = uuid4().hex
+        last_start = next((item for item in reversed(previous) if item.get("status") == "started"), None)
+        self.patrol_direction = -last_start.get("direction",1) if last_start else 1
+        self.journal({"status":"started","attempt":self.attempt,"username":self.username,
+                      "confirmed_today":total,"inventory_empty":True,"steps":steps,"direction":self.patrol_direction})
         attacks, sighted = self.patrol(steps)
         if not self.node("HomeFlagCloseReturnMain"):
             self.home()
+        return self.collect_patrol_reward(attacks, sighted, total, wanted)
+
+    def collect_patrol_reward(self, attacks, sighted, total, wanted):
         before, after, candies = self.redeem()
         gain = verified_reward(before,after,candies)
         total += gain
         self.journal({"status":"complete" if total>=wanted else "partial", "before":before,"after":after,
+                      "attempt":getattr(self,"attempt",None),"username":getattr(self,"username",None),
                       "candies":candies,"gain":gain,"confirmed_today":total,"attacks":attacks,"sighted":sighted})
         self.log(f"使用糖果{candies}颗，钻石{before}->{after}，实收{gain}钻；本日已核对{total}钻")
-        if candies == 0 and not sighted and steps >= 24:
-            self.log("村庄内未再发现目标，视为今日目标已清空")
-            return True
+        if candies == 0 and not sighted:
+            self.log("本次没有发现新目标，按实际到账奖励保留进度")
         if total < wanted:
             self.log("尚未核对全部目标奖励，保留未完成状态")
             return False
@@ -338,8 +361,14 @@ class VillageHunt(SeasonalScreen):
         label = TARGETS[self.kind]["label"]
         self.enter()
         self.leave_spawn()
-        attacks, misses, direction, sighted, bounces = 0,0,1,0,0
+        attacks, misses, direction, sighted, bounces = 0,0,getattr(self,"patrol_direction",1),0,0
+        self._last_patrol_view = None
+        self._last_patrol_player = None
+        self._still_patrol_frames = 0
         for step in range(steps):
+            if time.monotonic() + 120 >= self.deadline:
+                self.log("预留回大厅和领取糖果的时间，结束本次巡查")
+                break
             try:
                 self.capture()
                 self.guard()
@@ -388,6 +417,23 @@ class VillageHunt(SeasonalScreen):
                     attacks += 1
             else:
                 misses += 1
+                image = getattr(self, "image", None)
+                if image is not None:
+                    view = image[200:400:8,300:1000:8].copy()
+                    previous = getattr(self, "_last_patrol_view", None)
+                    position = getattr(self, "_last_patrol_player", None)
+                    stalled = False
+                    if previous is not None and position is not None:
+                        difference = abs(view.astype("int16") - previous.astype("int16"))
+                        stalled = (float(difference.mean()) < 2
+                                   and float((difference < 5).mean()) > .95
+                                   and math.hypot(player[0]-position[0],player[1]-position[1]) < 20)
+                    self._still_patrol_frames = getattr(self,"_still_patrol_frames",0) + 1 if stalled else 0
+                    if self._still_patrol_frames >= 2:
+                        direction = -direction
+                        self._still_patrol_frames = 0
+                        self.log("人物与背景连续未移动，换向继续巡查")
+                    self._last_patrol_view, self._last_patrol_player = view, player
                 portal = self.portal()
                 if portal and abs(player[0]-portal[0])<190 and player[1]>portal[1]+90:
                     self.move(direction,0,400)

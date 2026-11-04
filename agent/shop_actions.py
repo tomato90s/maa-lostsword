@@ -83,6 +83,23 @@ class ShopBatch(ScreenAction):
     def popup(self):
         return self.find(r"^批量购买$", (530, 60, 220, 55)) and self.find(r"总购买金额", (670, 535, 170, 45))
 
+    def open_batch(self):
+        until = time.monotonic() + 10
+        clicks, retry_after = 0, 0
+        while time.monotonic() < until:
+            self.capture()
+            if self.popup():
+                return
+            button = self.find(r"^批量购买$", (95, 640, 185, 65))
+            shop = self.find(r"^商店$", (45, 10, 120, 55))
+            if button and shop and clicks < 2 and time.monotonic() >= retry_after:
+                self.click_row(button, .5)
+                clicks += 1
+                retry_after = time.monotonic() + 2
+            else:
+                self.pause(.3)
+        raise RuntimeError("未确认批量购买窗口已经打开，本次没有提交购买")
+
     def scroll(self, top=False):
         self.check()
         if not self.popup():
@@ -258,7 +275,7 @@ class ShopBatch(ScreenAction):
         button = self.find(r"^批量购买$", (95, 640, 185, 65))
         if not button:
             raise RuntimeError("未能重新核对商品剩余上限")
-        self.click_row(button, .8)
+        self.open_batch()
         items = self.walk(configure=False)
         fields = ("name", "currency", "quantity", "maximum", "price")
         signature = lambda rows: sorted(tuple(item[key] for key in fields) for item in rows if item["selected"] and item["quantity"])
@@ -293,11 +310,7 @@ class ShopBatch(ScreenAction):
             before = self.wallet()
             self.open_category()
             before["分类代币"] = self.category_balance()
-        if not self.popup():
-            button = self.find(r"^批量购买$", (95, 640, 185, 65))
-            if not button or not self.find(r"^商店$", (45, 10, 120, 55)):
-                raise RuntimeError("未确认商店分类页")
-            self.click_row(button, .8)
+        self.open_batch()
         items = self.walk(configure=not self.param.get("inspect_only", False))
         expected = totals(items)
         actual = self.summary()

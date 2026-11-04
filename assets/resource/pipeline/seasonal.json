@@ -27,6 +27,11 @@
         "next": ["ReturnMain"],
         "on_error": ["LocalTaskFailed"]
     },
+    "LocalMaze_Entry": {
+        "action": {"type": "Custom", "param": {"custom_action": "LocalMazeDaily", "custom_action_param": {"priorities": ["石头", "经验宝箱", "金币宝箱"], "allow_other": true}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
     "LocalSecretCow_Entry": {
         "action": {"type": "Custom", "param": {"custom_action": "LocalSecretCow", "custom_action_param": {"limit": 3}}},
         "next": ["ReturnMain"],
