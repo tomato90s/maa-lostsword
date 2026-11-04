@@ -96,16 +96,16 @@ class CowFreeStateTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,"未确认"):
             action.execute()
 
-    def test_three_runs_survive_restart_after_the_first_confirmed_run(self):
+    def test_free_runs_do_not_consume_a_custom_bell_quota_after_restart(self):
         class Replay(seasonal.SecretCow):
             def __init__(self):
-                self.param = {"limit": 1}
+                self.param = {"use_custom_count": True, "limit": 0}
                 self.records, self.entries, self.free = [], 0, 3
             def ledger(self, record=None):
                 if record is not None: self.records.append(record)
                 return self.records
             def open_dungeon(self): pass
-            def ensure_single_battle(self): pass
+            def ensure_single_battle(self): return self.free, 0
             def to_team(self): return True
             def title(self): return NS(text="秘密奶牛副本第16层")
             def ocr(self, *args): return [NS(text=f"进入{self.free}/3")]
@@ -119,10 +119,11 @@ class CowFreeStateTest(unittest.TestCase):
                 return True
         replay = Replay()
         self.assertTrue(replay.execute())
-        replay.param = {"limit": 3}
+        replay.param = {"use_custom_count": True, "limit": 0}
         self.assertTrue(replay.execute())
         self.assertEqual((replay.entries, replay.free), (3, 0))
         self.assertEqual(seasonal.cow_attempts(replay.records), 3)
+        self.assertEqual(seasonal.cow_paid_attempts(replay.records), 0)
         self.assertTrue(replay.execute())
         self.assertEqual(replay.entries, 3)
 

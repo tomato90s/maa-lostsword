@@ -32,12 +32,7 @@ def friend_points(text):
 
 
 def cow_free_state(text):
-    """Free entries are spent only when the button explicitly says so.
-
-    After the weekly free entries, the button shows a bell icon and a bare
-    cost such as ``1 进入``. Anything that is not an explicit free marker is
-    treated as paid, so the action never spends a New Year's Eve Bell.
-    """
+    """Read free attempts; a separate icon/price check gates paid entry."""
     clean = re.sub(r"\s", "", text).replace("／", "/")
     if re.search(r"免费", clean):
         match = re.search(r"([0-3])/3", clean)
@@ -58,6 +53,19 @@ def cow_attempts(records):
     return len(attempts - cancelled) + max(
         sum(row.get("status") == "submitted" for row in legacy),
         sum(row.get("status") == "confirmed" for row in legacy))
+
+
+def cow_paid_attempts(records):
+    """Only explicitly priced bell entries consume the custom weekly quota."""
+    priced = [row for row in records if row.get("entry_cost") == 1]
+    used = cow_attempts(priced)
+    for attempt in {row["attempt"] for row in priced if row.get("attempt")}:
+        receipts = [row for row in priced if row.get("attempt") == attempt]
+        observed = max((row.get("paid_spent", 0) for row in receipts
+                        if type(row.get("paid_spent", 0)) is int and row.get("paid_spent", 0) >= 0), default=0)
+        if observed:
+            used += max(observed, cow_attempts(receipts)) - cow_attempts(receipts)
+    return used
 
 
 def game_week(now=None):
@@ -582,11 +590,27 @@ class SecretCow(SeasonalScreen):
     label = "秘密奶牛副本"
     timeout = 900
 
+    def entry_caption(self):
+        return " ".join(row.text for row in self.ocr(r".+", (890,635,310,55)))
+
+    def paid_entry_cost(self):
+        caption = re.sub(r"\s", "", self.entry_caption())
+        if (not re.fullmatch(r"(?:1)?进入", caption)
+                or not self.node("LocalSecretCow_BellEntry")
+                or self.number((1003,650,30,28)) != 1):
+            raise RuntimeError("未确认奶牛入口只消耗1个铃铛，不进入")
+        return 1
+
     def ensure_single_battle(self):
         self.capture()
-        state = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890,635,310,55))))
-        if (not self.title() or not self.find(r"^队伍编排$", (65,635,160,55))
-                or state not in (1,2,3)):
+        state = cow_free_state(self.entry_caption())
+        if not self.title() or not self.find(r"^队伍编排$", (65,635,160,55)):
+            raise RuntimeError("未确认奶牛副本队伍页，不进入")
+        if state in (1,2,3):
+            return state, 0
+        if state == 0 and getattr(self,"use_custom_count",False):
+            return state, self.paid_entry_cost()
+        else:
             raise RuntimeError("未确认每周免费次数和队伍页，不进入奶牛副本")
 
     def battle_active(self):
@@ -606,6 +630,26 @@ class SecretCow(SeasonalScreen):
             self.pause(.25)
         raise RuntimeError("点击进入后未确认奶牛战斗，停止追加进入")
 
+    def battle_bells(self):
+        # Combat can hide the currency bar. Unrelated text in the old fixed
+        # crop must not be interpreted as a balance or repaired by guessing.
+        match = self.node("LocalSecretCow_BellBalance")
+        if not match:
+            return None
+        box = match.best_result.box
+        x, y, w, h = (box.x, box.y, box.w, box.h) if hasattr(box, "x") else box
+        roi = (x + w + 4, max(0, y - 4), min(94, 1280 - x - w - 4), h + 8)
+        readings = []
+        for only_rec in (False, True):
+            rows = [row for row in self.ocr(r".+", roi, only_rec=only_rec) if row.score >= .85]
+            if len(rows) != 1:
+                return None
+            value = unsigned_number(rows[0].text)
+            if value is None:
+                return None
+            readings.append(value)
+        return readings[0] if readings[0] == readings[1] else None
+
     def wait_first_reward(self, bells):
         until = time.monotonic() + 150
         while time.monotonic() < until:
@@ -615,18 +659,48 @@ class SecretCow(SeasonalScreen):
                 self.log("已确认奶牛战利品，立即退场，停止游戏继续重复挑战")
                 return True
             if self.find(r"秘密奶牛副本", (960,75,300,55)):
-                try:
-                    current = self.number((925,15,75,40))
-                except RuntimeError:
-                    current = None
+                current = self.battle_bells()
                 if current is not None and current < bells:
-                    self.log(f"检测到本次结算后铃铛{bells}->{current}，立即退场")
-                    return True
+                    expected = getattr(self,"expected_entry_cost",0)
+                    if current != bells-expected:
+                        self.leave_battle()
+                        raise RuntimeError(f"铃铛消耗异常{bells}->{current}，已退场并停止")
+                    # One bell can be charged at entry. Spending alone is not
+                    # a completed battle; keep waiting for actual loot.
             self.pause(.2)
         self.leave_battle()
         raise RuntimeError("奶牛战利品未能确认，已退场，不再进入")
 
     def leave_battle(self):
+        # A task timeout must not prevent the exit that stops the game's own
+        # repeat battles. The bounded cleanup still honors a user stop.
+        original_deadline = getattr(self, "deadline", None)
+        self.deadline = max(original_deadline or 0, time.monotonic() + 65)
+        try:
+            return self._leave_battle()
+        finally:
+            if original_deadline is not None:
+                self.deadline = original_deadline
+
+    def leave_result(self):
+        result_back = self.find(r"^返回$", (865,620,180,80))
+        if (not result_back or not self.find(r"^战术$", (1045,620,220,80))
+                or not self.find(r"秘密奶牛副本", (960,75,300,55))):
+            return False
+        checked = self.node("LocalSecretCow_AutoRepeatChecked")
+        if checked:
+            self.click_row(checked.best_result, .1)
+            result_back = self.find(r"^返回$", (865,620,180,80))
+            if (not result_back or not self.find(r"^战术$", (1045,620,220,80))):
+                return True
+            if self.node("LocalSecretCow_AutoRepeatChecked"):
+                return True
+            self.log("已关闭奶牛结算页自动再次挑战")
+        self.click_row(result_back, .2)
+        self.log("已从奶牛结算页返回，阻止5秒自动再次挑战")
+        return True
+
+    def _leave_battle(self):
         """Leave through the menu's 退场 button and verify the village/lobby.
 
         The pin below the menu opens stage details while combat continues.
@@ -637,6 +711,8 @@ class SecretCow(SeasonalScreen):
         until = time.monotonic() + 60
         while time.monotonic() < until:
             self.capture()
+            if self.leave_result():
+                continue
             if self.find(r"是否.*(?:退场|退出|离开)", (330,250,650,200)):
                 leave = self.find(r"^(?:退场|退出|确认|确定)$", (500,400,420,140))
                 if not leave:
@@ -652,9 +728,6 @@ class SecretCow(SeasonalScreen):
                 continue
             if self.find(r"HOT\s*DEAL|牛仔女王的提议", (80,90,1110,480)):
                 self.click(1236,36,.3)
-                continue
-            if self.find(r"传说\s*(?:武器|防具|饰品|符文|辅助道具)", (600,70,330,70)):
-                self.click(640,600,.3)
                 continue
             if self.find(r"^背包$", (125,5,90,45)):
                 raise RuntimeError("退场期间出现背包，停止其他导航并保留画面供检查")
@@ -678,7 +751,7 @@ class SecretCow(SeasonalScreen):
                 if village or lobby:
                     self.log("已确认离开奶牛副本，当前在村庄" if village else "已确认离开奶牛副本，当前在大厅")
                     return True
-            if stage and not exit_submitted and attempts < 2 and time.monotonic() >= retry_after:
+            if stage and not exit_submitted and time.monotonic() >= retry_after:
                 self.click(1236,36,.3)
                 attempts += 1
                 retry_after = time.monotonic() + 1.5
@@ -706,6 +779,8 @@ class SecretCow(SeasonalScreen):
         return self.number((1105, 15, 100, 40))
 
     def open_dungeon(self):
+        if self.title() and self.find(r"^队伍编排$", (65,635,160,55)):
+            return
         self.open_menu("战斗")
         for _ in range(10):
             if self.find(r"战斗", (20, 5, 170, 60)) and (tab := self.find(r"^副本$", (345, 70, 150, 60))):
@@ -743,9 +818,15 @@ class SecretCow(SeasonalScreen):
         return False
 
     def execute(self):
-        limit = int(self.param.get("limit", 3))
-        if not 0 <= limit <= 5:
-            raise RuntimeError("秘密奶牛副本次数须为0至5")
+        self.use_custom_count = self.param.get("use_custom_count",False)
+        if not isinstance(self.use_custom_count,bool):
+            raise RuntimeError("使用自定义次数必须为开关值")
+        limit = None
+        if self.use_custom_count:
+            raw = self.param.get("limit",10)
+            if isinstance(raw,bool) or not re.fullmatch(r"(?:0|[1-9][0-9]?)",str(raw)):
+                raise RuntimeError("自定义铃铛次数须为0至99")
+            limit = int(raw)
         if self.param.get("inspect_only"):
             self.open_dungeon()
             if not self.to_team():
@@ -754,39 +835,46 @@ class SecretCow(SeasonalScreen):
             self.log(f"只核对未进入：免费次数{state}，铃铛{self.bells()}")
             return True
         records = self.ledger()
-        used = cow_attempts(records)
+        used = cow_paid_attempts(records)
         if records and records[-1].get("status") == "submitted":
             raise RuntimeError("上次奶牛副本进入结果尚未核对，不重复进入")
-        if used >= limit:
-            self.log(f"本周已由脚本进入{used}次，达到设置{limit}次，跳过")
-            return True
+        if self.use_custom_count:
+            self.deadline = time.monotonic()+max(900,(max(0,limit-used)+3)*240+60)
         self.open_dungeon()
-        while used < limit:
+        while True:
             if not self.to_team():
                 raise RuntimeError("未确认奶牛副本的进入按钮")
             floor = self.title().text
-            state = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890, 635, 310, 55))))
+            state = cow_free_state(self.entry_caption())
             if state is None or state == -1:
                 raise RuntimeError("未确认奶牛副本进入次数，不进入")
-            if state == 0:
+            if state == 0 and not self.use_custom_count:
                 self.log("本周免费次数已用完（进入需要消耗铃铛），不使用铃铛，正常结束")
                 return True
-            self.ensure_single_battle()
+            if state == 0 and used >= limit:
+                self.log(f"本周已由脚本使用铃铛{used}次，达到设置的{limit}次；免费次数另算，正常结束")
+                return True
+            state, cost = self.ensure_single_battle()
             before = self.bells()
+            if cost and before < cost:
+                self.log(f"铃铛不足，当前{before}个；本周已由脚本使用铃铛{used}次，本轮结束")
+                return True
+            self.expected_entry_cost = cost
             enter = self.find(r"进入", (1000, 635, 200, 60))
             attempt = uuid4().hex
             self.ledger({"status": "submitted", "attempt": attempt, "floor": floor, "bells": before,
-                         "before_free": state})
-            self.log(f"确认免费进入{state}/3，挑战{floor}（本周脚本第{used + 1}/{limit}次），铃铛{before}")
+                         "before_free": state,"entry_cost":cost,"custom_count":self.use_custom_count})
+            progress = f"本周铃铛{used+1}/{limit}" if cost else f"免费剩余{state}/3，不计入自定义次数"
+            self.log(f"确认{'使用1个铃铛' if cost else '免费'}进入，挑战{floor}（{progress}），铃铛{before}")
             self.click_row(enter, 1)
-            used += 1
             if not self.battle(before, state):
-                self.ledger({"status": "cancelled", "attempt": attempt, "floor": floor, "bells": before})
+                self.ledger({"status": "cancelled", "attempt": attempt, "floor": floor, "bells": before,
+                             "entry_cost":cost})
                 return True
             self.ledger({"status": "confirmed", "attempt": attempt, "floor": floor, "bells": before,
-                         "before_free": state, "after_free": self.last_cow_free})
-        self.log(f"已完成设置的{limit}次，正常结束")
-        return True
+                         "before_free": state, "after_free": self.last_cow_free,
+                         "entry_cost":cost,"paid_spent":cost,"custom_count":self.use_custom_count})
+            used += cost
 
     def battle(self, bells, before_free):
         try:
@@ -802,13 +890,16 @@ class SecretCow(SeasonalScreen):
         if not self.to_team():
             raise RuntimeError("退场后未确认奶牛副本队伍页，不再次进入")
         after = self.bells()
-        if after != bells:
+        cost = getattr(self,"expected_entry_cost",0)
+        if after != bells-cost:
             raise RuntimeError(f"铃铛数量变化{bells}->{after}，已退场并停止后续挑战")
         after_free = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890,635,310,55))))
-        if before_free not in (1,2,3) or after_free != before_free - 1:
+        valid_free = cost == 0 and before_free in (1,2,3) and after_free == before_free-1
+        valid_paid = cost == 1 and before_free == 0 and after_free == 0
+        if not (valid_free or valid_paid):
             raise RuntimeError("退场后剩余免费次数未确认，不再次进入")
         self.last_cow_free = after_free
-        self.log(f"本次战利品与退场已确认，免费次数{before_free}->{after_free}，铃铛保持{after}")
+        self.log(f"本次战利品与退场已确认，免费次数{before_free}->{after_free}，铃铛{bells}->{after}")
         return True
 
 
