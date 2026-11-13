@@ -63,6 +63,8 @@
         "resource/tasks/daily/bingo_task.json",
         "resource/tasks/daily/roulette_task.json",
         "resource/tasks/daily/village_task.json",
+        "resource/tasks/daily/maid_cafe_task.json",
+        "resource/tasks/daily/slime_race_task.json",
         "resource/tasks/daily/friend_task.json",
         "resource/tasks/daily/secret_cow_task.json",
         "resource/tasks/daily/maze_task.json"

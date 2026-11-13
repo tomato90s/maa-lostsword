@@ -235,7 +235,13 @@
     },
     "ReturnMain": {
         "timeout": 90000,
+        "action": {"type": "Custom", "param": {"custom_action": "LocalVillageReturnLobby"}},
         "next": [
+            "[JumpBack]LocalSlimeRace_CloseSelection",
+            "[JumpBack]LocalSlimeRace_CloseResult",
+            "[JumpBack]LocalSlimeRace_ReturnVillage",
+            "[JumpBack]LocalSlimeRace_Exit",
+            "[JumpBack]LocalMaidCafe_CloseMenu",
             "[JumpBack]Startup_CloseMaidPopup",
             "[JumpBack]CardReward",
             "[JumpBack]Draw_ViewAll",

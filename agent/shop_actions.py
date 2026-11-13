@@ -202,11 +202,18 @@ class ShopBatch(ScreenAction):
             "HomeFlagCloseReturnMain": {"next": []}, "LocalCrashRecovery": {"enabled": False}})
         if not result or not result.status.succeeded:
             raise RuntimeError("未能返回大厅核对余额")
-        self.capture()
-        if not self.node("HomeFlagCloseReturnMain"):
+        if not self.wait_for(lambda: self.node("HomeFlagCloseReturnMain"), stable=2):
             raise RuntimeError("大厅未稳定，无法核对余额")
-        self.click(1236, 36, .8)
-        if not self.find(r"游戏专属编号", (850, 55, 350, 50)):
+        menu = lambda: self.find(r"游戏专属编号", (850, 55, 350, 50))
+        for _ in range(2):
+            if menu():
+                break
+            if not self.node("HomeFlagCloseReturnMain"):
+                raise RuntimeError("未确认大厅，不打开余额菜单")
+            self.click(1236, 36, .8)
+            if self.wait_for(menu, stable=2):
+                break
+        if not menu():
             raise RuntimeError("未确认大厅菜单余额栏")
         return {"金币": self.number((1025, 655, 145, 42)),
                 "钻石": self.number((850, 655, 105, 42))}

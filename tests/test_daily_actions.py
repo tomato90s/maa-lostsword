@@ -393,6 +393,27 @@ class NewDailyTests(unittest.TestCase):
         self.assertTrue(model.execute())
         self.assertEqual(model.events, ['match', '确认', '返回'])
 
+    def test_squad_result_finds_return_left_of_tactics(self):
+        model = SquadModel()
+        normal_find = model.find
+        import re
+        def find(pattern, roi=None):
+            if model.state != 'result':
+                return normal_find(pattern, roi)
+            # Observed on the 1280x720 CLEAR screen on 2026-11-05.
+            visible = [('CLEAR', Rect(510, 130, 260, 65)),
+                       ('返回', Rect(923, 638, 65, 24)),
+                       ('战术', Rect(1122, 638, 65, 24))]
+            x, y, w, h = roi
+            return next((NS(text=text, tag=text, score=1, box=box)
+                         for text, box in visible if re.search(pattern, text)
+                         and x <= box.x and y <= box.y
+                         and box.x + box.w <= x + w and box.y + box.h <= y + h), None)
+        model.find, model.node = find, lambda name: False
+        with patch('agent.daily_actions.time.monotonic', side_effect=[0, 1, 161]):
+            self.assertTrue(model.execute())
+        self.assertEqual(model.events, ['match', '确认', '返回'])
+
     def test_guild_reward_returns_to_parent_after_popup(self):
         action = GuildClaimReward()
         action.argv = row('领取奖励')

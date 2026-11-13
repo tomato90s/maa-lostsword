@@ -5,7 +5,7 @@
             "label": "万圣节村庄目标",
             "entry": "LocalVillage_Entry",
             "group": ["daily"],
-            "default_check": true,
+            "default_check": false,
             "option": ["Local_VillageLimit"],
             "description": "进入村庄自动寻找并攻击万圣节目标，结束后在背包使用奇怪的糖果，每颗30钻，每日最多12个。钻石到账与糖果数一致才计入当日进度。"
         },

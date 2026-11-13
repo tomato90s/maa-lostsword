@@ -1,0 +1,162 @@
+{
+    "task": [
+        {
+            "name": "女仆店每周属性",
+            "label": "女仆店每周属性",
+            "entry": "LocalMaidCafe_Entry",
+            "group": [
+                "weekly"
+            ],
+            "default_check": false,
+            "description": "进入村庄找女仆丽塔点单。四种餐点独立开启，各自补到本周5/5；全部从0买满共475万金币。每次核对次数后才继续。",
+            "option": [
+                "Local_MaidCafeCoffee",
+                "Local_MaidCafeCookies",
+                "Local_MaidCafeParfait",
+                "Local_MaidCafeOmurice"
+            ]
+        }
+    ],
+    "option": {
+        "Local_MaidCafeCoffee": {
+            "type": "select",
+            "label": "心动美式咖啡（每份5万金币）",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "LocalMaidCafe_coffee": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "LocalMaidCafe_coffee": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "Local_MaidCafeCookies": {
+            "type": "select",
+            "label": "手作女仆曲奇（每份15万金币）",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "LocalMaidCafe_cookies": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "LocalMaidCafe_cookies": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "Local_MaidCafeParfait": {
+            "type": "select",
+            "label": "坠入爱河芭菲（每份25万金币）",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "LocalMaidCafe_parfait": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "LocalMaidCafe_parfait": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "Local_MaidCafeOmurice": {
+            "type": "select",
+            "label": "黄金蛋包饭（每份50万金币）",
+            "default_case": "关闭",
+            "cases": [
+                {
+                    "name": "开启",
+                    "pipeline_override": {
+                        "LocalMaidCafe_omurice": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "关闭",
+                    "pipeline_override": {
+                        "LocalMaidCafe_omurice": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "enabled": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

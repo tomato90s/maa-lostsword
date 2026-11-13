@@ -8,7 +8,7 @@
             ],
             "label": "🛒商店",
             "default_check": true,
-            "description": "领取每日免费礼包；交易所各分类独立开启，按预设商品分别完成批量购买，不共用兑换次数上限。",
+            "description": "领取每日及每周免费钻石礼包；只点击明确显示免费的商品。交易所各分类独立开启，按预设商品分别完成批量购买。",
             "option": [
                 "Local_ShopConsumables",
                 "Local_ShopRaid",
