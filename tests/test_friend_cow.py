@@ -15,14 +15,51 @@ except ImportError as exc:  # maafw is bundled only with the runtime
 
 
 class FriendPointsTest(unittest.TestCase):
+    def test_ignored_menu_navigation_can_retry_once_without_any_consumption(self):
+        action = seasonal.SeasonalScreen()
+        clicks = []
+        action.home = action.pause = action.capture = action.log = lambda *args: None
+        action.node = lambda name: True
+        def find(pattern, roi):
+            if "游戏专属编号" in pattern:
+                return True if len(clicks) < 2 else None
+            return NS(box=NS(x=1000,w=80,y=220))
+        action.find = find
+        action.click = lambda *args: clicks.append(args[:2])
+        action.open_menu("召唤")
+        self.assertEqual(clicks, [(1040,198), (1040,198)])
+
     def test_reads_live_counters(self):
         self.assertEqual(seasonal.friend_points("今日已赠送友情点数15/30 今日已领取友情点数4/30"), (15, 4))
 
     def test_missing_counter_is_unknown(self):
         self.assertIsNone(seasonal.friend_points("今日已赠送友情点数15/30"))
 
+    def test_current_ten_point_limit_is_read_from_the_page(self):
+        self.assertEqual(seasonal.friend_progress("今日已赠送友情点数10/10 今日已领取友情点数4/10"), (10,4,10))
+        self.assertEqual(seasonal.friend_points("今日已赠送友情点数0/10 今日已领取友情点数0/10"), (0,0))
+
+    def test_conflicting_or_over_limit_counters_remain_unknown(self):
+        for text in ("赠送友情点数10/10 领取友情点数10/30", "赠送友情点数11/10 领取友情点数10/10"):
+            self.assertIsNone(seasonal.friend_progress(text))
+
+    def test_completed_ten_point_day_skips_without_clicking(self):
+        action = seasonal.FriendGift()
+        action.open_menu = lambda label: None
+        action.page = lambda: True
+        action.ocr = lambda *args: [NS(text="今日已赠送友情点数10/10"), NS(text="今日已领取友情点数10/10")]
+        action.log = lambda *args: None
+        action.click_row = lambda *args: self.fail("Completed friends must not be clicked")
+        self.assertTrue(action.execute())
+
 
 class CowFreeStateTest(unittest.TestCase):
+    def test_entry_caption_excludes_the_bell_picture_that_ocr_reads_as_text(self):
+        action = seasonal.SecretCow()
+        action.ocr = lambda pattern, roi: [NS(text=t) for t in
+            (["1", "进入"] if roi == (990,640,205,50) else ["簡", "进入"])]
+        self.assertEqual(seasonal.cow_free_state(action.entry_caption()), 0)
+
     def test_bell_cost_is_not_free(self):
         # Live screen after this week's free entries: bell icon, "1", "进入".
         self.assertEqual(seasonal.cow_free_state("1 进入"), 0)

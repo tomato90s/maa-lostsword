@@ -350,6 +350,32 @@ class SeasonalTests(unittest.TestCase):
                 self.run_craft(model)
             self.assertEqual(model.commits, 1)
 
+    def test_roulette_transient_counter_misread_is_not_a_spend(self):
+        # 2026-11-05: the spin animation cut 251 to 25 once, then read 251.
+        model = RouletteReplay()
+        reads = iter([244, 24, 244, 244, 244, 244, 244, 244])
+        def number(roi):
+            value = next(reads, 244)
+            if value is None:
+                raise RuntimeError("unreadable")
+            return value
+        model.number = number
+        self.assertTrue(self.run_craft(model))
+        self.assertEqual((model.commits, model.reward_closed), (1, True))
+
+    def test_roulette_unreadable_counter_never_confirms_or_repeats(self):
+        model = RouletteReplay()
+        reads = iter([244])
+        def number(roi):
+            value = next(reads, None)
+            if value is None:
+                raise RuntimeError("unreadable")
+            return value
+        model.number = number
+        with self.assertRaisesRegex(RuntimeError, "尚未完全确认"):
+            self.run_craft(model)
+        self.assertEqual(model.commits, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

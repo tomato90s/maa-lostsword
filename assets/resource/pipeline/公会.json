@@ -197,12 +197,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    547,
-                    342,
-                    162,
-                    35
-                ],
+                "roi": [470, 326, 360, 68],
                 "expected": [
                     "今日捐献已达上限"
                 ]
@@ -238,12 +233,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    547,
-                    342,
-                    162,
-                    35
-                ],
+                "roi": [470, 326, 360, 68],
                 "expected": [
                     "今日捐献已达上限"
                 ]
@@ -288,12 +278,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    547,
-                    342,
-                    162,
-                    35
-                ],
+                "roi": [470, 326, 360, 68],
                 "expected": [
                     "今日捐献已达上限"
                 ]
@@ -329,12 +314,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    547,
-                    342,
-                    162,
-                    35
-                ],
+                "roi": [470, 326, 360, 68],
                 "expected": [
                     "今日捐献已达上限"
                 ]
@@ -591,6 +571,7 @@
             }
         },
         "next": [
+            "LocalGuild_DonationLimit",
             "[JumpBack]公会-捐献-金币",
             "[JumpBack]公会-捐献-信物",
             "公会-捐献-关闭弹框",
@@ -794,7 +775,7 @@
             "[JumpBack]公会-投资金币",
             "[JumpBack]公会-投资信物",
             "[JumpBack]公会-捐献",
-            "StopTask"
+            "LocalGuild_Finish"
         ],
         "$__mpe_code": {
             "position": {
@@ -897,13 +878,11 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalGuildInvest",
+                "custom_action_param": {"scope": "coin"}
             }
         },
-        "next": [
-            "Global_ItemObtained",
-            "公会-已投资金币"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2013,
@@ -934,13 +913,11 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalGuildInvest",
+                "custom_action_param": {"scope": "token"}
             }
         },
-        "next": [
-            "Global_ItemObtained",
-            "公会-已投资信物"
-        ],
+        "next": [],
         "$__mpe_code": {
             "position": {
                 "x": 2027,
@@ -957,12 +934,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    550,
-                    340,
-                    159,
-                    40
-                ],
+                "roi": [470, 326, 360, 68],
                 "expected": [
                     "今日已进行过投资"
                 ]
@@ -999,12 +971,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    550,
-                    340,
-                    159,
-                    40
-                ],
+                "roi": [470, 326, 360, 68],
                 "expected": [
                     "今日已进行过投资"
                 ]
@@ -1052,12 +1019,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "roi": [
-                    550,
-                    340,
-                    159,
-                    40
-                ],
+                "roi": [470, 326, 360, 68],
                 "expected": [
                     "今日已进行过投资"
                 ]
@@ -1088,6 +1050,44 @@
             "LocalCrashRecovery",
             "LocalTaskFailed"
         ]
+    },
+    "LocalGuild_Finish": {
+        "desc": "已配置的公会项目均检查完毕，正常结束本项",
+        "action": {"type": "DoNothing"},
+        "focus": {"Node.Action.Succeeded": "公会日常已检查，正常结束"},
+        "next": []
+    },
+    "LocalGuild_CoinInvested": {
+        "desc": "公会金币投资次数为1/1，关闭本轮入口并正常跳过",
+        "max_hit": 1,
+        "recognition": {"type": "And", "param": {"all_of": [
+            {"recognition": "OCR", "roi": [60, 8, 110, 55], "expected": ["^公会$"]},
+            {"recognition": "OCR", "roi": [1195, 472, 57, 42], "expected": ["^1\\s*[/／]\\s*1$"]}
+        ]}},
+        "action": {"type": "Custom", "param": {"custom_action": "DisableNode", "custom_action_param": {"node_name": "公会-投资金币"}}},
+        "focus": {"Node.Action.Succeeded": "今日金币投资已完成，正常跳过"},
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalGuild_TokenInvested": {
+        "desc": "公会信物投资次数为1/1，关闭本轮入口并正常跳过",
+        "max_hit": 1,
+        "recognition": {"type": "And", "param": {"all_of": [
+            {"recognition": "OCR", "roi": [60, 8, 110, 55], "expected": ["^公会$"]},
+            {"recognition": "OCR", "roi": [1195, 566, 57, 42], "expected": ["^1\\s*[/／]\\s*1$"]}
+        ]}},
+        "action": {"type": "Custom", "param": {"custom_action": "DisableNode", "custom_action_param": {"node_name": "公会-投资信物"}}},
+        "focus": {"Node.Action.Succeeded": "今日信物投资已完成，正常跳过"},
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalGuild_DonationLimit": {
+        "desc": "捐献入口直接提示今日上限时关闭确认，禁用本轮捐献后返回公会主流程",
+        "max_hit": 1,
+        "recognition": {"type": "OCR", "param": {"roi": [470, 326, 360, 68], "expected": ["今日捐献已达上限"]}},
+        "action": {"type": "Custom", "param": {"custom_action": "LocalGuildDonationLimit"}},
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
     },
     "Local_GuildPolicy": {
         "desc": "仅检测运行中旧界面仍在发送的合并配置，不用于执行捐献",

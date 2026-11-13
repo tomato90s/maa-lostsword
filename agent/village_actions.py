@@ -53,6 +53,12 @@ class VillageHunt(SeasonalScreen):
     label = "万圣节村庄目标"
     timeout = 1200
 
+    def trace_navigation(self):
+        if not getattr(self, "param", {}).get("trace_dir"):
+            return
+        self._navigation_frame = getattr(self, "_navigation_frame", 1000) + 1
+        self.trace(self._navigation_frame, self.player(), [])
+
     def trace(self, step, player, targets):
         directory = self.param.get("trace_dir")
         if not directory: return
@@ -195,12 +201,14 @@ class VillageHunt(SeasonalScreen):
                 self.pause(2.5)
                 self.capture()
                 if self.village():
+                    self.trace_navigation()
                     return
             self.pause(.5)
         raise RuntimeError("进入村庄后未确认攻击界面")
 
     def leave_spawn(self):
         """Walk well below the lobby circle in front of the INN door."""
+        self.trace_navigation()
         player = self.player()
         if player and player[1] >= self.SAFE_Y+20:
             # Village entry keeps the last location. Repeatedly moving down
@@ -210,10 +218,49 @@ class VillageHunt(SeasonalScreen):
             return
         for _ in range(4):
             self.move(0,1,400)
+            self.trace_navigation()
             player = self.player()
             if player and player[1] >= self.SAFE_Y+20:
                 return
         self.log("未确认已离开出生光圈，继续巡查时保持在下方")
+
+    def prepare_street(self):
+        # Arrival/spawn movement happens before patrol's ordinary bounce guard.
+        for attempt in range(3):
+            try:
+                self.enter()
+                self.ensure_street()
+                self.leave_spawn()
+                return
+            except LobbyBounce:
+                self.trace_navigation()
+                if attempt == 2:
+                    raise
+                self.log("进村后回到大厅，重新进入并离开出生光圈")
+
+    def cafe_room(self):
+        return bool(self.find(r"^(?:女仆丽塔|艾米|克拉拉)$", (0, 155, 1260, 240)))
+
+    def ensure_street(self):
+        """Village entry can remember the last position inside the maid cafe."""
+        for _ in range(28):
+            self.capture()
+            result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
+                template=["local_maid_cafe_exit.png"], threshold=[.85], roi=[0,100,1280,400]), self.image)
+            door = result.best_result.box if result and result.hit else None
+            if self.village() and not self.cafe_room() and not door:
+                return
+            if not self.village():
+                self.pause(.5)
+                continue
+            player = self.player()
+            if door and player:
+                x, y, w, h = door
+                dx, dy = x+w/2-player[0], y+330-player[1]
+                self.move(dx, dy, min(260, max(80, int(max(abs(dx),abs(dy))*1.2))))
+            else:
+                self.move(1, 0, 400)
+        raise RuntimeError("未能离开女仆店，停止打鸡，避免把店内巡查当作完成")
 
     # Feet at or above this screen height are on the INN-door lobby circle row.
     SAFE_Y = 560
@@ -228,13 +275,15 @@ class VillageHunt(SeasonalScreen):
         return row.box.x+row.box.w/2, row.box.y+255
 
     def targets(self, player):
+        chicken = self.kind == "chicken"
         result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
-            template=self.templates, threshold=[.7], roi=[0,230,1240,350]), self.image)
+            template=self.templates, threshold=[.8 if chicken else .7],
+            roi=[0,230,1280,460 if chicken else 390]), self.image)
         points = []
         for hit in (result.filtered_results if result and result.hit else []):
             box = hit.box
             x,y,w,h = (box.x,box.y,box.w,box.h) if hasattr(box,"x") else box
-            point = (x+w/2, y+238)
+            point = (x+w/2, y+h-3 if chicken else y+238)
             if math.hypot(point[0]-player[0], point[1]-(player[1]+15)) < 50:
                 # Exclude an accidental match on the controlled character's head.
                 continue
@@ -269,7 +318,7 @@ class VillageHunt(SeasonalScreen):
 
     def portal(self):
         result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
-            template=["local_village_in.png"],threshold=[.8],roi=[0,150,1240,400]),self.image)
+            template=["local_village_in.png", "local_village_in_alt.png"],threshold=[.8],roi=[0,150,1240,400]),self.image)
         if not result or not result.hit: return None
         box = result.best_result.box
         x,y,w,h = (box.x,box.y,box.w,box.h) if hasattr(box,"x") else box
@@ -293,6 +342,7 @@ class VillageHunt(SeasonalScreen):
         if kind not in TARGETS:
             raise RuntimeError("村庄目标类型须为万圣节女人或鸡")
         self.kind = kind
+        self.label = "村庄打鸡" if kind == "chicken" else "万圣节村庄目标"
         self.templates = TARGETS[kind]["templates"] or chicken_templates()
         if not self.templates:
             raise RuntimeError("还没有鸡的识别图片，暂时不能打鸡")
@@ -393,12 +443,12 @@ class VillageHunt(SeasonalScreen):
 
     def patrol(self, steps):
         label = TARGETS[self.kind]["label"]
-        self.enter()
-        self.leave_spawn()
+        self.prepare_street()
         attacks, misses, direction, sighted, bounces = 0,0,getattr(self,"patrol_direction",1),0,0
         self._last_patrol_view = None
         self._last_patrol_player = None
         self._still_patrol_frames = 0
+        self._missing_player_frames = 0
         for step in range(steps):
             if time.monotonic() + 120 >= self.deadline:
                 self.log("预留回大厅和领取糖果的时间，结束本次巡查")
@@ -417,6 +467,8 @@ class VillageHunt(SeasonalScreen):
                 self.leave_spawn()
                 continue
             if stop:
+                if self._missing_player_frames >= 5:
+                    raise RuntimeError("连续无法定位村庄人物，本轮巡查未完成")
                 break
             if (step+1)%12==0:
                 self.log(f"已巡查{step+1}步，攻击{attacks}轮")
@@ -434,9 +486,10 @@ class VillageHunt(SeasonalScreen):
             player = self.player()
             if not player:
                 self.trace(step, None, [])
-                misses += 1
+                self._missing_player_frames = getattr(self, "_missing_player_frames", 0)+1
                 self.pause(.3)
-                return misses, attacks, direction, sighted, misses >= 5
+                return misses, attacks, direction, sighted, self._missing_player_frames >= 5
+            self._missing_player_frames = 0
             targets = self.targets(player)
             self.trace(step, player, targets)
             if targets:

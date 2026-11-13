@@ -1,5 +1,6 @@
-import unittest
+import re
 import sys
+import unittest
 from pathlib import Path
 from types import SimpleNamespace as NS
 
@@ -46,6 +47,127 @@ class MazePreferenceTests(unittest.TestCase):
         action.find = lambda *args: None
         action.ocr = lambda *args: [NS(text="未知交易")]
         action.click = lambda *args: self.fail("Unknown choices must remain untouched")
+        with self.assertRaisesRegex(RuntimeError, "未识别"):
+            action.advance_story()
+
+    def test_well_event_declines_water_before_advancing_dialogue(self):
+        for allow_other in (False, True):
+            with self.subTest(allow_other=allow_other):
+                action = MazeDaily()
+                action.allow_other = allow_other
+                choices = [NS(text="喝井水。"), NS(text="不喝。")]
+                body = NS(text="迷宫探索中发现了水井。")
+                action.find = lambda pattern, roi: next((row for row in
+                    ([body] if roi == (30,595,1170,55) else choices)
+                    if re.search(pattern, row.text)), None)
+                records, selected = [], []
+                action.journal = lambda **record: records.append(record)
+                action.log = lambda *args: None
+                action.click_row = lambda row, delay: selected.append(row.text)
+                action.click = lambda *args: self.fail("Must choose the explicit decline button")
+                action.advance_story()
+                self.assertEqual(selected, ["不喝。"])
+                self.assertEqual(records[-1]["event"], "well")
+
+    def test_incomplete_well_choices_stop_without_input(self):
+        for missing in ("喝井水。", "不喝。"):
+            with self.subTest(missing=missing):
+                action = MazeDaily()
+                rows = [NS(text=text) for text in
+                        ("迷宫探索中发现了水井。", "喝井水。", "不喝。") if text != missing]
+                action.find = lambda pattern, roi: next((row for row in rows
+                    if re.search(pattern, row.text)), None)
+                action.click_row = action.click = lambda *args: self.fail("Incomplete choices must remain untouched")
+                with self.assertRaisesRegex(RuntimeError, "水井剧情选项未识别完整"):
+                    action.advance_story()
+
+    def test_well_decline_reply_without_speaker_continues_dialogue(self):
+        action = MazeDaily()
+        action.allow_other = True
+        body = NS(text="不喝。")
+        action.find = lambda pattern, roi: body if roi == (30,595,1170,55) and re.search(pattern, body.text) else None
+        action.ocr = lambda *args: []
+        action.dialogue_continue = lambda: True
+        selected = []
+        action.click = lambda *args: selected.append(args)
+        action.click_row = lambda *args: self.fail("There are no choice buttons on the reply page")
+        self.assertTrue(action.story())
+        action.advance_story()
+        self.assertEqual(selected, [(640,625,1.2)])
+
+    def test_speakerless_narration_requires_the_dialogue_continue_marker(self):
+        for arrow, expected in ((True, True), (False, False)):
+            with self.subTest(arrow=arrow):
+                action = MazeDaily()
+                body = NS(text="稍作休息后，我们继续前进。")
+                action.find = lambda pattern, roi: body if roi == (30,595,1170,55) else None
+                action.dialogue_continue = lambda: arrow
+                self.assertEqual(action.story(), expected)
+
+    def test_continue_marker_without_dialogue_text_is_not_a_story(self):
+        action = MazeDaily()
+        action.find = lambda *args: None
+        action.dialogue_continue = lambda: True
+        self.assertFalse(action.story())
+
+    def test_combat_ocr_noise_cannot_pose_as_a_dialogue_speaker(self):
+        action = MazeDaily()
+        action.find = lambda pattern, roi: NS(text="17.0" if roi == (30,595,1170,55) else "SaN")
+        action.dialogue_continue = lambda: False
+        self.assertFalse(action.story())
+
+    def test_trap_selects_stay_instead_of_losing_health(self):
+        action = MazeDaily()
+        rows = [NS(text=text) for text in ("最大生命值减少。", "受到伤害。", "保持不动。")]
+        action.find = lambda pattern, roi: next((row for row in rows if re.search(pattern, row.text)), None)
+        selected, records = [], []
+        action.click_row = lambda row, delay: selected.append(row.text)
+        action.click = lambda *args: self.fail("Must select the recognized stay button")
+        action.journal = lambda **record: records.append(record)
+        action.log = lambda *args: None
+        action.advance_story()
+        self.assertEqual(selected, ["保持不动。"])
+        self.assertEqual(records[-1]["event"], "trap")
+
+    def test_partial_trap_choices_stop_without_input(self):
+        action = MazeDaily()
+        rows = [NS(text=text) for text in ("受到伤害。", "保持不动。")]
+        action.find = lambda pattern, roi: next((row for row in rows if re.search(pattern, row.text)), None)
+        action.click_row = action.click = lambda *args: self.fail("Partial choices must remain untouched")
+        with self.assertRaisesRegex(RuntimeError, "陷阱剧情选项未识别完整"):
+            action.advance_story()
+
+    def test_colored_buttons_choose_blue_after_confirming_the_whole_event(self):
+        action = MazeDaily()
+        body = NS(text="黑暗的空间...有三个不同颜色的按键。")
+        buttons = [NS(text="按下" + color + "色按键。") for color in ("红", "蓝", "黄")]
+        action.find = lambda pattern, roi: next((row for row in
+            ([body] if roi == (30,595,1170,55) else buttons) if re.search(pattern, row.text)), None)
+        selected, records = [], []
+        action.click_row = lambda row, delay: selected.append(row.text)
+        action.click = lambda *args: self.fail("Must select the recognized blue button")
+        action.journal = lambda **record: records.append(record)
+        action.log = lambda *args: None
+        action.advance_story()
+        self.assertEqual(selected, ["按下蓝色按键。"])
+        self.assertEqual(records[-1]["event"], "colored_buttons")
+
+    def test_partial_colored_buttons_stop_without_input(self):
+        action = MazeDaily()
+        rows = [NS(text=text) for text in ("三个不同颜色的按键。", "按下蓝色按键。")]
+        action.find = lambda pattern, roi: next((row for row in rows if re.search(pattern, row.text)), None)
+        action.click_row = action.click = lambda *args: self.fail("Partial choices must remain untouched")
+        with self.assertRaisesRegex(RuntimeError, "三色按键剧情选项未识别完整"):
+            action.advance_story()
+
+    def test_declining_water_requires_the_matching_well_story(self):
+        action = MazeDaily()
+        action.allow_other = True
+        choices = [NS(text="喝井水。"), NS(text="不喝。")]
+        action.find = lambda pattern, roi: next((row for row in choices
+            if roi != (30,595,1170,55) and re.search(pattern, row.text)), None)
+        action.ocr = lambda *args: choices
+        action.click_row = action.click = lambda *args: self.fail("An unrelated story must remain untouched")
         with self.assertRaisesRegex(RuntimeError, "未识别"):
             action.advance_story()
 

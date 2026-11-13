@@ -75,19 +75,12 @@ class DailySweep(CustomAction):
             self.check_controls()
             # Partial old selections do not set the master checkbox. Select all,
             # then clear all; never confirm during these two configuration clicks.
-            if not checkbox_on(self.image, 132, 580):
-                self.click(132, 580)
-                if not checkbox_on(self.image, 132, 580):
-                    raise RuntimeError("无法确认全选状态，停止扫荡")
-            self.click(132, 580)
-            if checkbox_on(self.image, 132, 580):
-                raise RuntimeError("未能清空旧的票券选择，停止扫荡")
+            self.set_checkbox(132, 580, True)
+            self.set_checkbox(132, 580, False)
             all_free = all(self.categories.get(k, False)
                            for k in ("gold", "exp", "stone", "event"))
             if all_free:
-                self.click(360, 580)
-                if not checkbox_on(self.image, 360, 580):
-                    raise RuntimeError("无法确认每日免费选择，停止扫荡")
+                self.set_checkbox(360, 580, True)
             self.scroll(top=True)
             self.scroll(top=True)
             selected = 0
@@ -106,7 +99,7 @@ class DailySweep(CustomAction):
                                     "stone" if re.search(r"属性", names) else
                                     "event" if re.search(r"少女的过去|活动", names) else None)
                         if self.categories.get(category, False) and not checkbox_on(self.image, 406, fy):
-                            self.click(406, fy)
+                            self.set_checkbox(406, fy, True)
                     labels, ratios = self.read_rows()
                 selected += validate_ratios(labels, ratios)
                 signature = tuple((r.text, r.box.y // 5) for r in labels + ratios)
@@ -201,20 +194,40 @@ class DailySweep(CustomAction):
                 and self.find(r"一键扫荡", [500, 618, 280, 55])):
             raise RuntimeError("统一扫荡面板布局不匹配，停止操作")
 
+    def set_checkbox(self, x, y, wanted):
+        """Retry only a selection whose unchanged state is confirmed on fresh frames."""
+        for attempt in range(2):
+            self.check_controls()
+            if checkbox_on(self.image, x, y) == wanted:
+                return
+            self.click(x, y)
+            stable = 0
+            for _ in range(8):
+                self.pause(.4)
+                self.capture()
+                if not self.dialog():
+                    raise RuntimeError("勾选时离开统一扫荡面板，停止操作")
+                stable = stable + 1 if checkbox_on(self.image, x, y) == wanted else 0
+                if stable >= 2:
+                    return
+        raise RuntimeError("扫荡勾选状态未确认，停止扫荡")
+
     def open_dialog(self):
         self.capture()
-        for _ in range(5):
+        clicks, next_click = 0, 0
+        for _ in range(24):
             if self.dialog():
                 return
-            button = self.find(r"一键扫荡", [550, 620, 400, 75])
-            if button:
-                self.click_text(button)
-                continue
-            entrance = self.find(r"经验书|黄金猎犬|属性石", [40, 520, 1220, 130])
-            if entrance:
-                self.click_text(entrance)
-                continue
-            raise RuntimeError("未找到副本或一键扫荡入口")
+            if clicks < 3 and time.monotonic() >= next_click:
+                # The icon can hide the first 一 from OCR in the stage page.
+                button = self.find(r"一?键扫荡", [650, 620, 210, 75])
+                entrance = None if button else self.find(r"经验书|黄金猎犬|属性石", [40, 520, 1220, 130])
+                if button or entrance:
+                    self.click_text(button or entrance)
+                    clicks += 1
+                    next_click = time.monotonic() + 2
+            self.pause(.4)
+            self.capture()
         raise RuntimeError("打开统一扫荡面板失败")
 
     def read_rows(self):

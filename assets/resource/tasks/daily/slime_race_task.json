@@ -1,0 +1,11 @@
+{
+    "task": [{
+        "name": "芬恩史莱姆竞速",
+        "label": "芬恩史莱姆竞速",
+        "entry": "LocalSlimeRace_Entry",
+        "group": ["weekly"],
+        "default_check": false,
+        "description": "进入村庄与芬恩对话，随机选一只史莱姆，使用当前全部应援券（最多7张），等待本场比赛并核对结算；0票正常跳过。不购买或补充票券，中断后不重复投注。"
+    }],
+    "option": {}
+}

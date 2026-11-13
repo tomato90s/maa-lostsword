@@ -88,6 +88,17 @@ class ScreenAction(CustomAction):
             box = Rect(*box)
         self.click(box.x + box.w // 2, box.y + box.h // 2, delay)
 
+    def wait_for(self, predicate, attempts=12, stable=1):
+        """Wait for observed UI state without repeating any input."""
+        hits = 0
+        for _ in range(attempts):
+            self.capture()
+            hits = hits + 1 if predicate() else 0
+            if hits >= stable:
+                return True
+            self.pause(.4)
+        return False
+
     def swipe(self, x1, y1, x2, y2):
         self.check()
         if not self.context.tasker.controller.post_swipe(x1, y1, x2, y2, 400).wait().succeeded:
@@ -106,6 +117,36 @@ class ScreenAction(CustomAction):
             self.click(640, 680)
             return True
         return False
+
+
+class VillageReturnLobby(ScreenAction):
+    label = "村庄返回大厅"
+    timeout = 40
+
+    def destination(self):
+        return self.find(r"^前往大厅$", (820, 650, 350, 60))
+
+    def execute(self):
+        # Probe a fresh controller frame. The pipeline's first village frame
+        # can miss the HUD even while direct recognition sees it clearly.
+        if not (self.destination() or self.node("LocalVillageOpenMenu")):
+            return True  # Other pages continue through the ordinary ReturnMain.
+        for _ in range(2):
+            if self.destination():
+                break
+            if not self.node("LocalVillageOpenMenu"):
+                raise RuntimeError("村庄退出时画面变化，停止导航")
+            self.click(1236, 36, .8)
+            if self.wait_for(self.destination, attempts=12):
+                break
+        destination = self.destination()
+        if not destination:
+            raise RuntimeError("未确认村庄菜单的前往大厅按钮")
+        self.click_row(destination, 1)
+        if not self.wait_for(lambda: self.node("HomeFlagCloseReturnMain"), attempts=30, stable=2):
+            raise RuntimeError("已点击前往大厅，尚未确认到达")
+        self.log("已识别前往大厅并确认返回")
+        return True
 
 
 class GuildClaimReward(ScreenAction):
@@ -128,6 +169,139 @@ class GuildClaimReward(ScreenAction):
             self.pause(.4)
             self.capture()
         raise RuntimeError("领奖结果尚未确认，停止重复点击")
+
+
+class GuildDonationLimit(ScreenAction):
+    label = "公会捐献"
+    timeout = 15
+
+    def execute(self):
+        if not self.find(r"今日捐献已达上限", (470, 326, 360, 68)):
+            raise RuntimeError("未确认公会捐献已满")
+        confirm = self.find(r"^确认$", (450, 430, 400, 90))
+        if not confirm:
+            raise RuntimeError("未确认捐献上限提示的关闭按钮")
+        self.click_row(confirm, .8)
+        for _ in range(10):
+            if (self.find(r"^公会$", (60, 8, 110, 55))
+                    and not self.find(r"今日捐献已达上限", (470, 326, 360, 68))):
+                self.context.override_pipeline({"公会-捐献": {"enabled": False}})
+                self.log("今日捐献已满，关闭提示并正常跳过")
+                return True
+            self.pause(.4)
+            self.capture()
+        raise RuntimeError("捐献上限提示尚未关闭")
+
+
+class GuildInvest(ScreenAction):
+    label = "公会投资"
+    timeout = 90
+
+    def state(self, scope):
+        if not self.find(r"^公会$", (60, 8, 110, 55)):
+            return None
+        y = 472 if scope == "coin" else 566
+        rows = self.ocr(r"^[01]\s*[/／]\s*1$", (1195, y, 57, 42))
+        if len(rows) != 1:
+            return None
+        return int(re.sub(r"\s", "", rows[0].text)[0])
+
+    def offer(self, scope):
+        y = 470 if scope == "coin" else 564
+        label, price = ("金币", 50000) if scope == "coin" else ("精灵王的信物", 10)
+        if not self.find("^" + label + "$", (960, y, 220, 45)):
+            return None
+        values = [r.text.strip() for r in self.ocr(r"^\d+$", (1040, y + 48, 90, 45))]
+        if values != [str(price)]:
+            return None
+        return self.find(r"^投资$", (1125, y + 42, 85, 55))
+
+    def finish(self, scope):
+        node = "公会-投资金币" if scope == "coin" else "公会-投资信物"
+        self.context.override_pipeline({node: {"enabled": False}})
+        self.log(("金币" if scope == "coin" else "信物") + "投资次数已确认1/1")
+        return True
+
+    def execute(self):
+        scope = self.param.get("scope")
+        if scope not in ("coin", "token"):
+            raise RuntimeError("未知公会投资种类")
+        if self.state(scope) == 1:
+            return self.finish(scope)
+        # Daily game quota is one. Retry only if the same zero counter and
+        # the exact priced offer remain visible on multiple fresh captures.
+        for attempt in range(2):
+            if not self.wait_for(lambda: self.state(scope) == 0 and bool(self.offer(scope)), attempts=8, stable=2):
+                raise RuntimeError("公会投资次数或价格无法确认，不投资")
+            button = self.offer(scope)
+            if self.state(scope) != 0 or not button:
+                raise RuntimeError("投资前页面发生变化，不投资")
+            self.click_row(button, .8)
+            unchanged = 0
+            for _ in range(20):
+                self.capture()
+                if self.close_reward():
+                    unchanged = 0
+                    continue
+                state = self.state(scope)
+                if state == 1:
+                    return self.finish(scope)
+                if self.find(r"今日已进行过投资|资源不足|材料不足|货币不足", (340, 230, 650, 280)):
+                    raise RuntimeError("投资出现提示，保留页面停止核对")
+                unchanged = unchanged + 1 if state == 0 else 0
+                self.pause(.4)
+            if unchanged < 3 or not self.offer(scope):
+                raise RuntimeError("投资结果不明，不重复点击")
+            if attempt == 0:
+                self.log("投资次数连续保持0/1且价格未变，重试一次")
+        raise RuntimeError("投资点击后仍为0/1，停止该项")
+
+
+class TreasureQuickFree(ScreenAction):
+    label = "免费快速探查"
+    timeout = 45
+
+    def remaining(self):
+        if not self.find(r"^快速探查$", (540, 85, 220, 55)):
+            return None
+        rows = self.ocr(r".+", (490, 495, 350, 55))
+        text = re.sub(r"\s", "", " ".join(row.text for row in rows))
+        match = re.search(r"今日剩余免费次数([01])$", text)
+        return int(match[1]) if match else None
+
+    def execute(self):
+        if self.remaining() == 0:
+            self.log("今日免费次数已用完，跳过")
+            return True
+        for attempt in range(2):
+            if not self.wait_for(lambda: self.remaining() == 1, attempts=8, stable=2):
+                raise RuntimeError("未确认剩余1次免费探查，不点击")
+            button = self.find(r"^开始探查$", (490, 568, 310, 70))
+            if not button or self.remaining() != 1:
+                raise RuntimeError("未确认免费探查按钮")
+            self.click_row(button, .8)
+            unchanged, reward = 0, False
+            for _ in range(20):
+                self.capture()
+                if self.close_reward():
+                    reward = True
+                    unchanged = 0
+                    self.log("已确认并关闭免费探查奖励")
+                    continue
+                if reward and self.find(r"^宝藏探索$", (530, 105, 250, 60)):
+                    self.log("免费探查奖励已确认并返回宝藏页面")
+                    return True
+                state = self.remaining()
+                if state == 0:
+                    self.log("免费探查次数1->0" + ("，奖励已确认" if reward else "，不再点击"))
+                    return True
+                unchanged = unchanged + 1 if state == 1 else 0
+                self.pause(.4)
+            if reward or unchanged < 3:
+                raise RuntimeError("探查结果不明，不重复点击")
+            if attempt == 0:
+                self.log("免费次数连续保持1，重试一次免费探查")
+        raise RuntimeError("免费探查点击后次数未变化，停止该项")
 
 
 class DungeonOpenMenu(ScreenAction):
@@ -682,7 +856,7 @@ class SquadDaily(ScreenAction):
         while time.monotonic() < battle_until:
             self.capture()
             result = self.find(r"CLEAR|FAIL|DEFEAT|胜利|失败", (360, 75, 580, 180))
-            back = self.find(r"返回", (1070, 620, 180, 65))
+            back = self.find(r"^返回$", (865, 620, 180, 80))
             if result and back:
                 self.log(f"小队副本已结算：{result.text}")
                 self.click_row(back, 1)
@@ -763,8 +937,8 @@ class ShopExchangeFinish(CustomAction):
 
 
 class ShopFreeGift(ScreenAction):
-    label = "每日免费礼包"
-    timeout = 75
+    label = "每日及每周免费礼包"
+    timeout = 150
 
     def finish(self, message):
         # Return to the parent JumpBack chain so enabled exchange tasks can run.
@@ -773,10 +947,23 @@ class ShopFreeGift(ScreenAction):
         return True
 
     def execute(self):
+        periods = getattr(self, "param", {}).get("periods", ["每日", "每周"])
+        if (not isinstance(periods, list) or not periods or len(set(periods)) != len(periods)
+                or any(period not in ("每日", "每周") for period in periods)):
+            raise RuntimeError("免费礼包周期须为每日、每周")
+        for period in periods:
+            self.claim(period)
+        return self.finish("每日及每周免费礼包已检查，继续后续任务")
+
+    def claim(self, period):
+        title = period + "免费礼包"
         submitted = False
         reward_seen = False
         popup_opened = False
         products_clicked = False
+        period_attempts = 0
+        catalogue_steps = 0
+        next_navigation = 0
         open_attempts = 0
         next_open = 0
         for _ in range(65):
@@ -786,15 +973,16 @@ class ShopFreeGift(ScreenAction):
                 continue
             popup = self.find(r"购买商品", (540, 75, 210, 60))
             if popup:
-                if not self.find(r"每日免费礼包", (270, 480, 260, 65)):
-                    raise RuntimeError("当前弹窗不是每日免费礼包，不购买")
+                if not self.find(title, (270, 480, 260, 65)):
+                    raise RuntimeError(f"当前弹窗不是{title}，不购买")
                 popup_opened = True
                 bought = self.find(r"已购买|已领取|售罄|购买完成|售完", (250, 150, 730, 480))
                 ratios = self.ocr(r".+", (305, 155, 240, 40))
                 bought = bought or any(re.search(r"1\s*[/／]\s*1", r.text) for r in ratios)
                 if bought or reward_seen:
                     self.click(1018, 103)
-                    return self.finish("礼包已领取，正常结束并继续后续任务")
+                    self.log(f"{title}已领取")
+                    return
                 free = self.find(r"^免费$", (500, 580, 280, 65))
                 if free and not submitted:
                     submitted = True
@@ -809,15 +997,22 @@ class ShopFreeGift(ScreenAction):
                 reward_seen = True
             elif self.find(r"商店", (65, 12, 100, 55)):
                 if reward_seen:
-                    return self.finish("免费礼包领取完成，继续后续任务")
-                gift = self.find(r"每日免费礼包", (340, 140, 230, 55))
+                    self.log(f"{title}领取完成")
+                    return
+                gift = self.find("^" + title + "$", (305, 140, 970, 565))
                 if gift and not popup_opened and not submitted:
+                    # Weekly free gifts can be the last card on the second row.
+                    # Bind the status and price crops to this exact title.
+                    center = gift.box.x + gift.box.w // 2
+                    left = max(305, min(1010, center - 135))
+                    top = gift.box.y
                     # The card can already be marked sold out without a popup.
-                    card_rows = self.ocr(r".+", (335, 175, 230, 40))
-                    if (self.find(r"已购买|已领取|售罄|售完", (315, 195, 265, 215))
+                    card_rows = self.ocr(r".+", (left, top + 23, 270, 40))
+                    if (self.find(r"已购买|已领取|售罄|售完", (left, top + 45, 270, 180))
                             or any(re.search(r"1\s*[/／]\s*1", r.text) for r in card_rows)):
-                        return self.finish("每日礼包已领取，正常结束并继续后续任务")
-                    free_card = self.find(r"^免费$", (315, 360, 260, 60))
+                        self.log(f"{title}已领取，跳过购买")
+                        return
+                    free_card = self.find(r"^免费$", (left, top + 200, 270, 65))
                     if free_card and time.monotonic() >= next_open:
                         if open_attempts >= 2:
                             raise RuntimeError("免费礼包弹窗未打开，停止当前任务")
@@ -827,17 +1022,40 @@ class ShopFreeGift(ScreenAction):
                         open_attempts += 1
                         next_open = time.monotonic() + 2
                         continue
-                if not gift and not products_clicked and not popup_opened:
+                if (not gift and not products_clicked and not popup_opened
+                        and time.monotonic() >= next_navigation):
                     product = self.find(r"^商品$", (350, 75, 135, 55))
                     if product:
                         self.click_row(product)
                         products_clicked = True
+                        next_navigation = time.monotonic() + 2
                         continue
+                if (not gift and products_clicked and not popup_opened
+                        and time.monotonic() >= next_navigation):
+                    period_page = self.find(r"^" + period + r".*礼包", (305, 140, 970, 565))
+                    if period_page:
+                        if catalogue_steps >= 6:
+                            raise RuntimeError(f"翻页后仍未找到{title}，停止当前任务")
+                        self.swipe(1115, 420, 390, 420)
+                        catalogue_steps += 1
+                        next_navigation = time.monotonic() + 1
+                        continue
+                    tab = self.find(r"^" + period + r"$", (75, 155, 180, 230))
+                    if tab and period_attempts < 2:
+                        self.click_row(tab, .8)
+                        period_attempts += 1
+                        next_navigation = time.monotonic() + 3
+                        continue
+                    if period_attempts >= 2:
+                        raise RuntimeError(f"未确认{period}免费礼包页面，停止当前任务")
             self.pause(.4)
         raise RuntimeError("免费礼包结果未确认，不重复购买")
 
 
 ACTIONS = {"LocalGuildClaimReward": GuildClaimReward(), "LocalFavorTalk": FavorTalk(),
+           "LocalVillageReturnLobby": VillageReturnLobby(),
+           "LocalGuildDonationLimit": GuildDonationLimit(),
+           "LocalGuildInvest": GuildInvest(), "LocalTreasureQuickFree": TreasureQuickFree(),
            "LocalDungeonOpenMenu": DungeonOpenMenu(),
            "LocalArenaDaily": ArenaDaily(), "LocalGemCombine": GemCombine(),
            "LocalSquadDaily": SquadDaily(), "LocalShopFreeGift": ShopFreeGift(),

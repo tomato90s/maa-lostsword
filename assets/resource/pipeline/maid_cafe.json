@@ -1,0 +1,75 @@
+{
+    "LocalMaidCafe_CloseMenu": {
+        "desc": "识别点单菜单的固定招牌后关闭，允许中断后回大厅并核对已有点单",
+        "max_hit": 2,
+        "recognition": {"type": "TemplateMatch", "param": {"template": ["local_maid_cafe_menu.png"], "roi": [560, 0, 420, 110], "threshold": [0.85]}},
+        "action": {"type": "Click", "param": {"target": [1233, 38, 1, 1]}},
+        "post_delay": 800,
+        "next": [],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalMaidCafe_Entry": {
+        "desc": "找村庄女仆丽塔点单；仅按四项独立开关购买每周金币餐点",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "LocalMaidCafe",
+                "custom_action_param": {}
+            }
+        },
+        "next": [
+            "ReturnMain"
+        ],
+        "on_error": [
+            "LocalTaskFailed"
+        ]
+    },
+    "LocalMaidCafe_coffee": {
+        "desc": "仅存储餐点独立开关，不作为执行入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {
+                    "enabled": false
+                }
+            }
+        }
+    },
+    "LocalMaidCafe_cookies": {
+        "desc": "仅存储餐点独立开关，不作为执行入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {
+                    "enabled": false
+                }
+            }
+        }
+    },
+    "LocalMaidCafe_parfait": {
+        "desc": "仅存储餐点独立开关，不作为执行入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {
+                    "enabled": false
+                }
+            }
+        }
+    },
+    "LocalMaidCafe_omurice": {
+        "desc": "仅存储餐点独立开关，不作为执行入口",
+        "action": {
+            "type": "Custom",
+            "param": {
+                "custom_action": "my_action_111",
+                "custom_action_param": {
+                    "enabled": false
+                }
+            }
+        }
+    }
+}

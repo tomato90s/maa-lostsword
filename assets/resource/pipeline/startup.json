@@ -78,6 +78,7 @@
             "LinkStart",
             "[JumpBack]LocalVillageGoLobby",
             "[JumpBack]LocalVillageOpenMenu",
+            "[JumpBack]LocalMaidCafe_CloseMenu",
             "[JumpBack]Startup_CloseMaidPopup",
             "[JumpBack]Global_ItemObtained",
             "[JumpBack]CloseX",

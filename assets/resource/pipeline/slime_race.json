@@ -1,0 +1,35 @@
+{
+    "LocalSlimeRace_Entry": {
+        "desc": "找芬恩进入赛场，随机一只使用现有全部应援券，一场结算后结束",
+        "action": {"type": "Custom", "param": {"custom_action": "LocalSlimeRace", "custom_action_param": {}}},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
+    },
+    "LocalSlimeRace_CloseSelection": {
+        "recognition": {"type": "OCR", "param": {"expected": ["^选择应援选手$"], "roi": [460, 28, 360, 62]}},
+        "action": {"type": "Click", "param": {"target": [1177, 58, 1, 1]}},
+        "post_delay": 700,
+        "max_hit": 2
+    },
+    "LocalSlimeRace_CloseResult": {
+        "recognition": {"type": "OCR", "param": {"expected": ["^我的应援结果$"], "roi": [640, 86, 400, 65]}},
+        "action": {"type": "Click", "param": {"target": [1161, 119, 1, 1]}},
+        "post_delay": 700,
+        "max_hit": 2
+    },
+    "LocalSlimeRace_Exit": {
+        "recognition": {"type": "OCR", "param": {"expected": ["^(?:投注中|结果公布|竞速准备中|竞速中|竞速进行中|比赛中|比赛进行中)$"], "roi": [495, 12, 290, 50]}},
+        "action": {"type": "Click", "param": {"target": [1219, 42, 1, 1]}},
+        "post_delay": 1800,
+        "max_hit": 2
+    },
+    "LocalSlimeRace_ReturnVillage": {
+        "recognition": {"type": "And", "param": {"all_of": [
+            {"recognition": "OCR", "expected": ["是否返回村庄"], "roi": [470, 320, 340, 85]},
+            {"recognition": "OCR", "expected": ["^确认$"], "roi": [490, 440, 300, 65]}
+        ]}},
+        "action": {"type": "Click", "param": {"target": [640, 470, 1, 1]}},
+        "post_delay": 2500,
+        "max_hit": 2
+    }
+}

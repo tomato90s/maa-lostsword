@@ -6,6 +6,35 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from agent.village_actions import VillageHunt, verified_reward
 
 class VillageTests(unittest.TestCase):
+    def test_one_player_ocr_miss_after_an_empty_street_does_not_end_the_patrol(self):
+        action = VillageHunt()
+        action.find = lambda *args: None
+        action.player = lambda: None
+        action.trace = action.pause = lambda *args: None
+        for step in range(4):
+            self.assertFalse(action.patrol_step(step,30,0,1,0)[-1])
+        self.assertTrue(action.patrol_step(4,30,0,1,0)[-1])
+
+    def test_a_remembered_cafe_position_is_left_before_hunting(self):
+        action = VillageHunt()
+        frame, moves = [0], []
+        action.image = None
+        action.capture = lambda: frame.__setitem__(0,frame[0]+1)
+        action.village = lambda: True
+        action.cafe_room = lambda: frame[0] == 1
+        action.player = lambda: (640,570)
+        action.context = NS(run_recognition_direct=lambda *args: NS(hit=frame[0]==1,best_result=NS(box=(800,140,180,170))))
+        action.move = lambda *args: moves.append(args)
+        action.ensure_street()
+        self.assertEqual(len(moves),1)
+
+    def test_chicken_approach_uses_its_feet_instead_of_a_human_height(self):
+        action = VillageHunt()
+        action.kind, action.templates, action.image = "chicken", ["chicken.png"], None
+        hit = NS(box=(100, 400, 85, 100))
+        action.context = NS(run_recognition_direct=lambda *args: NS(hit=True, filtered_results=[hit]))
+        self.assertEqual(action.targets((640,600)), [(142.5,497)])
+
     def test_only_bounded_thirty_diamond_receipts_are_accepted(self):
         self.assertEqual(verified_reward(144347,144377,1),30)
         self.assertEqual(verified_reward(144347,144707,12),360)

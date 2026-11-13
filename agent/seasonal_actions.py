@@ -20,15 +20,22 @@ def material_ratio(text):
     return tuple(map(int, match.groups())) if match else None
 
 
-def friend_points(text):
-    """Return (sent, received) from the friend page's daily counters."""
+def friend_progress(text):
+    """Read both counters and their current shared daily limit."""
     clean = re.sub(r"\s", "", text).replace("／", "/")
-    sent = re.search(r"赠送友情点数(\d+)/30", clean)
-    received = re.search(r"领取友情点数(\d+)/30", clean)
+    sent = re.search(r"赠送友情点数(\d+)/(\d+)", clean)
+    received = re.search(r"领取友情点数(\d+)/(\d+)", clean)
     if not sent or not received:
         return None
-    values = int(sent[1]), int(received[1])
-    return values if all(0 <= value <= 30 for value in values) else None
+    values, limit = (int(sent[1]), int(received[1])), int(sent[2])
+    if limit not in (10, 30) or limit != int(received[2]):
+        return None
+    return (*values, limit) if all(0 <= value <= limit for value in values) else None
+
+
+def friend_points(text):
+    progress = friend_progress(text)
+    return progress[:2] if progress else None
 
 
 def cow_free_state(text):
@@ -136,6 +143,17 @@ class SeasonalScreen(ScreenAction):
                         return
                     self.pause(.3)
                     self.capture()
+                # A dropped navigation click leaves this same known menu open.
+                # Retry the entry once; this cannot submit a summon or purchase.
+                button = self.find("^" + re.escape(label) + "$", (755, 160, 420, 480))
+                if button and self.find(r"游戏专属编号", (850, 55, 350, 50)):
+                    self.log("确认仍在菜单，重新打开一次：" + label)
+                    self.click(button.box.x + button.box.w // 2, button.box.y - 22, .8)
+                    for _ in range(8):
+                        if not self.find(r"游戏专属编号", (850, 55, 350, 50)):
+                            return
+                        self.pause(.3)
+                        self.capture()
                 raise RuntimeError("菜单入口点击后没有打开：" + label)
             self.pause(.4)
             self.capture()
@@ -161,11 +179,40 @@ class BingoCraft(SeasonalScreen):
                 and self.find(r"^南瓜币$", (960, 190, 220, 55)))
 
     def material(self):
-        for row in self.ocr(r".+", (970, 225, 230, 45), only_rec=True):
-            ratio = material_ratio(row.text)
-            if ratio:
-                return ratio
+        for _ in range(3):
+            readings = []
+            for only_rec in (False, True):
+                ratios = {material_ratio(row.text) for row in self.ocr(
+                    r".+", (970, 225, 230, 45), only_rec=only_rec)} - {None}
+                if len(ratios) > 1:
+                    raise RuntimeError("南瓜币用量识别冲突，不制作")
+                readings.extend(ratios)
+            if len(set(readings)) > 1:
+                raise RuntimeError("南瓜币用量识别冲突，不制作")
+            if readings:
+                return readings[0]
+            self.pause(.3)
+            self.capture()
         raise RuntimeError("南瓜币用量无法确认，不制作")
+
+    def select_activity_ticket(self):
+        # The menu can disappear before the crafting tabs accept input.
+        # Retry only this navigation; no crafting is submitted here.
+        for _ in range(2):
+            self.capture()
+            activity = self.find(r"^活动$", (1030, 60, 195, 75))
+            if not activity:
+                raise RuntimeError("没有确认制作页面的活动分类")
+            self.click_row(activity, .8)
+            for _ in range(10):
+                if self.find(r"^宾果", (115, 135, 240, 55)) and self.daily_counter() == 5:
+                    return None
+                ticket = self.find(r"^宾果票(?:券)?$", (115, 135, 240, 500))
+                if ticket:
+                    return ticket
+                self.pause(.3)
+                self.capture()
+        raise RuntimeError("未确认活动分类中的宾果票券配方，不制作")
 
     def daily_counter(self):
         text = " ".join(row.text for row in self.ocr(r".+", (125, 175, 230, 50)))
@@ -198,18 +245,18 @@ class BingoCraft(SeasonalScreen):
             self.log("数量为0，跳过")
             return True
         self.open_menu("制作")
-        activity = self.find(r"^活动$", (1030, 60, 195, 75))
-        if not activity:
-            raise RuntimeError("没有确认制作页面的活动分类")
-        self.click_row(activity)
-        if self.find(r"^宾果", (115, 135, 240, 55)) and self.daily_counter() == 5:
+        ticket = self.select_activity_ticket()
+        if ticket is None:
             self.log("今日宾果票券已制作5张，跳过锁定配方")
             return True
-        ticket = self.find(r"^宾果票(?:券)?$", (115, 135, 240, 500))
-        if not ticket:
-            self.log("本期没有宾果票券配方，跳过")
-            return True
-        self.click_row(ticket)
+        for _ in range(2):
+            self.click_row(ticket, .8)
+            if self.wait_for(self.recipe):
+                break
+            # Re-select only the same visible recipe; never retry 制作.
+            ticket = self.find(r"^宾果票(?:券)?$", (115, 135, 240, 500))
+            if not ticket:
+                break
         if not self.recipe():
             raise RuntimeError("配方名称或南瓜币材料不匹配，不制作")
         used = self.daily_counter()
@@ -420,6 +467,9 @@ class RouletteFree(SeasonalScreen):
         self.log(f"已确认免费1/1及持有抽奖券{before}，仅提交一次免费抽奖")
         self.click_row(push, .8)
         reward = False
+        # The spin animation can briefly cut the counter (251 read as 25).
+        # Only a stable, repeated different value proves the balance changed.
+        changed = []
         until = time.monotonic() + 40
         while time.monotonic() < until:
             self.capture()
@@ -428,9 +478,18 @@ class RouletteFree(SeasonalScreen):
                 self.log("已识别并关闭轮盘奖励弹窗")
                 continue
             if self.page():
-                after = self.number((1140, 14, 65, 40))
+                try:
+                    after = self.number((1140, 14, 65, 40))
+                except RuntimeError:
+                    after = None
                 if after != before:
-                    raise RuntimeError("抽奖券余额发生变化，停止核对，不再次抽奖")
+                    if after is not None:
+                        changed.append(after)
+                        if len(changed) >= 3 and len(set(changed[-3:])) == 1:
+                            raise RuntimeError("抽奖券余额连续确认发生变化，停止核对，不再次抽奖")
+                    self.pause(.5)
+                    continue
+                changed.clear()
                 if reward and (self.free_remaining() == 0 or self.paid_only()):
                     self.log(f"免费抽奖奖励已确认，抽奖券保持{after}张")
                     return True
@@ -448,11 +507,21 @@ class DailyFreeSummon(SeasonalScreen):
 
     def diamond_balance(self):
         self.home()
-        self.click(1236, 36, 1)
-        if not self.find(r"游戏专属编号", (850, 55, 350, 50)):
+        ready = lambda: self.find(r"游戏专属编号", (850, 55, 350, 50))
+        for _ in range(2):
+            if ready():
+                break
+            if not self.node("HomeFlagCloseReturnMain"):
+                raise RuntimeError("未确认大厅，不打开钻石余额菜单")
+            self.click(1236, 36, .8)
+            if self.wait_for(ready, stable=2):
+                break
+        if not ready():
             raise RuntimeError("未确认大厅菜单，无法核对召唤前后钻石")
         value = self.number((850, 655, 105, 42))
         self.click(1236, 36, .8)
+        if not self.wait_for(lambda: not ready() and self.node("HomeFlagCloseReturnMain")):
+            raise RuntimeError("核对钻石后菜单尚未关闭")
         return value
 
     def select_tab(self, name):
@@ -542,7 +611,9 @@ class FriendGift(SeasonalScreen):
                 and self.find(r"一?键收发", (620, 625, 200, 70)))
 
     def points(self):
-        return friend_points(" ".join(row.text for row in self.ocr(r".+", (150, 625, 280, 70))))
+        progress = friend_progress(" ".join(row.text for row in self.ocr(r".+", (150, 625, 280, 70))))
+        self.friend_limit = progress[2] if progress else None
+        return progress[:2] if progress else None
 
     def execute(self):
         self.open_menu("好友")
@@ -556,11 +627,12 @@ class FriendGift(SeasonalScreen):
         before = self.points()
         if not before:
             raise RuntimeError("好友赠送和领取数量无法读取，不点击一键收发")
-        if before == (30, 30):
-            self.log("今日友情点数已赠送和领取满30，跳过")
+        limit = self.friend_limit
+        if before == (limit, limit):
+            self.log(f"今日友情点数已赠送和领取满{limit}，跳过")
             return True
         button = self.find(r"一?键收发", (620, 625, 200, 70))
-        self.log(f"已赠送{before[0]}/30、已领取{before[1]}/30，点击一次一键收发")
+        self.log(f"已赠送{before[0]}/{limit}、已领取{before[1]}/{limit}，点击一次一键收发")
         self.click_row(button, 1)
         reward = False
         clicked_at = time.monotonic()
@@ -575,6 +647,8 @@ class FriendGift(SeasonalScreen):
                 # A late reward popup must not be mistaken for "nothing to collect".
                 settled = after != before or time.monotonic() - clicked_at > 2.5
                 if after and settled:
+                    if self.friend_limit != limit:
+                        raise RuntimeError("友情点数上限发生变化，停止核对")
                     if after[0] < before[0] or after[1] < before[1]:
                         raise RuntimeError("友情点数减少，停止核对")
                     if after == before:
@@ -591,7 +665,9 @@ class SecretCow(SeasonalScreen):
     timeout = 900
 
     def entry_caption(self):
-        return " ".join(row.text for row in self.ocr(r".+", (890,635,310,55)))
+        # Exclude the bell icon: OCR can turn that picture into "簡" and hide
+        # the explicit one-bell paid-entry state after the free runs are used.
+        return " ".join(row.text for row in self.ocr(r".+", (990,640,205,50)))
 
     def paid_entry_cost(self):
         caption = re.sub(r"\s", "", self.entry_caption())

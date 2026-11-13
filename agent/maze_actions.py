@@ -5,6 +5,8 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+from maa.pipeline import JTemplateMatch
+
 from agent.seasonal_actions import SeasonalScreen
 
 DEFAULT_PRIORITIES = ("石头", "经验宝箱", "金币宝箱")
@@ -47,9 +49,14 @@ class MazeDaily(SeasonalScreen):
             stream.write(json.dumps({"time": datetime.now().astimezone().isoformat(), **record}, ensure_ascii=False) + "\n")
 
     def story(self):
-        body = self.find(r".+", (30,595,1170,55))
-        return bool(body and (self.find(r".+", (30,520,250,60))
-                    or re.fullmatch(r"(?:魔法卡|陷阱卡|无视|离开|捡起羽毛|不去碰)[。.!！]?", body.text.strip())))
+        # Combat scenery can produce spurious "speaker" OCR. Require the
+        # actual dialogue continue marker even when a name is recognized.
+        return bool(self.find(r".+", (30,595,1170,55)) and self.dialogue_continue())
+
+    def dialogue_continue(self):
+        result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
+            template=["local_maze_dialogue_next.png"], threshold=[.85], roi=[1190,625,90,95]), self.image)
+        return bool(result and result.hit)
 
     def cards(self):
         return (self.find(r"^选择$", (490,610,300,85))
@@ -85,6 +92,36 @@ class MazeDaily(SeasonalScreen):
     def advance_story(self):
         # Choice buttons overlap the upper story area. Read them before
         # advancing text so a dialogue click cannot silently choose a trap.
+        if self.find(r"迷宫探索中发现了水井", (30,595,1170,55)):
+            drink = self.find(r"^喝井水[。.!！]?$", (400,190,500,285))
+            decline = self.find(r"^不喝[。.!！]?$", (400,190,500,285))
+            if not (drink and decline):
+                raise RuntimeError("水井剧情选项未识别完整，保留画面")
+            self.journal(status="story_selected", event="well", choice=decline.text)
+            self.log("发现水井，选择不喝，继续迷宫")
+            self.click_row(decline,1)
+            return
+        stay = self.find(r"^保持不动[。.!！]?$", (400,190,500,285))
+        if stay:
+            if not (self.find(r"^最大生命值减少[。.!！]?$", (400,190,500,285))
+                    and self.find(r"^受到伤害[。.!！]?$", (400,190,500,285))):
+                raise RuntimeError("陷阱剧情选项未识别完整，保留画面")
+            self.journal(status="story_selected", event="trap", choice=stay.text)
+            self.log("发现陷阱选择，选择保持不动，继续迷宫")
+            self.click_row(stay,1)
+            return
+        if self.find(r"三个不同颜色的按键", (30,595,1170,55)):
+            buttons = [self.find(r"^按下" + color + r"色按键[。.!！]?$", (400,190,500,285))
+                       for color in ("红", "蓝", "黄")]
+            if not all(buttons):
+                raise RuntimeError("三色按键剧情选项未识别完整，保留画面")
+            # The recorded labyrinth event favors blue over the red/yellow traps:
+            # https://techpost.tistory.com/371
+            blue = buttons[1]
+            self.journal(status="story_selected", event="colored_buttons", choice=blue.text)
+            self.log("发现三色按键，选择蓝色按键，继续迷宫")
+            self.click_row(blue,1)
+            return
         choice = self.find(r"^魔法卡[!！]?$", (400,190,500,285))
         if not choice:
             choice = self.find(r"^无视[。.!！]?$|^离开[。.!！]?$", (400,190,500,285))

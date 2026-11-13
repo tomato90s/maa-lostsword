@@ -570,13 +570,10 @@
         "action": {
             "type": "Custom",
             "param": {
-                "custom_action": "CenterClick"
+                "custom_action": "LocalTreasureQuickFree"
             }
         },
-        "next": [
-            "Treasure_QuickPopupC",
-            "Global_ItemObtained"
-        ],
+        "next": ["LocalTreasure_Finish"],
         "$__mpe_code": {
             "position": {
                 "x": 2007,
@@ -587,5 +584,13 @@
             "LocalCrashRecovery",
             "LocalTaskFailed"
         ]
+    },
+    "LocalTreasure_Finish": {
+        "action": {"type": "Custom", "param": {
+            "custom_action": "NodeOverride",
+            "custom_action_param": {"HomeFlagCloseReturnMain": {"next": []}}
+        }},
+        "next": ["ReturnMain"],
+        "on_error": ["LocalTaskFailed"]
     }
 }
