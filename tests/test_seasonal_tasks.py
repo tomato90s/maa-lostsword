@@ -73,14 +73,16 @@ class CraftReplay(BingoCraft):
 
 
 class RaidReplay(RaidSweep):
-    def __init__(self, quantity=1, receipt=True, valid=True, initial_dialog=True, previous=None, free=None):
+    def __init__(self, quantity=1, receipt=True, valid=True, initial_dialog=False, previous=None, free=3, limit=3):
         super().__init__()
+        self.param = {"limit": limit}
         self.clock, self.deadline = 0, 1000
         self.context = NS(tasker=NS(stopping=False))
         self.quantity, self.receipt, self.valid = quantity, receipt, valid
         self.tickets, self.commits, self.reward_closed = 403, 0, False
         self.initial_dialog, self.records = initial_dialog, [] if previous is None else [previous]
         self.free = free
+        self.rewards = 0
 
     def free_remaining(self): return self.free
 
@@ -106,9 +108,13 @@ class RaidReplay(RaidSweep):
     def find(self, pattern, roi=None):
         if not self.valid:
             return None
-        return NS(text="扫荡")
+        choices = ("取消", "扫荡") if self.dialog() else ("队伍编排", f"扫荡{self.free}/3")
+        return next((NS(text=text) for text in choices if re.search(pattern, text)), None)
 
     def click_row(self, row, delay=.5):
+        if row.text == "取消":
+            self.initial_dialog = False
+            return
         self.commits += 1
         if self.receipt:
             if self.free:
@@ -117,7 +123,8 @@ class RaidReplay(RaidSweep):
                 self.tickets -= 1
 
     def close_reward(self):
-        if self.commits and self.receipt and not self.reward_closed:
+        if self.commits > self.rewards and self.receipt:
+            self.rewards = self.commits
             self.reward_closed = True
             return True
         return False
@@ -273,37 +280,44 @@ class SeasonalTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "0至5"):
             self.run_craft(CraftReplay(limit=6))
 
-    def test_raid_popup_commits_one_default_sweep_and_requires_reward(self):
-        model = RaidReplay()
+    def test_raid_paid_popup_is_cancelled_without_spending_tickets(self):
+        model = RaidReplay(initial_dialog=True)
         self.assertTrue(self.run_craft(model))
-        self.assertEqual((model.commits, model.tickets, model.reward_closed), (1, 402, True))
+        self.assertEqual((model.commits, model.tickets, model.reward_closed), (0, 403, False))
 
     def test_raid_without_confirmation_checks_ticket_before_the_first_click(self):
         model = RaidReplay(initial_dialog=False)
         self.assertTrue(self.run_craft(model))
-        self.assertEqual((model.commits, model.tickets), (1, 402))
+        self.assertEqual((model.commits, model.tickets), (3, 403))
         self.assertEqual(model.records[-1]["status"], "confirmed")
 
     def test_raid_free_sweep_changes_daily_counter_without_spending_a_ticket(self):
         model = RaidReplay(initial_dialog=False, free=3)
         self.assertTrue(self.run_craft(model))
-        self.assertEqual((model.commits, model.free, model.tickets), (1, 2, 403))
+        self.assertEqual((model.commits, model.free, model.tickets), (3, 0, 403))
 
-    def test_raid_previous_receipt_prevents_a_second_sweep(self):
-        for status in ("confirmed", "unknown", "reward_observed"):
+    def test_raid_previous_confirmed_sweep_resumes_the_remaining_two(self):
+        model = RaidReplay(previous={"status": "confirmed", "after_free": 2}, free=2)
+        self.assertTrue(self.run_craft(model))
+        self.assertEqual((model.commits, model.free, model.tickets), (2, 0, 403))
+
+    def test_raid_unknown_receipt_cannot_be_repeated(self):
+        for status in ("unknown", "reward_observed"):
             model = RaidReplay(previous={"status":status})
-            if status == "confirmed":
-                self.assertTrue(self.run_craft(model))
-            else:
-                with self.assertRaisesRegex(RuntimeError,"已经提交过"):
-                    self.run_craft(model)
+            with self.assertRaisesRegex(RuntimeError,"已经提交过"):
+                self.run_craft(model)
             self.assertEqual(model.commits,0)
 
-    def test_raid_rejects_changed_quantity_and_foreign_screens(self):
-        for model in (RaidReplay(quantity=2), RaidReplay(valid=False)):
-            with self.assertRaises(RuntimeError):
-                self.run_craft(model)
+    def test_raid_rejects_foreign_screen_or_unreadable_free_counter(self):
+        for model in (RaidReplay(valid=False), RaidReplay(free=None)):
+            with self.assertRaises(RuntimeError): self.run_craft(model)
             self.assertEqual(model.commits, 0)
+
+    def test_raid_daily_limit_and_exhausted_free_counter(self):
+        for free, limit, expected in ((3, 2, 2), (2, 2, 1), (0, 3, 0), (3, 0, 0)):
+            model = RaidReplay(free=free, limit=limit)
+            self.assertTrue(self.run_craft(model))
+            self.assertEqual((model.commits, model.tickets), (expected, 403))
 
     def test_raid_unknown_write_cannot_loop_on_background_button(self):
         model = RaidReplay(receipt=False)

@@ -2,7 +2,7 @@
     "interface_version": 2,
     "name": "maa-lostsword",
     "title": "MAA-LostSword v0.1.36 - Lost Sword 自动化助手",
-    "icon": "logo.webp",
+    "icon": "logo.png",
     "description": "Lost Sword 自动化助手，基于 MaaFramework",
     "version": "v0.1.36",
     "contact": "游戏交流 QQ 群: 1020907837",
@@ -32,6 +32,10 @@
         {
             "name": "daily",
             "label": "日常任务"
+        },
+        {
+            "name": "weekly",
+            "label": "每周任务"
         }
     ],
     "agent": {
@@ -60,6 +64,7 @@
         "resource/tasks/daily/roulette_task.json",
         "resource/tasks/daily/village_task.json",
         "resource/tasks/daily/friend_task.json",
-        "resource/tasks/daily/secret_cow_task.json"
+        "resource/tasks/daily/secret_cow_task.json",
+        "resource/tasks/daily/maze_task.json"
     ]
 }

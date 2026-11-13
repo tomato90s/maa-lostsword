@@ -7,8 +7,17 @@
                 "daily"
             ],
             "label": "👤个人突袭",
-            "default_check": true
+            "default_check": true,
+            "description": "完成每日最多3次免费个人突袭扫荡，逐次核对奖励和剩余次数，不消耗突袭门票。",
+            "option": ["Local_RaidFreeLimit"]
         }
     ],
-    "option": {}
+    "option": {
+        "Local_RaidFreeLimit": {
+            "type": "input",
+            "label": "每日免费扫荡次数",
+            "inputs": [{"name": "limit", "label": "次数上限（0跳过）", "default": "3", "pipeline_type": "int", "verify": "^[0-3]$", "pattern_msg": "填写0至3"}],
+            "pipeline_override": {"LocalRaid_Run": {"action": {"param": {"custom_action_param": {"limit": "{limit}"}}}}}
+        }
+    }
 }

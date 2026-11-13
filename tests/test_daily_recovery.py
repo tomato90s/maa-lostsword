@@ -257,17 +257,24 @@ class RecoveryTests(unittest.TestCase):
         self.assertTrue(any('角色B' in text and '待确认' in text for text in model.messages))
         self.assertTrue(any('角色C' in text and '已确认完成' in text for text in model.messages))
 
-    def test_unconfirmed_people_count_towards_the_seven_person_cap(self):
+    def test_unchanged_people_are_not_retried_when_searching_for_other_people(self):
         model = FavorReplay(['unchanged'] * 8)
         self.assertFalse(self.run_replay(model))
-        self.assertEqual(model.events, model.names[:7])
-        self.assertEqual(len(set(model.events)), 7)
+        self.assertEqual(model.events, model.names)
+        self.assertEqual(len(set(model.events)), 8)
         self.assertEqual(model.total, 7)
 
-    def test_lower_limit_includes_unconfirmed_people(self):
+    def test_lower_limit_counts_confirmed_daily_conversations(self):
         model = FavorReplay(['unchanged', 'success'], limit=1)
-        self.assertFalse(self.run_replay(model))
-        self.assertEqual(model.events, model.names[:1])
+        self.assertTrue(self.run_replay(model))
+        self.assertEqual(model.events, model.names)
+        self.assertEqual(model.total, 6)
+
+    def test_story_only_characters_do_not_leave_daily_attempts_unused(self):
+        model = FavorReplay(['unchanged', 'success', 'unchanged'] + ['success'] * 6)
+        self.assertTrue(self.run_replay(model))
+        self.assertEqual(model.events, model.names)
+        self.assertEqual(model.total, 0)
 
     def test_talk_that_never_enters_story_is_not_clicked_twice(self):
         model = FavorReplay(['unstarted', 'success'])
