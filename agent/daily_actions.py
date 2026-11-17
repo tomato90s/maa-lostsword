@@ -153,18 +153,37 @@ class GuildClaimReward(ScreenAction):
     label = "公会领奖"
     timeout = 25
 
+    def claim(self):
+        for row in self.ocr(r".+", (960, 530, 300, 95)):
+            if re.fullmatch(r"领取(?:奖励|报酬)", re.sub(r"\s", "", row.text)):
+                return row
+        return None
+
+    def stage(self):
+        text = "".join(row.text for row in self.ocr(r".+", (1000, 185, 235, 60)))
+        match = re.search(r"(\d+)\s*阶段", text)
+        return int(match[1]) if match else None
+
     def execute(self):
-        self.click_row(self.argv)
+        button, before = self.claim(), self.stage()
+        if not button:
+            raise RuntimeError("未确认公会领奖按钮")
+        self.click_row(button, .8)
         seen_reward = False
+        settled = 0
         for _ in range(22):
             if self.close_reward():
                 seen_reward = True
+                settled = 0
                 continue
             main = self.find(r"简介", (330, 220, 90, 65))
-            claim = self.find(r"领取奖励", (1010, 520, 220, 110))
-            if main and (seen_reward or not claim):
-                self.context.override_pipeline({"公会-领取投资奖励": {"enabled": False}})
-                self.log("奖励弹窗已处理，继续公会主流程和后续捐献")
+            claim, after = self.claim(), self.stage()
+            advanced = before is not None and after is not None and after > before
+            settled = settled + 1 if main and (not claim or advanced) else 0
+            if settled >= 2:
+                # Keep this branch enabled: another reward can become ready
+                # after claiming an earlier stage or after an investment.
+                self.log("公会阶段奖励已" + ("领取" if seen_reward else "核对") + "，继续检查后续奖励和捐献")
                 return True
             self.pause(.4)
             self.capture()
@@ -246,6 +265,21 @@ class GuildInvest(ScreenAction):
                 state = self.state(scope)
                 if state == 1:
                     return self.finish(scope)
+                if self.find(r"领取奖励|领取报酬", (960, 530, 300, 95)):
+                    # An investment can finish a stage and replace its quota
+                    # counters with a claim button. Clear that reward before
+                    # verifying the investment, without submitting it again.
+                    for _ in range(8):
+                        if not self.find(r"领取奖励|领取报酬", (960, 530, 300, 95)):
+                            break
+                        claim = GuildClaimReward()
+                        claim.context, claim.image = self.context, self.image
+                        claim.deadline = min(self.deadline, time.monotonic() + claim.timeout)
+                        claim.execute()
+                        self.capture()
+                    if self.state(scope) == 1:
+                        return self.finish(scope)
+                    raise RuntimeError("投资触发的阶段奖励已检查，投资次数尚未确认，不重复投资")
                 if self.find(r"今日已进行过投资|资源不足|材料不足|货币不足", (340, 230, 650, 280)):
                     raise RuntimeError("投资出现提示，保留页面停止核对")
                 unchanged = unchanged + 1 if state == 0 else 0
@@ -260,6 +294,13 @@ class GuildInvest(ScreenAction):
 class TreasureQuickFree(ScreenAction):
     label = "免费快速探查"
     timeout = 45
+
+    def treasure_page(self):
+        # The title OCR can include its decorative icon. Two page controls
+        # distinguish this from the quick-search dialog and its reward popup.
+        return (self.find(r"宝藏探索", (500, 90, 350, 75))
+                and self.find(r"^快速探查$", (650, 545, 200, 75))
+                and self.find(r"^获取宝藏$", (875, 545, 225, 75)))
 
     def remaining(self):
         if not self.find(r"^快速探查$", (540, 85, 220, 55)):
@@ -288,7 +329,7 @@ class TreasureQuickFree(ScreenAction):
                     unchanged = 0
                     self.log("已确认并关闭免费探查奖励")
                     continue
-                if reward and self.find(r"^宝藏探索$", (530, 105, 250, 60)):
+                if reward and self.treasure_page():
                     self.log("免费探查奖励已确认并返回宝藏页面")
                     return True
                 state = self.remaining()

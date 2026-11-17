@@ -419,11 +419,14 @@ class NewDailyTests(unittest.TestCase):
         action.argv = row('领取奖励')
         action.context = NS(override_pipeline=unittest.mock.Mock(return_value=True))
         action.click_row = lambda *args: None
-        action.close_reward = unittest.mock.Mock(side_effect=[True, False])
+        action.close_reward = unittest.mock.Mock(side_effect=[True, False, False])
+        action.claim = unittest.mock.Mock(side_effect=[row('领取奖励'), None, None])
+        action.stage = lambda: 2
+        action.pause = action.capture = lambda *args: None
         action.find = lambda pattern, roi: row('简介') if pattern == '简介' else None
         action.log = lambda *args: None
         self.assertTrue(action.execute())
-        action.context.override_pipeline.assert_called_once_with({'公会-领取投资奖励': {'enabled': False}})
+        action.context.override_pipeline.assert_not_called()
 
 
 if __name__ == '__main__':

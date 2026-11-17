@@ -14,6 +14,7 @@ class BingoNavigationTests(unittest.TestCase):
         action.capture = lambda: None
         action.pause = lambda delay: None
         action.daily_counter = lambda: 0
+        action.recipe_locked = lambda: False
         return action
 
     def test_tab_ignored_during_transition_is_retried_without_crafting(self):
@@ -61,3 +62,23 @@ class BingoNavigationTests(unittest.TestCase):
         action.ocr = lambda pattern, roi, only_rec=False: [NS(text="13700/20" if only_rec else "1370/20")]
         with self.assertRaisesRegex(RuntimeError, "识别冲突"):
             action.material()
+
+    def test_material_conflict_is_rechecked_on_a_fresh_frame(self):
+        action = self.model()
+        captures = []
+        action.capture = lambda: captures.append(True)
+        action.ocr = lambda pattern, roi, only_rec=False: [NS(
+            text="3770/20" if only_rec and not captures else "37770/20")]
+        self.assertEqual(action.material(), (37770, 20))
+        self.assertEqual(len(captures), 1)
+
+    def test_locked_bingo_row_skips_even_when_counter_is_obscured(self):
+        action = self.model()
+        clicks = []
+        action.find = lambda pattern, roi=None: NS(text="活动" if roi == (1030,60,195,75) else "宾果票券")
+        action.click_row = lambda row, delay=.5: clicks.append(row.text)
+        action.recipe_locked = lambda: True
+        def obscured(): raise AssertionError("Lock already confirms recipe unavailable")
+        action.daily_counter = obscured
+        self.assertIsNone(action.select_activity_ticket())
+        self.assertEqual(clicks, ["活动"])

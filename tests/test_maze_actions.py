@@ -41,11 +41,12 @@ class MazePreferenceTests(unittest.TestCase):
         action.click = lambda *args: self.fail("Must not click through a choice")
         action.advance_story()
 
-    def test_unknown_choices_stop_without_sending_input(self):
+    def test_one_verified_but_unreadable_choice_stops_without_input(self):
         action = MazeDaily()
         action.allow_other = True
         action.find = lambda *args: None
         action.ocr = lambda *args: [NS(text="未知交易")]
+        action.story_options = lambda rows: rows
         action.click = lambda *args: self.fail("Unknown choices must remain untouched")
         with self.assertRaisesRegex(RuntimeError, "未识别"):
             action.advance_story()
@@ -160,16 +161,22 @@ class MazePreferenceTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "三色按键剧情选项未识别完整"):
             action.advance_story()
 
-    def test_declining_water_requires_the_matching_well_story(self):
+    def test_unclassified_well_story_can_use_the_visible_random_choices(self):
         action = MazeDaily()
         action.allow_other = True
         choices = [NS(text="喝井水。"), NS(text="不喝。")]
         action.find = lambda pattern, roi: next((row for row in choices
             if roi != (30,595,1170,55) and re.search(pattern, row.text)), None)
         action.ocr = lambda *args: choices
-        action.click_row = action.click = lambda *args: self.fail("An unrelated story must remain untouched")
-        with self.assertRaisesRegex(RuntimeError, "未识别"):
-            action.advance_story()
+        action.story_options = lambda rows: rows
+        selected = []
+        action.click_row = lambda row,delay: selected.append(row.text)
+        action.click = lambda *args: self.fail("Must choose one of the two visible choices")
+        action.journal = lambda **record: None
+        action.log = lambda *args: None
+        action.advance_story()
+        self.assertEqual(len(selected),1)
+        self.assertIn(selected[0],[row.text for row in choices])
 
     def test_card_fallback_excludes_paid_choices_and_sacrifices(self):
         action = MazeDaily()

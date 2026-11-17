@@ -1,6 +1,7 @@
 """Resource preference policy for the labyrinth's automatic progression."""
 import json
 import re
+import random
 import time
 from datetime import datetime
 from pathlib import Path
@@ -89,6 +90,25 @@ class MazeDaily(SeasonalScreen):
             raise RuntimeError("选卡确认界面变化，停止提交")
         self.click_row(button,2)
 
+    def story_options(self, rows=None):
+        rows = self.ocr(r".+", (110,175,1060,310)) if rows is None else rows
+        options = []
+        for row in sorted(rows, key=lambda r: getattr(getattr(r, "box", None), "y", 0)):
+            box = getattr(row, "box", None)
+            if not box or not (400 <= box.x + box.w / 2 <= 880 and 175 <= box.y + box.h / 2 <= 480):
+                continue
+            y = int(box.y + box.h / 2)
+            band = self.image[max(175,y-10):min(485,y+10),180:1100,:3]
+            # Real story choices are full-width pale bars. Centered scenery
+            # text alone must never be accepted as a selectable option.
+            pale = (band.min(axis=2) >= 185) & (band.max(axis=2).astype(int) - band.min(axis=2) <= 65)
+            if not band.size or pale.mean() < .72:
+                continue
+            if options and abs(y - (options[-1].box.y + options[-1].box.h / 2)) < 35:
+                continue
+            options.append(row)
+        return options
+
     def advance_story(self):
         # Choice buttons overlap the upper story area. Read them before
         # advancing text so a dialogue click cannot silently choose a trap.
@@ -133,9 +153,19 @@ class MazeDaily(SeasonalScreen):
             return
         if self.find(r"^陷阱卡[!！]?$", (400,190,500,285)):
             raise RuntimeError("剧情选项未识别完整，停止选择")
-        options = self.ocr(r".+", (420,180,440,300))
+        rows = self.ocr(r".+", (110,175,1060,310))
+        options = self.story_options(rows)
         if options:
-            raise RuntimeError("出现未识别的迷宫剧情选项，保留画面")
+            if len(options) not in (2, 3):
+                raise RuntimeError("出现未识别的迷宫剧情选项布局，保留画面")
+            available = [row for row in options if not re.search(r"钻石|购买|支付|花费|消耗.*(?:门票|铃铛)", row.text)]
+            if not available:
+                raise RuntimeError("迷宫剧情只识别到付费选项，保留画面")
+            chosen = random.choice(available)
+            self.journal(status="story_selected", event="unknown_random", options=[r.text for r in options], choice=chosen.text)
+            self.log("陌生迷宫剧情，随机选择：" + chosen.text)
+            self.click_row(chosen,1)
+            return
         self.click(640,625,1.2)
 
     def start_auto(self):
