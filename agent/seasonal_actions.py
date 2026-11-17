@@ -6,6 +6,8 @@ from uuid import uuid4
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from maa.pipeline import JTemplateMatch
+
 from agent.daily_actions import ScreenAction
 
 
@@ -53,7 +55,7 @@ def cow_free_state(text):
 def cow_attempts(records):
     """Submission and result are two receipts for the same entry, not two runs."""
     attempts = {row["attempt"] for row in records if row.get("attempt")
-                and row.get("status") in ("submitted", "confirmed")}
+                and row.get("status") in ("submitted", "confirmed", "counter_confirmed")}
     cancelled = {row["attempt"] for row in records if row.get("attempt")
                  and row.get("status") == "cancelled"}
     legacy = [row for row in records if not row.get("attempt")]
@@ -174,25 +176,33 @@ class SeasonalScreen(ScreenAction):
 class BingoCraft(SeasonalScreen):
     label = "宾果票券"
 
+    def recipe_locked(self):
+        # Only the Bingo row: the armor recipe below is independently locked.
+        result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
+            template=["local_craft_lock.png"], roi=[165, 135, 65, 95], threshold=[.88]), self.image)
+        return bool(result and result.hit)
+
     def recipe(self):
         return (self.find(r"^宾果票券$", (570, 135, 210, 65))
                 and self.find(r"^南瓜币$", (960, 190, 220, 55)))
 
     def material(self):
+        conflict = False
         for _ in range(3):
             readings = []
             for only_rec in (False, True):
+                # Extra blank space shrinks these small digits in recognition-
+                # only OCR: the old crop read 37770/20 as 3770/20.
                 ratios = {material_ratio(row.text) for row in self.ocr(
-                    r".+", (970, 225, 230, 45), only_rec=only_rec)} - {None}
-                if len(ratios) > 1:
-                    raise RuntimeError("南瓜币用量识别冲突，不制作")
+                    r".+", (985, 235, 150, 30), only_rec=only_rec)} - {None}
                 readings.extend(ratios)
-            if len(set(readings)) > 1:
-                raise RuntimeError("南瓜币用量识别冲突，不制作")
-            if readings:
+            if len(set(readings)) == 1:
                 return readings[0]
+            conflict = conflict or len(set(readings)) > 1
             self.pause(.3)
             self.capture()
+        if conflict:
+            raise RuntimeError("南瓜币用量识别冲突，不制作")
         raise RuntimeError("南瓜币用量无法确认，不制作")
 
     def select_activity_ticket(self):
@@ -205,8 +215,9 @@ class BingoCraft(SeasonalScreen):
                 raise RuntimeError("没有确认制作页面的活动分类")
             self.click_row(activity, .8)
             for _ in range(10):
-                if self.find(r"^宾果", (115, 135, 240, 55)) and self.daily_counter() == 5:
-                    return None
+                if self.find(r"^宾果", (115, 135, 240, 55)):
+                    if self.recipe_locked() or self.daily_counter() == 5:
+                        return None
                 ticket = self.find(r"^宾果票(?:券)?$", (115, 135, 240, 500))
                 if ticket:
                     return ticket
@@ -247,7 +258,7 @@ class BingoCraft(SeasonalScreen):
         self.open_menu("制作")
         ticket = self.select_activity_ticket()
         if ticket is None:
-            self.log("今日宾果票券已制作5张，跳过锁定配方")
+            self.log("宾果票券配方已锁定或今日已制作5张，正常跳过")
             return True
         for _ in range(2):
             self.click_row(ticket, .8)
@@ -259,6 +270,9 @@ class BingoCraft(SeasonalScreen):
                 break
         if not self.recipe():
             raise RuntimeError("配方名称或南瓜币材料不匹配，不制作")
+        if self.recipe_locked():
+            self.log("宾果票券配方已锁定，正常跳过")
+            return True
         used = self.daily_counter()
         if used == 5:
             self.log("今日宾果票券已制作5张，跳过")
@@ -337,6 +351,15 @@ class RaidSweep(SeasonalScreen):
             return 0
         return None
 
+    def sweep_button(self):
+        # Use the same crop and Python parsing as the free counter. A second,
+        # tighter OCR crop used to reject the very same 1/3 or 2/3 caption.
+        rows = self.ocr(r".+", (880, 635, 160, 65))
+        text = re.sub(r"\s", "", "".join(row.text for row in sorted(rows, key=lambda row: row.box.x))).replace("／", "/")
+        if not re.fullmatch(r"扫荡[1-3]/3", text):
+            return None
+        return next((row for row in rows if "扫荡" in row.text), None)
+
     def ledger(self, record=None):
         path = Path(__file__).resolve().parents[1] / "debug" / f"raid-sweeps-{datetime.now():%Y-%m-%d}.jsonl"
         if record is None:
@@ -385,7 +408,7 @@ class RaidSweep(SeasonalScreen):
                 self.log(f"今日已用{3 - before_free}/3次免费扫荡，达到设置上限{limit}次")
                 return True
             before = self.number((1140, 14, 65, 40))
-            button = self.find(r"^扫荡(?:\s*[0-3]\s*[/／]\s*3)?$", (900, 640, 130, 55))
+            button = self.sweep_button()
             if not button:
                 raise RuntimeError("未找到个人突袭扫荡入口")
             self.ledger({"status": "unknown", "before_tickets": before, "before_free": before_free})
@@ -669,6 +692,10 @@ class SecretCow(SeasonalScreen):
         # the explicit one-bell paid-entry state after the free runs are used.
         return " ".join(row.text for row in self.ocr(r".+", (990,640,205,50)))
 
+    def free_remaining(self):
+        # Reuse the icon-free crop after battle as well as before entry.
+        return cow_free_state(self.entry_caption())
+
     def paid_entry_cost(self):
         caption = re.sub(r"\s", "", self.entry_caption())
         if (not re.fullmatch(r"(?:1)?进入", caption)
@@ -679,7 +706,7 @@ class SecretCow(SeasonalScreen):
 
     def ensure_single_battle(self):
         self.capture()
-        state = cow_free_state(self.entry_caption())
+        state = self.free_remaining()
         if not self.title() or not self.find(r"^队伍编排$", (65,635,160,55)):
             raise RuntimeError("未确认奶牛副本队伍页，不进入")
         if state in (1,2,3):
@@ -907,21 +934,36 @@ class SecretCow(SeasonalScreen):
             self.open_dungeon()
             if not self.to_team():
                 raise RuntimeError("未确认奶牛副本队伍页")
-            state = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890, 635, 310, 55))))
+            state = self.free_remaining()
             self.log(f"只核对未进入：免费次数{state}，铃铛{self.bells()}")
             return True
         records = self.ledger()
         used = cow_paid_attempts(records)
+        opened = False
         if records and records[-1].get("status") == "submitted":
-            raise RuntimeError("上次奶牛副本进入结果尚未核对，不重复进入")
+            previous = records[-1]
+            self.open_dungeon()
+            opened = True
+            title = self.title() if self.to_team() else None
+            same_floor = title and re.sub(r"\s", "", title.text) == re.sub(r"\s", "", previous.get("floor", ""))
+            if (same_floor and previous.get("entry_cost") == 0 and previous.get("before_free") == 1
+                    and self.free_remaining() == 0 and self.bells() == previous.get("bells")):
+                self.ledger({**{k:v for k,v in previous.items() if k not in ("time","week")},
+                             "submission_time":previous.get("time"), "status":"counter_confirmed", "after_free":0,
+                             "after_bells":previous["bells"], "paid_spent":0,
+                             "reward_verified":False, "recovered":True})
+                self.log("已核对上次最后一次免费额度用完、铃铛未变；不补打，也不补写奖励确认")
+            else:
+                raise RuntimeError("上次奶牛副本进入结果尚未核对，不重复进入")
         if self.use_custom_count:
             self.deadline = time.monotonic()+max(900,(max(0,limit-used)+3)*240+60)
-        self.open_dungeon()
+        if not opened:
+            self.open_dungeon()
         while True:
             if not self.to_team():
                 raise RuntimeError("未确认奶牛副本的进入按钮")
             floor = self.title().text
-            state = cow_free_state(self.entry_caption())
+            state = self.free_remaining()
             if state is None or state == -1:
                 raise RuntimeError("未确认奶牛副本进入次数，不进入")
             if state == 0 and not self.use_custom_count:
@@ -969,7 +1011,7 @@ class SecretCow(SeasonalScreen):
         cost = getattr(self,"expected_entry_cost",0)
         if after != bells-cost:
             raise RuntimeError(f"铃铛数量变化{bells}->{after}，已退场并停止后续挑战")
-        after_free = cow_free_state(" ".join(row.text for row in self.ocr(r".+", (890,635,310,55))))
+        after_free = self.free_remaining()
         valid_free = cost == 0 and before_free in (1,2,3) and after_free == before_free-1
         valid_paid = cost == 1 and before_free == 0 and after_free == 0
         if not (valid_free or valid_paid):

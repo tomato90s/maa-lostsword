@@ -106,10 +106,58 @@ class SlimeRace(VillageHunt):
     def dialogue(self):
         return bool(self.find(r"^芬恩$", (25, 515, 180, 65)))
 
+    def other_dialogue(self):
+        if not self.find(r"Log", (25,10,150,60)):
+            return None
+        speaker = self.find(r".+", (25,515,280,65))
+        return speaker if speaker and speaker.text.strip() != "芬恩" else None
+
+    def finn_anchor(self):
+        name = self.find(r"^芬恩$", (0,180,1260,220))
+        if name:
+            return name,255
+        # When the player is in front of Finn the two name tags overlap.
+        # His yellow race-guide title stays visible above both names.
+        guide = self.find(r"竞速向导", (0,180,1260,220))
+        return (guide,275) if guide else (None,255)
+
+    def player(self):
+        position = super().player()
+        if position:
+            return position
+        anchor,_ = self.finn_anchor()
+        username = re.sub(r"\s", "", self.username).casefold()
+        if not anchor or len(username) < 6:
+            return None
+        # At Finn, the middle of the player tag can be overwritten by 芬恩
+        # (observed: Ronot256 -> Ro萜恩56). Require both ends of the player's
+        # own name, and only accept a tag immediately beside Finn's anchor.
+        x = anchor.box.x+anchor.box.w/2
+        for row in self.ocr(r".+", (0,0,1280,720)):
+            text = re.sub(r"\s", "", row.text).casefold()
+            if (row.score >= .6 and text.startswith(username[:2]) and text.endswith(username[-2:])
+                    and abs(row.box.x+row.box.w/2-x) < 95 and abs(row.box.y-anchor.box.y) < 85):
+                return row.box.x+row.box.w/2,row.box.y+255
+        return None
+
+    def approach_finn(self, finn, player, feet_offset=255):
+        # The general chat button chooses the nearest NPC. Joan can stand
+        # between the player and Finn, so horizontal proximity alone is wrong.
+        dx = finn.box.x+finn.box.w/2-player[0]
+        dy = finn.box.y+feet_offset-player[1]
+        if abs(dx) <= 30 and abs(dy) <= 20:
+            self.log("已走近村庄最左侧芬恩，打开竞速对话")
+            self.click(790,610,.8)
+            return
+        distance = max(abs(dx),abs(dy))
+        self.move(dx,dy,min(220,max(70,int(distance*1.6))))
+
     def home(self):
-        for _ in range(6):
+        for _ in range(10):
             self.capture()
-            if self.selection():
+            if self.other_dialogue():
+                self.click(640,626,1)
+            elif self.selection():
                 self.click(1177, 58, .5)
             elif self.result():
                 self.click(1161, 119, .5)
@@ -131,8 +179,10 @@ class SlimeRace(VillageHunt):
         self.enter()
         self.ensure_street()
         self.leave_spawn()
-        for _ in range(40):
+        other_lines = 0
+        for _ in range(70):
             self.capture()
+            self.trace_navigation()
             if self.phase() or self.selection() or self.result():
                 return
             if self.dialogue():
@@ -140,18 +190,25 @@ class SlimeRace(VillageHunt):
                 # dismiss this line without opening its follow-up panel.
                 self.click(640, 626, 1.5)
                 continue
+            other = self.other_dialogue()
+            if other:
+                other_lines += 1
+                if other_lines > 6:
+                    raise RuntimeError("误触的其他村民对话尚未结束，停止继续交互")
+                self.log("当前对话是"+other.text+"，结束对白后继续找最左侧芬恩")
+                self.click(640,626,1)
+                continue
+            other_lines = 0
             choice = self.find(r"^史莱姆竞速$", (630, 235, 590, 260))
             if choice:
                 self.click_row(choice, .9)
                 continue
-            finn = self.find(r"^芬恩$", (0, 180, 1260, 220))
+            finn, feet_offset = self.finn_anchor()
             player = self.player()
             if finn and player:
-                dx = finn.box.x+finn.box.w/2-player[0]
-                if abs(dx) <= 150:
-                    self.click(790, 610, .8)
-                else:
-                    self.move(dx, 0, min(400, max(80, int(abs(dx)*1.1))))
+                self.approach_finn(finn,player,feet_offset)
+            elif finn:
+                self.pause(.4)
             elif self.village():
                 self.move(-1, 0, 400)
             else:
@@ -347,6 +404,10 @@ class SlimeRace(VillageHunt):
             return True
         if not in_arena:
             self.open_race()
+        if self.param.get("navigate_only"):
+            self.tick()
+            self.log("已确认芬恩的竞速页面，仅核对村庄入口，不提交应援")
+            return True
         finished = self.wait_and_play(pending)
         if not self.param.get("inspect_only"):
             self.home()

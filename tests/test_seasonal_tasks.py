@@ -38,6 +38,8 @@ class CraftReplay(BingoCraft):
     def recipe(self):
         return self.valid_recipe
 
+    def recipe_locked(self): return False
+
     def material(self):
         return self.coins, 20 * max(1, self.quantity)
 
@@ -85,6 +87,9 @@ class RaidReplay(RaidSweep):
         self.rewards = 0
 
     def free_remaining(self): return self.free
+
+    def ocr(self, *args, **kwargs):
+        return [NS(text=f"扫荡{self.free}/3", box=NS(x=921))] if self.free is not None else []
 
     def ledger(self, record=None):
         if record is not None: self.records.append(record)
@@ -220,6 +225,12 @@ class SeasonalTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "初始数量"):
             self.run_craft(model)
         self.assertEqual((model.commits, model.clicks), (0, []))
+
+    def test_locked_bingo_recipe_does_not_consume_materials(self):
+        model = CraftReplay(initial=1)
+        model.recipe_locked = lambda: True
+        self.assertTrue(self.run_craft(model))
+        self.assertEqual((model.commits, model.coins), (0, 100))
 
     def test_repeat_button_may_jump_only_within_the_requested_limit(self):
         model = CraftReplay(initial=1, step=4)
