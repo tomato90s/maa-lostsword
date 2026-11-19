@@ -1,6 +1,6 @@
 {
     "LocalSlimeRace_Entry": {
-        "desc": "找芬恩进入赛场，随机一只使用现有全部应援券，一场结算后结束",
+        "desc": "找芬恩进入赛场，在投注倒计时内平均分配现有应援券，一场结算后结束",
         "action": {"type": "Custom", "param": {"custom_action": "LocalSlimeRace", "custom_action_param": {}}},
         "next": ["ReturnMain"],
         "on_error": ["LocalTaskFailed"]
@@ -25,8 +25,8 @@
     },
     "LocalSlimeRace_ReturnVillage": {
         "recognition": {"type": "And", "param": {"all_of": [
-            {"recognition": "OCR", "expected": ["是否返回村庄"], "roi": [470, 320, 340, 85]},
-            {"recognition": "OCR", "expected": ["^确认$"], "roi": [490, 440, 300, 65]}
+            {"sub_name": "SlimeReturn_Prompt", "recognition": "OCR", "expected": ["是否返回村庄"], "roi": [470, 320, 340, 85]},
+            {"sub_name": "SlimeReturn_Confirm", "recognition": "OCR", "expected": ["^确认$"], "roi": [490, 440, 300, 65]}
         ]}},
         "action": {"type": "Click", "param": {"target": [640, 470, 1, 1]}},
         "post_delay": 2500,
