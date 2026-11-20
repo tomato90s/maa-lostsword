@@ -480,8 +480,9 @@ class RouletteFree(SeasonalScreen):
         return None
 
     def paid_only(self):
-        if (not self.find(r"^PUSH$", (780, 315, 145, 75))
-                or not self.find(r"10连抽", (850, 640, 125, 55))):
+        # The ten-draw button is absent at zero tickets; the single-draw
+        # ticket cost still explicitly identifies the paid entry.
+        if not self.find(r"^PUSH$", (780, 315, 145, 75)):
             return False
         try:
             return self.number((850, 355, 45, 40)) == 1
@@ -493,8 +494,11 @@ class RouletteFree(SeasonalScreen):
         if not self.page():
             raise RuntimeError("未确认贝迪兔女郎轮盘页面")
         remaining = self.free_remaining()
-        if remaining == 0 or (remaining is None and self.paid_only()):
+        if remaining == 0:
             self.log("今日免费轮盘已用完，跳过")
+            return True
+        if remaining is None and self.paid_only():
+            self.log("轮盘按钮显示消耗1张抽奖券，跳过付费抽奖")
             return True
         if remaining != 1:
             raise RuntimeError("未确认免费1/1，不使用抽奖券")

@@ -6,8 +6,9 @@
         "on_error": ["LocalTaskFailed"]
     },
     "LocalMail_MenuIcon": {
+        "desc": "识别无红点及有未读红点的邮箱入口，打开后仍核对邮箱和一键领取",
         "recognition": {"type": "TemplateMatch", "param": {
-            "template": ["local_mail_icon.png"],
+            "template": ["local_mail_icon.png", "local_mail_icon_unread.png"],
             "roi": [1198, 145, 70, 100],
             "threshold": 0.88
         }}
