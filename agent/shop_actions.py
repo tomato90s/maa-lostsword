@@ -121,30 +121,38 @@ class ShopBatch(ScreenAction):
         raise RuntimeError(f"无法确认商店数量或价格（区域{roi}，读到{[row.text for row in rows]}）")
 
     def rows(self):
-        if not self.popup() and not self.wait_for(self.popup, attempts=12):
-            raise RuntimeError("未确认交易所批量购买窗口")
-        result = []
-        for row in sorted(self.ocr(r".+", (250, 141, 320, 380)), key=lambda row: row.box.y):
-            y = row.box.y + row.box.h // 2
-            if not 160 <= y <= 500:
-                continue
-            count = self.number((870, y - 18, 140, 37), quantity)
-            selected = bool(self.template("local_shop_checked.png", (129, y - 24, 47, 48)))
-            # Item sparkles cross the empty box's center. Mask only that small
-            # area; its border and the independent checked template still agree.
-            unchecked = bool(self.template("local_shop_unchecked.png", (129, y - 24, 47, 48),
-                                           .85, green_mask=True))
-            if selected == unchecked:
-                raise RuntimeError("商品勾选状态不明确：" + row.text)
-            matched = [name for name, image in CURRENCY_IMAGES.items()
-                       if self.template(image, (568, y - 24, 40, 48))]
-            currency = matched[0] if len(matched) == 1 else "unknown"
-            price = self.number((605, y - 20, 118, 42))
-            result.append({"name": row.text, "currency": currency, "selected": selected,
-                           "quantity": count[0], "maximum": count[1], "price": price, "y": y})
-        if not result:
-            raise RuntimeError("批量窗口没有读到完整商品行")
-        return result
+        for attempt in range(8):
+            if not self.popup() and not self.wait_for(self.popup, attempts=12):
+                raise RuntimeError("未确认交易所批量购买窗口")
+            result, ambiguous = [], None
+            for row in sorted(self.ocr(r".+", (250, 141, 320, 380)), key=lambda row: row.box.y):
+                y = row.box.y + row.box.h // 2
+                if not 160 <= y <= 500:
+                    continue
+                count = self.number((870, y - 18, 140, 37), quantity)
+                selected = bool(self.template("local_shop_checked.png", (129, y - 24, 47, 48)))
+                unchecked = bool(self.template("local_shop_unchecked.png", (129, y - 24, 47, 48),
+                                               .85, green_mask=True))
+                if selected == unchecked:
+                    ambiguous = row.text
+                    break
+                matched = [name for name, image in CURRENCY_IMAGES.items()
+                           if self.template(image, (568, y - 24, 40, 48))]
+                currency = matched[0] if len(matched) == 1 else "unknown"
+                price = self.number((605, y - 20, 118, 42))
+                result.append({"name": row.text, "currency": currency, "selected": selected,
+                               "quantity": count[0], "maximum": count[1], "price": price, "y": y})
+            if ambiguous is None:
+                if not result:
+                    raise RuntimeError("批量窗口没有读到完整商品行")
+                return result
+            if attempt < 7:
+                if attempt == 0:
+                    self.log("商品勾选状态暂不明确，等待闪光消退后重新截图：" + ambiguous)
+                # Re-read the whole fresh frame, without toggling or purchasing.
+                self.pause(.4)
+                self.capture()
+        raise RuntimeError("等待闪光消退后，商品勾选状态仍不明确：" + ambiguous)
 
     def walk(self, configure=False):
         for _ in range(4):
@@ -156,12 +164,12 @@ class ShopBatch(ScreenAction):
                 for item in rows:
                     allowed = product_allowed(self.category, item["name"], item["currency"])
                     if not allowed and item["selected"]:
-                        self.click(151, item["y"], .6)
+                        self.click(151, item["y"], 1.2)
                     elif allowed and item["maximum"] > 0:
                         if not item["selected"]:
-                            self.click(151, item["y"], .6)
+                            self.click(151, item["y"], 1.2)
                         if item["quantity"] != item["maximum"]:
-                            self.click(1120, item["y"], .6)
+                            self.click(1120, item["y"], 1.2)
                 rows = self.rows()
                 for item in rows:
                     allowed = product_allowed(self.category, item["name"], item["currency"])

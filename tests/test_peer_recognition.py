@@ -1,4 +1,4 @@
-"""Regressions from the peer's November 17-19 v0.1.39 failure frames."""
+"""Regressions from the peer's November 17-20 v0.1.39/40 failure frames."""
 import re
 import unittest
 from types import SimpleNamespace as NS
@@ -125,6 +125,50 @@ class PeerRecognitionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "批量窗口已关闭"):
             action.scroll()
         swipe.assert_not_called()
+
+    def shop_checkbox_reader(self, states):
+        action = ShopBatch()
+        frame = [0]
+        action.popup = lambda: True
+        action.ocr = Mock(return_value=[NS(text='普通精炼石', box=Rect(258, 408, 108, 24))])
+        action.number = Mock(side_effect=lambda roi, parser=None: (0, 5) if parser else 0)
+        def template(name, roi, *args, **kwargs):
+            selected, unchecked = states[min(frame[0], len(states) - 1)]
+            return {'local_shop_checked.png': selected, 'local_shop_unchecked.png': unchecked,
+                    'local_shop_raid.png': True}.get(name, False)
+        action.template = template
+        action.capture = Mock(side_effect=lambda: frame.__setitem__(0, frame[0] + 1))
+        action.pause, action.log = Mock(), Mock()
+        action.click = action.click_row = Mock(side_effect=AssertionError('Reading must not send input'))
+        return action
+
+    def test_shop_flash_refreshes_the_whole_page_without_toggling(self):
+        for ambiguous in [(False, False), (True, True)]:
+            with self.subTest(ambiguous=ambiguous):
+                action = self.shop_checkbox_reader([ambiguous, (False, True)])
+                items = action.rows()
+                self.assertEqual([(item['name'], item['selected'], item['quantity']) for item in items],
+                                 [('普通精炼石', False, 0)])
+                action.capture.assert_called_once()
+                self.assertEqual(action.ocr.call_count, 2)
+                action.pause.assert_called()
+                action.click.assert_not_called()
+
+    def test_persistent_shop_checkbox_ambiguity_stops_after_bounded_wait(self):
+        action = self.shop_checkbox_reader([(False, False)])
+        with self.assertRaisesRegex(RuntimeError, '勾选状态.*不明确.*普通精炼石'):
+            action.rows()
+        self.assertGreater(action.capture.call_count, 0)
+        self.assertLessEqual(action.capture.call_count, 10)
+        action.click.assert_not_called()
+
+    def test_shop_price_error_is_not_hidden_as_a_flash(self):
+        action = self.shop_checkbox_reader([(False, True)])
+        action.number.side_effect = RuntimeError('无法确认商店数量或价格')
+        with self.assertRaisesRegex(RuntimeError, '数量或价格'):
+            action.rows()
+        action.capture.assert_not_called()
+        action.click.assert_not_called()
 
 
 if __name__ == "__main__":

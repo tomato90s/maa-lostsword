@@ -239,7 +239,7 @@ class SquadModel(SquadDaily):
     def find(self, pattern, roi=None):
         import re
         visible = {'start': ['开始匹配'], 'confirm': ['是否前往小队副本房间?', '确认'],
-                   'result': ['CLEAR', '返回']}[self.state]
+                   'result': ['CLEAR', '返回'], 'returned': []}[self.state]
         return next((row(t, tag=t) for t in visible if re.search(pattern, t)), None)
 
     def click(self, x, y, delay=.5):
@@ -248,7 +248,7 @@ class SquadModel(SquadDaily):
 
     def click_row(self, item, delay=.5):
         self.events.append(item.tag)
-        self.state = 'result'
+        self.state = 'returned' if item.tag == '返回' else 'result'
 
 
 class NewDailyTests(unittest.TestCase):
@@ -362,57 +362,84 @@ class NewDailyTests(unittest.TestCase):
         self.assertEqual(model.events, [])
 
     def test_squad_timeout_leaves_only_a_recognized_room(self):
-        model = SquadModel()
-        normal_find = model.find
         import re
-        def find(pattern, roi=None):
-            if model.state == 'waiting':
-                return None
-            if model.state == 'exit-confirm':
-                return next((row(t, tag=t) for t in ['是否退出小队副本房间?', '确认']
-                             if re.search(pattern, t)), None)
-            return normal_find(pattern, roi)
-        def click(x, y, delay=.5):
-            if x == 1235:
-                model.events.append('exit')
-                model.state = 'exit-confirm'
-            else:
-                model.events.append('match')
-                model.state = 'confirm'
-        def click_row(item, delay=.5):
-            model.events.append(item.tag)
-            model.state = 'waiting'
-        model.find, model.click, model.click_row = find, click, click_row
-        model.node = lambda name: name == 'LocalSquad_RoomExit'
-        with patch('agent.daily_actions.time.monotonic', side_effect=[0, 161]):
-            with self.assertRaises(RuntimeError): model.execute()
-        self.assertEqual(model.events, ['match', '确认', 'exit', '确认'])
+        for prompt, confirm in [('是否退出小队副本房间?', '确认'), ('是否确定放弃突袭?', '退出')]:
+            with self.subTest(prompt=prompt):
+                model = SquadModel()
+                normal_find = model.find
+                def find(pattern, roi=None):
+                    if model.state == 'waiting':
+                        return None
+                    if model.state == 'exit-confirm':
+                        return next((row(t, tag=t) for t in [prompt, confirm]
+                                     if re.search(pattern, t)), None)
+                    return normal_find(pattern, roi)
+                def click(x, y, delay=.5):
+                    if x == 1235:
+                        model.events.append('exit')
+                        model.state = 'exit-confirm'
+                    else:
+                        model.events.append('match')
+                        model.state = 'confirm'
+                def click_row(item, delay=.5):
+                    model.events.append(item.tag)
+                    model.state = 'waiting'
+                model.find, model.click, model.click_row = find, click, click_row
+                model.node = lambda name: name == 'LocalSquad_RoomExit'
+                with patch('agent.daily_actions.time.monotonic', side_effect=[0, 161]):
+                    with self.assertRaises(RuntimeError): model.execute()
+                self.assertEqual(model.events, ['match', '确认', 'exit', confirm])
 
     def test_squad_free_confirmation_then_result(self):
         model = SquadModel()
         self.assertTrue(model.execute())
         self.assertEqual(model.events, ['match', '确认', '返回'])
 
-    def test_squad_result_finds_return_left_of_tactics(self):
+    def test_squad_result_finds_both_observed_return_positions(self):
+        import re
+        # Local and peer 1280x720 CLEAR screens retained on 2026-11-20.
+        for return_x in (935, 1129):
+            with self.subTest(return_x=return_x):
+                model = SquadModel()
+                normal_find = model.find
+                def find(pattern, roi=None):
+                    if model.state != 'result':
+                        return normal_find(pattern, roi)
+                    visible = [('CLEAR', Rect(510, 130, 260, 65)),
+                               ('返回', Rect(return_x, 636, 40, 23)),
+                               ('战术', Rect(1122, 638, 65, 24))]
+                    x, y, w, h = roi
+                    return next((NS(text=text, tag=text, score=1, box=box)
+                                 for text, box in visible if re.search(pattern, text)
+                                 and x <= box.x and y <= box.y
+                                 and box.x + box.w <= x + w and box.y + box.h <= y + h), None)
+                model.find, model.node = find, lambda name: False
+                with patch('agent.daily_actions.time.monotonic', side_effect=[0, 1, 161]):
+                    self.assertTrue(model.execute())
+                self.assertEqual(model.events, ['match', '确认', '返回'])
+
+    def test_squad_return_must_leave_the_result_without_clicking_twice(self):
+        model = SquadModel()
+        def click_row(item, delay=.5):
+            model.events.append(item.tag)
+            model.state = 'result'
+        model.click_row = click_row
+        with self.assertRaisesRegex(RuntimeError, '仍在结算页面'):
+            model.execute()
+        self.assertEqual(model.events, ['match', '确认', '返回'])
+
+    def test_squad_return_requires_a_result_heading(self):
         model = SquadModel()
         normal_find = model.find
-        import re
         def find(pattern, roi=None):
-            if model.state != 'result':
-                return normal_find(pattern, roi)
-            # Observed on the 1280x720 CLEAR screen on 2026-11-05.
-            visible = [('CLEAR', Rect(510, 130, 260, 65)),
-                       ('返回', Rect(923, 638, 65, 24)),
-                       ('战术', Rect(1122, 638, 65, 24))]
-            x, y, w, h = roi
-            return next((NS(text=text, tag=text, score=1, box=box)
-                         for text, box in visible if re.search(pattern, text)
-                         and x <= box.x and y <= box.y
-                         and box.x + box.w <= x + w and box.y + box.h <= y + h), None)
+            if model.state == 'result' and pattern != r'^返回$':
+                return None
+            return normal_find(pattern, roi)
         model.find, model.node = find, lambda name: False
         with patch('agent.daily_actions.time.monotonic', side_effect=[0, 1, 161]):
-            self.assertTrue(model.execute())
-        self.assertEqual(model.events, ['match', '确认', '返回'])
+            with self.assertRaisesRegex(RuntimeError, '结算超时'):
+                model.execute()
+        self.assertEqual(model.events, ['match', '确认'])
 
     def test_guild_reward_returns_to_parent_after_popup(self):
         action = GuildClaimReward()

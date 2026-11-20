@@ -865,6 +865,9 @@ class SquadDaily(ScreenAction):
     label = "小队副本"
     timeout = 240
 
+    def result(self):
+        return self.find(r"CLEAR|FAIL|DEFEAT|胜利|失败", (360, 75, 580, 180))
+
     def execute(self):
         if int(self.param.get("limit", 1)) <= 0:
             self.log("本轮上限为0，跳过")
@@ -898,11 +901,14 @@ class SquadDaily(ScreenAction):
         battle_until = time.monotonic() + 160
         while time.monotonic() < battle_until:
             self.capture()
-            result = self.find(r"CLEAR|FAIL|DEFEAT|胜利|失败", (360, 75, 580, 180))
-            back = self.find(r"^返回$", (865, 620, 180, 80))
+            result = self.result()
+            # Cover both observed lower-right result layouts.
+            back = self.find(r"^返回$", (640, 500, 640, 220)) if result else None
             if result and back:
                 self.log(f"小队副本已结算：{result.text}")
                 self.click_row(back, 1)
+                if not self.wait_for(lambda: not self.result(), attempts=20, stable=2):
+                    raise RuntimeError("已点击小队返回，但仍在结算页面；不会重复匹配")
                 return True
             if self.find(r"门票不足|次数不足|今日.*已用完", (350, 250, 600, 200)):
                 self.log("当前没有可用的免费次数，正常结束")
@@ -911,12 +917,12 @@ class SquadDaily(ScreenAction):
         if self.node("LocalSquad_RoomExit"):
             self.click(1235, 35)
             for _ in range(8):
-                if self.find(r"(?:退出|离开|放弃).*(?:房间|小队|副本)|是否.*(?:退出|离开)",
+                if self.find(r"(?:退出|离开|放弃).*(?:房间|小队|副本|突袭)|是否.*(?:退出|离开)",
                              (350, 275, 600, 150)):
-                    confirm = self.find(r"确认|确定", (380, 430, 550, 100))
+                    confirm = self.find(r"^(?:确认|确定|退出)$", (380, 430, 550, 100))
                     if confirm:
                         self.click_row(confirm)
-                        self.log("等待过久，已退出当前小队房间")
+                        self.log("等待过久，已点击退出当前小队房间")
                     break
                 if self.find(r"开始匹配", (940, 638, 270, 58)):
                     break

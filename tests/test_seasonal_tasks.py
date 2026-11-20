@@ -357,6 +357,31 @@ class SeasonalTests(unittest.TestCase):
         self.assertTrue(self.run_craft(model))
         self.assertEqual(model.commits, 0)
 
+    def test_roulette_single_paid_button_without_ten_draws_is_skipped(self):
+        model = RouletteReplay(free=None, paid=True)
+        model.paid_only = RouletteFree.paid_only.__get__(model)
+        model.find = lambda pattern, roi=None: NS(text='PUSH') if re.search(pattern, 'PUSH') else None
+        model.number = lambda roi: 1 if roi == (850, 355, 45, 40) else 0
+        self.assertTrue(self.run_craft(model))
+        self.assertEqual(model.commits, 0)
+
+    def test_roulette_zero_tickets_is_not_proof_the_free_chance_is_used(self):
+        model = RouletteReplay(free=None)
+        model.paid_only = RouletteFree.paid_only.__get__(model)
+        model.find = lambda pattern, roi=None: NS(text='PUSH') if re.search(pattern, 'PUSH') else None
+        model.number = lambda roi: 0
+        with self.assertRaisesRegex(RuntimeError, '免费1/1'):
+            self.run_craft(model)
+        self.assertEqual(model.commits, 0)
+
+    def test_roulette_explicit_free_chance_works_with_zero_tickets(self):
+        model = RouletteReplay(paid=True)
+        model.paid_only = RouletteFree.paid_only.__get__(model)
+        model.find = lambda pattern, roi=None: NS(text='PUSH') if re.search(pattern, 'PUSH') else None
+        model.number = lambda roi: 1 if roi == (850, 355, 45, 40) else 0
+        self.assertTrue(self.run_craft(model))
+        self.assertEqual((model.commits, model.reward_closed), (1, True))
+
     def test_roulette_unknown_receipt_or_changed_balance_cannot_repeat(self):
         for model in (RouletteReplay(receipt=False), RouletteReplay(spent=True)):
             with self.assertRaises(RuntimeError):
