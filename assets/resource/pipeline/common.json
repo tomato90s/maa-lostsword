@@ -144,8 +144,8 @@
         "recognition": {"type": "Or", "param": {"any_of": [
             {"recognition": "TemplateMatch", "template": ["maoxian.png"], "roi": [1096, 407, 151, 121]},
             {"recognition": "And", "all_of": [
-                {"recognition": "OCR", "expected": ["前往.*村庄"], "roi": [1060, 140, 180, 85]},
-                {"recognition": "OCR", "expected": ["宝.*藏.*探.*索"], "roi": [750, 635, 160, 75]}
+                {"sub_name": "HomeFlag_VillageCaption", "recognition": "OCR", "expected": ["前往.*村庄"], "roi": [1060, 140, 180, 85]},
+                {"sub_name": "HomeFlag_TreasureCaption", "recognition": "OCR", "expected": ["宝.*藏.*探.*索"], "roi": [750, 635, 160, 75]}
             ]}
         ]}},
         "$__mpe_code": {
@@ -167,8 +167,8 @@
                 "any_of": [
                     {"recognition": "TemplateMatch", "template": ["maoxian.png"], "roi": [1089, 383, 162, 170]},
                     {"recognition": "And", "all_of": [
-                        {"recognition": "OCR", "expected": ["前往.*村庄"], "roi": [1060, 140, 180, 85]},
-                        {"recognition": "OCR", "expected": ["宝.*藏.*探.*索"], "roi": [750, 635, 160, 75]}
+                        {"sub_name": "HomeMenu_VillageCaption", "recognition": "OCR", "expected": ["前往.*村庄"], "roi": [1060, 140, 180, 85]},
+                        {"sub_name": "HomeMenu_TreasureCaption", "recognition": "OCR", "expected": ["宝.*藏.*探.*索"], "roi": [750, 635, 160, 75]}
                     ]}
                 ]
             }
@@ -218,7 +218,7 @@
     },
     "LocalVillageOpenMenu": {
         "recognition": {"type": "And", "param": {"all_of": [
-            {"recognition": "OCR", "expected": ["^冒险$"], "roi": [1080, 80, 170, 90]},
+            {"sub_name": "Village_AdventureCaption", "recognition": "OCR", "expected": ["^冒险$"], "roi": [1080, 80, 170, 90]},
             {"recognition": "TemplateMatch", "template": ["local_village_attack.png"], "roi": [1030, 500, 120, 120], "threshold": 0.85}
         ]}},
         "action": {"type": "Click", "param": {"target": [1236, 36, 1, 1]}},

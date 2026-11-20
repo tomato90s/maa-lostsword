@@ -6,6 +6,7 @@ from uuid import uuid4
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from maa.define import Rect
 from maa.pipeline import JTemplateMatch
 
 from agent.daily_actions import ScreenAction
@@ -335,6 +336,23 @@ class RaidSweep(SeasonalScreen):
     label = "个人突袭扫荡"
     timeout = 180
 
+    def ticket_balance(self):
+        # Extra vertical padding made detection drop the leading 1 from 15.
+        # Preserve the full numeric width and cross-check both OCR modes.
+        readings = []
+        for attempt in range(3):
+            values = []
+            for only_rec in (False, True):
+                rows = self.ocr(r".+", (1140, 21, 65, 25), only_rec=only_rec)
+                values.append(unsigned_number(rows[0].text) if len(rows) == 1 else None)
+            readings.append(values)
+            if values[0] is not None and values[0] == values[1]:
+                return values[0]
+            if attempt < 2:
+                self.pause(.4)
+                self.capture()
+        raise RuntimeError(f"个人突袭门票数量识别不一致：{readings}，不继续扫荡")
+
     def dialog(self):
         return (self.find(r"(?:一)?键扫荡", (560, 85, 180, 60))
                 and self.find(r"Boss\s*Raid\s*Ticket", (500, 285, 290, 65)))
@@ -380,7 +398,7 @@ class RaidSweep(SeasonalScreen):
         if previous and previous["status"] not in ("confirmed", "counter_confirmed", "cancelled"):
             remaining = self.free_remaining()
             same_tickets = ("before_tickets" in previous
-                            and self.number((1140, 14, 65, 40)) == previous["before_tickets"])
+                            and self.ticket_balance() == previous["before_tickets"])
             decreased = (previous.get("before_free") in (1, 2, 3)
                          and remaining == previous["before_free"] - 1)
             if same_tickets and decreased and (previous["status"] == "reward_observed" or remaining == 0):
@@ -407,7 +425,7 @@ class RaidSweep(SeasonalScreen):
             if before_free == 0 or 3 - before_free >= limit:
                 self.log(f"今日已用{3 - before_free}/3次免费扫荡，达到设置上限{limit}次")
                 return True
-            before = self.number((1140, 14, 65, 40))
+            before = self.ticket_balance()
             button = self.sweep_button()
             if not button:
                 raise RuntimeError("未找到个人突袭扫荡入口")
@@ -428,7 +446,7 @@ class RaidSweep(SeasonalScreen):
                         self.click_row(cancel, .8)
                     raise RuntimeError("免费扫荡出现门票确认框，停止且不确认扣票")
                 if self.find(r"队伍编排", (65, 635, 160, 55)):
-                    after = self.number((1140, 14, 65, 40))
+                    after = self.ticket_balance()
                     after_free = self.free_remaining()
                     if after != before:
                         raise RuntimeError("免费扫荡后门票变化，停止后续操作")
@@ -561,6 +579,24 @@ class DailyFreeSummon(SeasonalScreen):
             self.swipe(125, 180, 125, 600) if step < 2 else self.swipe(125, 590, 125, 180)
         raise RuntimeError("没有找到召唤分类：" + name)
 
+    def ticket_balance(self, name):
+        templates = {"领取角色": ["local_summon_character_ticket.png",
+                                 "local_summon_character_ticket_diamonds.png"],
+                     "领取宠物": ["local_summon_pet_ticket.png"]}[name]
+        result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
+            template=templates, roi=[900, 8, 300, 52], threshold=[.88]), self.image)
+        if not result or not result.hit or len(result.filtered_results) != 1:
+            raise RuntimeError(name + "顶部召唤券图标未唯一确认，不读取相邻钻石")
+        box = result.best_result.box
+        if not isinstance(box, Rect):
+            box = Rect(*box)
+        # With diamonds visible the ticket moves left; its count stays in the
+        # same position relative to this category's ticket icon.
+        try:
+            return self.number((box.x + 50, 14, 75, 40))
+        except RuntimeError as exc:
+            raise RuntimeError(name + f"召唤券数量无法确认（图标x={box.x}）") from exc
+
     def summon(self, name):
         self.select_tab(name)
         free = self.find(r"^免费$", (740, 655, 150, 45))
@@ -572,7 +608,7 @@ class DailyFreeSummon(SeasonalScreen):
                 raise RuntimeError(name + "的免费状态无法确认，不召唤")
             self.log(name + "今日免费次数已用完，跳过")
             return
-        tickets = self.number((1140, 14, 65, 40))
+        tickets = self.ticket_balance(name)
         button = self.find(r"^召唤1次$", (735, 615, 170, 45))
         if not button:
             raise RuntimeError("未确认免费单次召唤按钮")
@@ -602,7 +638,7 @@ class DailyFreeSummon(SeasonalScreen):
                 self.click_row(confirm, .8)
                 continue
             if self.find("^" + name + "$", (270, 125, 400, 150)):
-                after = self.number((1140, 14, 65, 40))
+                after = self.ticket_balance(name)
                 if after != tickets:
                     raise RuntimeError(name + "召唤券发生变化，停止后续召唤")
                 if result_seen and not self.find(r"^免费$", (740, 655, 150, 45)):
@@ -623,6 +659,95 @@ class DailyFreeSummon(SeasonalScreen):
             raise RuntimeError(f"免费召唤前后钻石变化{before}->{after}")
         self.log(f"角色和宠物每日免费召唤已检查，钻石保持{after}")
         return True
+
+
+class MailClaim(SeasonalScreen):
+    label = "领取邮件"
+    timeout = 120
+
+    def page(self):
+        return (self.find(r"^邮箱$", (55, 10, 135, 55))
+                and self.find(r"^一键领取$", (5, 635, 175, 60)))
+
+    def empty_notice(self):
+        return self.find(r"暂无可领取的奖励", (430, 300, 450, 110))
+
+    def open_mail(self):
+        if self.page():
+            return
+        self.home()
+        menu_clicks, entry_clicks = 0, 0
+        for _ in range(18):
+            self.capture()
+            if self.page():
+                return
+            if self.find(r"游戏专属编号", (850, 55, 350, 50)):
+                icon = self.node("LocalMail_MenuIcon")
+                if icon and entry_clicks < 2:
+                    self.click_row(icon.best_result, 1)
+                    entry_clicks += 1
+                    continue
+            elif self.node("HomeFlagCloseReturnMain") and menu_clicks < 2:
+                self.click(1236, 36, .8)
+                menu_clicks += 1
+                continue
+            self.pause(.4)
+        raise RuntimeError("未确认右侧邮箱入口或邮箱页面")
+
+    def close_empty_notice(self):
+        confirm = self.find(r"^确认$", (490, 440, 300, 70))
+        if not confirm:
+            raise RuntimeError("邮箱无奖励提示缺少确认按钮")
+        self.click_row(confirm, .5)
+        if not self.wait_for(lambda: self.page() and not self.empty_notice(), stable=2):
+            raise RuntimeError("关闭邮箱提示后尚未返回邮箱页面")
+
+    def leave_mail(self):
+        if not self.page():
+            raise RuntimeError("领取结束后未确认邮箱页面，停止返回")
+        # Mail can have been opened from the village. Close this known page
+        # first so ReturnMain's fresh village check sees the actual parent.
+        self.click(1236, 36, 1)
+        self.home()
+
+    def execute(self):
+        if self.empty_notice():
+            self.close_empty_notice()
+            self.leave_mail()
+            self.log("邮箱暂无可领取的奖励，正常结束")
+            return True
+        self.open_mail()
+        if self.param.get("inspect_only"):
+            self.log("已确认邮箱及一键领取入口，本次只检查")
+            return True
+        if self.empty_notice():
+            self.close_empty_notice()
+            self.leave_mail()
+            self.log("邮箱暂无可领取的奖励，正常结束")
+            return True
+        claim = self.find(r"^一键领取$", (5, 635, 175, 60))
+        if not claim:
+            raise RuntimeError("未确认邮箱左下角的一键领取按钮")
+        self.log("提交一次邮箱一键领取")
+        self.click_row(claim, .8)
+        reward_seen, settled = False, 0
+        for _ in range(40):
+            self.capture()
+            if self.empty_notice():
+                self.close_empty_notice()
+                self.leave_mail()
+                self.log("邮箱暂无可领取的奖励，正常结束")
+                return True
+            if self.close_reward():
+                reward_seen, settled = True, 0
+                continue
+            settled = settled+1 if reward_seen and self.page() else 0
+            if settled >= 2:
+                self.leave_mail()
+                self.log("邮箱领取奖励已确认，并已返回大厅")
+                return True
+            self.pause(.4)
+        raise RuntimeError("邮箱已提交一次领取，结果尚未确认，不重复点击")
 
 
 class FriendGift(SeasonalScreen):
@@ -1028,5 +1153,5 @@ class CowLeave(SecretCow):
         return self.leave_battle()
 
 
-ACTIONS.update({"LocalDailyFreeSummon": DailyFreeSummon(), "LocalFriendGift": FriendGift(),
+ACTIONS.update({"LocalDailyFreeSummon": DailyFreeSummon(), "LocalMailClaim": MailClaim(), "LocalFriendGift": FriendGift(),
                 "LocalSecretCow": SecretCow(), "LocalSecretCowExit": CowLeave()})

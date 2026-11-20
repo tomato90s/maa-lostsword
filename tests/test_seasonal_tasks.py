@@ -110,6 +110,8 @@ class RaidReplay(RaidSweep):
     def number(self, roi):
         return self.quantity if roi == (620, 373, 45, 36) else self.tickets
 
+    def ticket_balance(self): return self.tickets
+
     def find(self, pattern, roi=None):
         if not self.valid:
             return None

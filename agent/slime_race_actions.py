@@ -1,8 +1,7 @@
-"""Finn's weekly ticket race: one random runner, a durable submission, one result."""
+"""Finn's weekly ticket race: balanced tickets, a betting window, one verified result."""
 import json
 import os
 import re
-import secrets
 import time
 from datetime import datetime
 from pathlib import Path
@@ -15,11 +14,20 @@ from agent.village_actions import VillageHunt
 
 ROW_Y = (238, 318, 398, 478, 556)
 RANK_REWARDS = (500, 400, 350, 300, 250)
+RACE_REWARDS = {"slime": RANK_REWARDS, "golden": (1000, 450, 300, 200, 100)}
+MIN_BET_SECONDS = 20
 
 
 def race_seconds(text):
     match = re.fullmatch(r"\s*(\d{1,2})\s*[:：]\s*([0-5]\d)\s*", text)
     return int(match[1])*60+int(match[2]) if match else None
+
+
+def balanced_allocation(tickets):
+    if type(tickets) is not int or not 1 <= tickets <= 7:
+        raise RuntimeError("史莱姆应援券须为1至7张")
+    each, extra = divmod(tickets, 5)
+    return tuple(each + (index >= 5-extra) for index in range(5))
 
 
 def pending_race(records, username, week):
@@ -33,10 +41,21 @@ def pending_race(records, username, week):
     return rows[0] if rows else None
 
 
-def expected_reward(tickets, rank):
+def expected_reward(tickets, rank, rewards=RANK_REWARDS):
     if type(tickets) is not int or not 1 <= tickets <= 7 or type(rank) is not int or not 1 <= rank <= 5:
         raise RuntimeError("史莱姆票数或名次无效")
-    return tickets*RANK_REWARDS[rank-1]
+    return tickets*rewards[rank-1]
+
+
+def receipt_rewards(record):
+    # Released single-runner receipts predate the golden event and have no
+    # currency/table fields. New receipts commit the observed reward policy.
+    if "currency" not in record and "rank_rewards" not in record:
+        return RANK_REWARDS
+    currency = record.get("currency")
+    if currency not in RACE_REWARDS or tuple(record.get("rank_rewards", ())) != RACE_REWARDS[currency]:
+        raise RuntimeError("史莱姆历史奖励币种或奖励表无法核对")
+    return RACE_REWARDS[currency]
 
 
 def settled_result(text, pending):
@@ -52,11 +71,34 @@ def settled_result(text, pending):
     return {"rank": rank, "tickets": tickets, "coins": reward, "name": pending["name"]}
 
 
+def settled_allocations(results, pending):
+    rewards = receipt_rewards(pending)
+    if (len(pending["names"]) != 5 or len(set(pending["names"])) != 5
+            or len(pending["allocation"]) != 5 or sum(pending["allocation"]) != pending["tickets"]):
+        raise RuntimeError("史莱姆历史选手名单与分配票数无法核对")
+    expected = {name: count for name, count in zip(pending["names"], pending["allocation"]) if count}
+    if (len(results) != len(expected) or {row["name"] for row in results} != set(expected)
+            or len({row["rank"] for row in results}) != len(results)):
+        raise RuntimeError("史莱姆结算选手名单或名次不完整")
+    for row in results:
+        if (row["tickets"] != expected[row["name"]]
+                or row["coins"] != expected_reward(row["tickets"], row["rank"], rewards)):
+            raise RuntimeError("史莱姆结算奖励与分配票数、名次不一致")
+    tickets = sum(row["tickets"] for row in results)
+    if tickets != pending["tickets"]:
+        raise RuntimeError("史莱姆结算总票数与提交记录不一致")
+    return {"tickets": tickets, "coins": sum(row["coins"] for row in results), "results": results}
+
+
 def week_spent(records, username, week):
     receipts = {}
     for row in records:
         if row.get("status") == "settled" and row.get("username") == username and row.get("week") == week:
-            if not row.get("attempt") or row.get("coins") != expected_reward(row.get("tickets"), row.get("rank")):
+            # Published builds stored a single rank; balanced bets store all
+            # runners. Both histories must remain verifiable without replay.
+            coins = (settled_allocations(row["results"], row)["coins"] if "results" in row
+                     else expected_reward(row.get("tickets"), row.get("rank"), receipt_rewards(row)))
+            if not row.get("attempt") or row.get("coins") != coins:
                 raise RuntimeError("已有史莱姆结算记录无法核对")
             receipts[row["attempt"]] = row["tickets"]
     return sum(receipts.values())
@@ -102,6 +144,14 @@ class SlimeRace(VillageHunt):
         if re.search(r"竞速|比赛|进行|出发", text):
             return "racing"
         return None
+
+    def betting_seconds(self):
+        # The selection/confirmation overlays hide the arena phase caption.
+        # Only this observed deadline label establishes an open betting panel.
+        text = "".join(row.text for row in sorted(
+            self.ocr(r".+", (475, 105, 335, 52)), key=lambda row: row.box.x))
+        match = re.search(r"距离截止\s*(\d{1,2}\s*[:：]\s*[0-5]\d)", text)
+        return race_seconds(match[1]) if match else None
 
     def dialogue(self):
         return bool(self.find(r"^芬恩$", (25, 515, 180, 65)))
@@ -229,7 +279,8 @@ class SlimeRace(VillageHunt):
         raise RuntimeError("与芬恩对话后未确认应援选手面板")
 
     def tickets(self):
-        if not self.selection() or not self.match("local_slime_ticket.png", (1000, 35, 65, 55)):
+        if not self.selection() or not any(self.match(image, (1000, 35, 65, 55)) for image in
+                ("local_slime_ticket.png", "local_slime_golden_ticket.png")):
             raise RuntimeError("未确认史莱姆应援券，不投注")
         value = self.number((1080, 45, 48, 30))
         if not 0 <= value <= 7:
@@ -254,27 +305,55 @@ class SlimeRace(VillageHunt):
         return names
 
     def verify_rewards(self):
-        if not self.match("local_slime_coin.png", (849, 204, 70, 76)):
+        currencies = [currency for currency, image in
+                      (("slime", "local_slime_coin.png"), ("golden", "local_slime_golden_coin.png"))
+                      if self.match(image, (849, 204, 70, 76))]
+        if len(currencies) != 1:
             raise RuntimeError("未确认奖励币种为史莱姆币")
-        values = tuple(self.number((1135, y-21, 60, 42)) for y in ROW_Y)
-        if values != RANK_REWARDS:
+        values = tuple(self.number((1128, y-21, 70, 42)) for y in ROW_Y)
+        currency = currencies[0]
+        if values != RACE_REWARDS[currency]:
             raise RuntimeError("史莱姆排名奖励表发生变化，不投注")
+        return currency, values
 
     def submit(self, before):
-        self.verify_rewards()
+        seconds = self.betting_seconds()
+        if seconds is None or seconds < MIN_BET_SECONDS:
+            self.log("当前不在可投注倒计时或临近截止，等待下一轮投注中")
+            self.click(1177, 58, .5)
+            return None
+        currency, rewards = self.verify_rewards()
         names = self.runner_names()
         allocations = self.allocations()
         if any(allocations):
             raise RuntimeError("已有选手票数，保留当前选择，不覆盖或重复投注")
-        runner = secrets.randbelow(5)
-        self.click(777, ROW_Y[runner], .35)
+        wanted = balanced_allocation(before)
+        progress = [0]*5
+        for index, count in enumerate(wanted):
+            for _ in range(count):
+                seconds = self.betting_seconds()
+                if seconds is None or seconds < 3:
+                    if self.selection():
+                        self.click(1177, 58, .5)
+                    self.log("分配期间投注已截止，未提交；等待下一轮")
+                    return None
+                self.click(735, ROW_Y[index], .25)
+                progress[index] += 1
+                if self.allocations() != tuple(progress):
+                    raise RuntimeError("史莱姆逐项加票结果不一致，不提交应援")
         chosen = self.allocations()
-        wanted = tuple(before if i == runner else 0 for i in range(5))
         if chosen != wanted or self.tickets() not in (before, 0):
-            raise RuntimeError("最大票数与持有票数不一致，不提交应援")
+            raise RuntimeError("平均分配票数与持有票数不一致，不提交应援")
+        seconds = self.betting_seconds()
+        if seconds is None or seconds < 3:
+            if self.selection():
+                self.click(1177, 58, .5)
+            self.log("核对分配后投注已截止，未提交；等待下一轮")
+            return None
         self.tick()
         attempt = {"status": "submitted", "attempt": uuid4().hex,
-                   "runner": runner+1, "name": names[runner], "names": names,
+                   "strategy": "balanced", "names": names,
+                   "currency": currency, "rank_rewards": list(rewards),
                    "tickets": before, "before": before, "allocation": list(chosen)}
         self.journal(attempt)
         # Persist the selection before opening the final confirmation, and
@@ -282,15 +361,46 @@ class SlimeRace(VillageHunt):
         self.click(770, 652, 1.5)
         self.tick()
         if self.confirmation():
+            seconds = self.betting_seconds()
+            if seconds is None or seconds == 0:
+                self.click(509, 484, .5)
+                self.journal({"status": "not_submitted", "attempt": attempt["attempt"],
+                              "reason": "betting deadline ended before final confirmation"})
+                if self.selection():
+                    self.click(1177, 58, .5)
+                return None
             self.journal({"status": "confirmation_submitted", "attempt": attempt["attempt"]})
             self.click(770, 484, 1)
             self.tick()
-            self.log(f"已确认使用{before}张现有应援券给{names[runner]}；等待本场结算")
+            self.log(f"已确认使用{before}张现有应援券，分配{','.join(map(str,chosen))}；等待本场结算")
         else:
             raise RuntimeError("未确认史莱姆应援二次确认框，不重复提交")
         return attempt
 
-    def read_result(self, pending):
+    def result_allocations(self, pending):
+        if not self.find(r"^已领奖励$", (1030, 165, 165, 55)):
+            raise RuntimeError("史莱姆结果页尚未确认奖励已经领取")
+        results = []
+        for name, count in zip(pending["names"], pending["allocation"]):
+            if not count:
+                continue
+            rows = self.ocr("^"+re.escape(name)+"$", (705, 210, 330, 400))
+            if len(rows) != 1:
+                raise RuntimeError("未完整读到史莱姆结算选手："+name)
+            y = rows[0].box.y + rows[0].box.h//2
+            # Crop digits separately: the top-three rank crests, the ticket's
+            # multiplication sign and the coin border otherwise become OCR text.
+            rank = self.number((549, y-3, 28, 31))
+            tickets = self.number((742, y+13, 26, 24))
+            coins = self.number((1098, y+31, 35, 17))
+            coin_image = ("local_slime_golden_result_coin.png" if pending.get("currency") == "golden"
+                          else "local_slime_result_coin.png")
+            if not self.match(coin_image, (1050, y-28, 100, 90), .85):
+                raise RuntimeError("结算奖励币种无法核对："+name)
+            results.append({"name":name, "rank":rank, "tickets":tickets, "coins":coins})
+        return settled_allocations(results, pending)
+
+    def read_result(self, pending, close_result=True):
         """Return a verified receipt only after the exact result layout is understood."""
         text = " ".join(r.text for r in self.ocr(r".+", (480, 165, 710, 440)))
         if re.search(r"未给任何人应援|未能获得奖励", text):
@@ -302,25 +412,27 @@ class SlimeRace(VillageHunt):
         self.tick()
         if not pending:
             return None
-        receipt = settled_result(text, pending)
-        if not self.match("local_slime_result_coin.png", (1050, 210, 100, 90), .85):
-            raise RuntimeError("结算奖励币种无法核对")
-        self.journal({"status": "settled", "attempt": pending["attempt"], **receipt})
-        claim = self.find(r"^(?:领取|领取奖励)$", (470, 535, 730, 100))
-        if claim:
-            self.click_row(claim, 1)
-            self.journal({"status": "claim_clicked", "attempt": pending.get("attempt") if pending else None})
-            self.tick()
-        if self.result():
+        if "allocation" in pending:
+            receipt = self.result_allocations(pending)
+            allocation = {"names":pending["names"], "allocation":pending["allocation"]}
+            if "currency" in pending:
+                allocation.update(currency=pending["currency"], rank_rewards=pending["rank_rewards"])
+        else:
+            receipt = settled_result(text, pending)
+            if not self.match("local_slime_result_coin.png", (1050, 210, 100, 90), .85):
+                raise RuntimeError("结算奖励币种无法核对")
+            allocation = {}
+        self.journal({"status": "settled", "attempt": pending["attempt"], **allocation, **receipt})
+        if close_result and self.result():
             self.click(1161, 119, .6)
-        self.log(f"{receipt['name']}第{receipt['rank']}名，{receipt['tickets']}张票已领取{receipt['coins']}史莱姆币；关闭结果")
+        self.log(f"本场{receipt['tickets']}张票的名次及奖励均已核对，已领取{receipt['coins']}史莱姆币")
         return receipt
 
     def wait_and_play(self, pending):
         def confirmed_intent(row):
             return bool(row and row.get("attempt") and any(r.get("attempt") == row["attempt"] and r.get("status") == "confirmation_submitted"
                                     for r in self.journal()))
-        last_log, submitted = 0, confirmed_intent(pending)
+        last_log, submitted, next_window = 0, confirmed_intent(pending), False
         while True:
             self.capture()
             if self.result():
@@ -337,7 +449,7 @@ class SlimeRace(VillageHunt):
                                       "reason": "new race, unchanged tickets, final confirmation never sent"})
                         self.log("上次只选择了票数，未最终确认；票券保留，改在本场应援")
                         pending = self.submit(count)
-                        submitted = True
+                        submitted, next_window = bool(pending), not pending
                         continue
                     if count == pending["before"]-pending["tickets"]:
                         self.log("应援券已扣除，继续等待本次结算，不重复提交")
@@ -355,12 +467,16 @@ class SlimeRace(VillageHunt):
                     return True
                 else:
                     pending = self.submit(count)
-                    submitted = True
+                    submitted, next_window = bool(pending), not pending
             elif self.dialogue():
                 self.click(640, 626, 1)
-            elif self.phase() == "betting" and not submitted:
-                self.open_selection()
-                continue
+            else:
+                phase = self.phase()
+                if phase in ("racing", "result"):
+                    next_window = False
+                elif phase == "betting" and not submitted and not next_window:
+                    self.open_selection()
+                    continue
             if time.monotonic()-last_log > 60:
                 self.log("等待史莱姆比赛阶段切换" + ("；本次已提交，不再下注" if submitted else ""))
                 self.tick()
@@ -370,6 +486,7 @@ class SlimeRace(VillageHunt):
     def execute(self):
         self.frame_index = 0
         records = self.journal()
+        saved_result = self.image.copy() if self.result() else None
         if self.confirmation():
             submitted = [r for r in records if r.get("status") == "submitted"]
             if not submitted:
@@ -397,6 +514,19 @@ class SlimeRace(VillageHunt):
         self.username = name.text.strip()
         records = self.journal()
         pending = pending_race(records, self.username, game_week())
+        if saved_result is not None:
+            # The result overlay hides the account name. Keep its exact frame,
+            # verify the current account after closing, then reconcile that
+            # result without sending input against a page that is now closed.
+            current_image = self.image
+            try:
+                self.image = saved_result
+                receipt = self.read_result(pending, close_result=False)
+            finally:
+                self.image = current_image
+            if receipt:
+                self.home()
+                return True
         if not pending and week_spent(records, self.username, game_week()) >= 7:
             self.log("本周7张应援券已经结算，正常跳过")
             if in_arena:

@@ -26,7 +26,7 @@ class SummonReplay(DailyFreeSummon):
     def log(self, message): pass
     def node(self, name): return self.phase == "page" and not self.available[self.kind]
     def ocr(self, *args, **kwargs): return [NS(text="1")]
-    def number(self, roi): return 229 - int(self.spent and self.kind in self.commits)
+    def ticket_balance(self, name): return 229 - int(self.spent and self.kind in self.commits)
 
     def find(self, pattern, roi=None):
         if self.phase == "intro": choices = ["Skip+>"] if self.receipt else []
@@ -80,6 +80,38 @@ class DailySummonTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "召唤券发生变化"):
             self.run_model(model)
         self.assertEqual(model.commits, ["领取角色"])
+
+    def test_ticket_count_follows_the_category_icon_in_both_header_layouts(self):
+        for name, icon, x, count in (("领取角色", "character", 939, 5),
+                                     ("领取角色", "character", 1082, 34),
+                                     ("领取宠物", "pet", 1082, 168)):
+            with self.subTest(name=name, x=x):
+                action = DailyFreeSummon()
+                action.image = object()
+                hit = NS(box=[x, 19, 24, 35])
+                def recognize(kind, params, image):
+                    self.assertEqual(kind, "TemplateMatch")
+                    expected = [f"local_summon_{icon}_ticket.png"]
+                    if icon == "character":
+                        expected.append("local_summon_character_ticket_diamonds.png")
+                    self.assertEqual(params.template, expected)
+                    return NS(hit=True, filtered_results=[hit], best_result=hit)
+                action.context = NS(run_recognition_direct=recognize)
+                def number(roi):
+                    self.assertEqual(roi, (x + 50, 14, 75, 40))
+                    return count
+                action.number = number
+                self.assertEqual(action.ticket_balance(name), count)
+
+    def test_missing_or_ambiguous_ticket_icon_never_reads_a_balance(self):
+        for hit, rows in ((False, []), (True, [NS(), NS()])):
+            action = DailyFreeSummon()
+            action.image = object()
+            action.context = NS(run_recognition_direct=lambda *args:
+                                NS(hit=hit, filtered_results=rows))
+            action.number = lambda roi: self.fail("must not read a diamond count")
+            with self.assertRaisesRegex(RuntimeError, "图标未唯一确认"):
+                action.ticket_balance("领取角色")
 
     def test_native_null_custom_parameters_are_treated_as_empty(self):
         action = ScreenAction()

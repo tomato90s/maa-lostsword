@@ -1,0 +1,11 @@
+{
+    "task": [{
+        "name": "领取邮件",
+        "label": "领取邮件",
+        "entry": "LocalMail_Entry",
+        "group": ["daily"],
+        "default_check": true,
+        "description": "打开邮箱并一键领取可领取的邮件奖励，确认奖励或暂无奖励提示后返回大厅；不删除邮件。"
+    }],
+    "option": {}
+}

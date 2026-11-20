@@ -775,7 +775,9 @@ class StonehengeGate(ScreenAction):
             if self.find(r"^巨石阵$", (125, 535, 130, 70)):
                 self.log("已返回副本列表，继续已开启的巨石阵")
                 return bool(self.context.override_next(self.argv.node_name, ["副本_点击巨石阵"]))
-            if (self.find(r"一键扫荡", (550, 620, 400, 75))
+            # Keep the neighboring paid Sweep button out of OCR. The wider
+            # crop split 一键扫荡 into '-' and 键扫荡 on the peer's saved frames.
+            if (self.find(r"一键扫荡", (690, 635, 145, 55))
                     or self.find(r"冒险区域", (170, 18, 180, 70))):
                 self.click(1235, 35, .9)
                 continue

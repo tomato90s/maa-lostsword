@@ -75,9 +75,9 @@ class ShopBatch(ScreenAction):
             stream.write(json.dumps({"time": datetime.now().astimezone().isoformat(),
                                      "category": self.param.get("category"), "message": message}, ensure_ascii=False) + "\n")
 
-    def template(self, name, roi, threshold=.8):
+    def template(self, name, roi, threshold=.8, green_mask=False):
         result = self.context.run_recognition_direct("TemplateMatch", JTemplateMatch(
-            template=[name], roi=list(roi), threshold=[threshold]), self.image)
+            template=[name], roi=list(roi), threshold=[threshold], green_mask=green_mask), self.image)
         return result if result and result.hit else None
 
     def popup(self):
@@ -102,7 +102,9 @@ class ShopBatch(ScreenAction):
 
     def scroll(self, top=False):
         self.check()
-        if not self.popup():
+        # A short achievement toast can cover the popup title. Wait for it to
+        # clear without toggling products or clicking the purchase button.
+        if not self.popup() and not self.wait_for(self.popup, attempts=12):
             raise RuntimeError("批量窗口已关闭，停止滚动")
         start, end = ((180, 480) if top else (475, 175))
         if not self.context.tasker.controller.post_swipe(500, start, 500, end, 1100).wait().succeeded:
@@ -119,7 +121,7 @@ class ShopBatch(ScreenAction):
         raise RuntimeError(f"无法确认商店数量或价格（区域{roi}，读到{[row.text for row in rows]}）")
 
     def rows(self):
-        if not self.popup():
+        if not self.popup() and not self.wait_for(self.popup, attempts=12):
             raise RuntimeError("未确认交易所批量购买窗口")
         result = []
         for row in sorted(self.ocr(r".+", (250, 141, 320, 380)), key=lambda row: row.box.y):
@@ -128,7 +130,10 @@ class ShopBatch(ScreenAction):
                 continue
             count = self.number((870, y - 18, 140, 37), quantity)
             selected = bool(self.template("local_shop_checked.png", (129, y - 24, 47, 48)))
-            unchecked = bool(self.template("shop_exchange_unchecked.png", (129, y - 24, 47, 48), .85))
+            # Item sparkles cross the empty box's center. Mask only that small
+            # area; its border and the independent checked template still agree.
+            unchecked = bool(self.template("local_shop_unchecked.png", (129, y - 24, 47, 48),
+                                           .85, green_mask=True))
             if selected == unchecked:
                 raise RuntimeError("商品勾选状态不明确：" + row.text)
             matched = [name for name, image in CURRENCY_IMAGES.items()

@@ -5,6 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 COMMON = json.loads((ROOT / "assets/resource/pipeline/common.json").read_text("utf-8"))
 STARTUP = json.loads((ROOT / "assets/resource/pipeline/startup.json").read_text("utf-8"))
+SLIME = json.loads((ROOT / "assets/resource/pipeline/slime_race.json").read_text("utf-8"))
 
 
 class StartupRouteTests(unittest.TestCase):
@@ -24,6 +25,30 @@ class StartupRouteTests(unittest.TestCase):
         self.assertEqual(village["action"]["param"]["target"], [1236, 36, 1, 1])
         self.assertEqual(COMMON["LocalVillageGoLobby"]["recognition"]["param"]["expected"], ["^前往大厅$"])
         self.assertGreaterEqual(COMMON["ReturnMain"]["timeout"], 60000)
+
+    def test_return_candidates_do_not_share_ocr_batch_cache_names(self):
+        # Maa 5.10's batch planner keys inline OCR by sub_name. Reusing its
+        # default "OCR" makes the village caption read another node's crop.
+        nodes = {**COMMON, **SLIME}
+        names = []
+        def collect(recognition, name):
+            kind = recognition["type"]
+            param = recognition.get("param", {})
+            if kind == "OCR":
+                names.append(name)
+            for child in param.get("all_of", param.get("any_of", [])):
+                if isinstance(child, str):
+                    collect(nodes[child]["recognition"], child)
+                else:
+                    collect({"type": child["recognition"], "param": child},
+                            child.get("sub_name", child["recognition"]))
+        for name in COMMON["ReturnMain"]["next"]:
+            name = name.removeprefix("[JumpBack]")
+            node = nodes.get(name)
+            if node and "recognition" in node:
+                collect(node["recognition"], name)
+        self.assertGreaterEqual(len(names), 5)
+        self.assertEqual(len(names), len(set(names)), names)
 
 
 if __name__ == "__main__":
