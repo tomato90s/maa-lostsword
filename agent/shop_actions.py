@@ -29,6 +29,13 @@ PRODUCTS = {
     "竞技场": {"竞技场币": ("竞技场补给箱",)},
     "南瓜币": {"金币": ("南瓜票券",), "南瓜币": ("轮盘券", "Boss Raid Ticket")},
 }
+CATEGORY_BALANCES = {
+    "消耗品": ((825, 12, 110, 44), "local_shop_top_token.png", "信物"),
+    "突袭": ((1110, 12, 95, 44), "local_shop_top_raid.png", "突袭"),
+    "公会": ((1110, 12, 95, 44), "local_shop_top_guild.png", "公会"),
+    "竞技场": ((1110, 12, 95, 44), "local_shop_top_arena.png", "竞技"),
+    "南瓜币": ((980, 12, 90, 44), "local_shop_top_pumpkin.png", "南瓜"),
+}
 
 
 def amount(text):
@@ -236,36 +243,104 @@ class ShopBatch(ScreenAction):
         if not shop:
             raise RuntimeError("未找到大厅菜单中的商店")
         self.click_row(shop, .8)
+        if not self.wait_for(lambda: self.find(r"^交易所$", (600, 70, 140, 60)), stable=2):
+            raise RuntimeError("点击商店后未确认商店页面")
         exchange = self.find(r"^交易所$", (600, 70, 140, 60))
-        if not exchange:
-            raise RuntimeError("未找到交易所")
         self.click_row(exchange, .8)
-        category = self.find("^" + re.escape(self.category) + "$", (90, 140, 180, 510))
-        if not category:
-            raise RuntimeError("未找到交易所分类：" + self.category)
-        self.click_row(category, .8)
+        if not self.wait_for(self.exchange_page, stable=2):
+            raise RuntimeError("点击交易所后未确认分类页面")
+        self.select_category()
+
+    def exchange_page(self):
+        return (self.find(r"^商店$", (45, 10, 120, 55))
+                and self.find(r"^批量购买$", (95, 640, 185, 65))
+                and not self.popup())
+
+    def selected_category(self):
+        rows = self.ocr(r"^(?:消耗品|突袭|公会|竞技场|灵魂|夏日币|南瓜币)$", (90, 140, 180, 510))
+        selected = []
+        for row in rows:
+            y = row.box.y + row.box.h // 2
+            # The selected tab has a pale background behind its dark label.
+            # Use the label band: the last category's decorative edges are
+            # clipped by the batch button, so its full tab cannot be matched.
+            band = self.image[y - 10:y + 10, 90:250, :3]
+            pale = ((band.min(axis=2) >= 185)
+                    & (band.max(axis=2).astype(int) - band.min(axis=2) <= 65))
+            if pale.mean() >= .72:
+                selected.append(row.text)
+        return selected[0] if len(selected) == 1 else None
+
+    def category_ready(self):
+        if not self.exchange_page() or self.selected_category() != self.category:
+            return False
+        roi, icon, _ = CATEGORY_BALANCES[self.category]
+        return bool(self.template(icon, (roi[0] - 55, 8, 65, 50), .88))
+
+    def wait_category(self):
+        # A successful screenshot can follow an internal ADB reconnect. Always
+        # re-establish the selected tab AND currency on two fresh frames.
+        hits = 0
+        for attempt in range(6):
+            self.capture()
+            hits = hits + 1 if self.category_ready() else 0
+            if hits == 2:
+                return True
+            if attempt < 5:
+                self.pause(2)
+        return False
+
+    def select_category(self):
+        for attempt in range(2):
+            self.capture()
+            current = self.selected_category() if self.exchange_page() else None
+            category = self.find("^" + re.escape(self.category) + "$", (90, 140, 180, 510))
+            # Re-send only a navigation tap, and only on an observed old tab.
+            if current is not None and current != self.category and category:
+                self.click_row(category, .8)
+            if self.wait_category():
+                self.log(f"已间隔2秒确认{self.category}分类选中且币种正确")
+                return
+            if attempt == 0:
+                self.log(f"尚未确认{self.category}分类，重新核对页面后再尝试切换")
+        raise RuntimeError(f"未确认已切到{self.category}且显示对应代币，本次不购买")
 
     def category_balance(self):
-        roi = (825, 12, 110, 44) if self.category == "消耗品" else ((980, 12, 90, 44) if self.category == "南瓜币" else (1110, 12, 95, 44))
-        rows = self.ocr(r".+", roi)
-        values = [amount(row.text) for row in rows]
-        if len(values) == 1 and values[0] is not None:
-            return values[0]
-        if not any(re.fullmatch(r"\s*\d+(?:\.\d+)?[万亿]\+?\s*", row.text) for row in rows):
-            return self.number(roi)
-        # The top bar abbreviates large balances. The currency icon opens an
-        # item description showing the exact owned amount, including commas.
+        roi, _, keyword = CATEGORY_BALANCES[self.category]
+        if not self.wait_category():
+            raise RuntimeError(f"未确认{self.category}分类及币种，停止读取余额")
+        for attempt in range(2):
+            readings, texts = [], []
+            for only_rec in (True, False):
+                rows = self.ocr(r".+", roi, only_rec=only_rec)
+                texts.append([row.text for row in rows])
+                readings.append(amount(rows[0].text) if len(rows) == 1 else None)
+            if readings[0] is not None and readings[0] == readings[1]:
+                return readings[0]
+            if attempt == 0:
+                self.pause(2)
+                self.capture()
+                if not self.category_ready():
+                    raise RuntimeError(f"读取余额期间{self.category}页面或币种发生变化")
+        # Abbreviations, a '+' attached by OCR, or conflicting readings are not
+        # exact balances. Read the actual currency details rather than guess.
+        self.log(f"顶部余额未能完整确认（{texts}），打开{self.category}代币详情核对")
         self.click(roi[0] - 20, 34, .8)
-        keyword = {"消耗品": "信物", "南瓜币": "南瓜", "突袭": "突袭",
-                   "公会": "公会", "竞技场": "竞技"}[self.category]
-        if (not self.find(keyword, (480, 180, 350, 70))
-                or not self.find(r"^说明$", (470, 245, 130, 55))):
+        details = lambda: (self.find(keyword, (480, 180, 350, 70))
+                           and self.find(r"^说明$", (470, 245, 130, 55)))
+        if not self.wait_for(details, stable=2):
             raise RuntimeError("未确认分类代币详情，不按缩写估算余额")
         exact = self.number((825, 195, 95, 45))
+        self.pause(2)
+        self.capture()
+        if not details() or self.number((825, 195, 95, 45)) != exact:
+            raise RuntimeError("分类代币详情两次余额不一致，不继续购买")
         close = self.find(r"^确认$", (540, 550, 210, 90))
         if not close:
             raise RuntimeError("代币详情没有确认按钮")
         self.click_row(close, .8)
+        if not self.wait_category():
+            raise RuntimeError("关闭代币详情后未确认原分类页面")
         return exact
 
     def ledger(self, record=None):
@@ -361,8 +436,9 @@ class ShopBatch(ScreenAction):
         self.log("提交一次购买：" + json.dumps(selected, ensure_ascii=False))
         self.click_row(confirm, .8)
         until = time.monotonic() + 30
+        connection_wait_before = self.connection_wait_used
         reward_seen = False
-        while time.monotonic() < until:
+        while time.monotonic() - (self.connection_wait_used - connection_wait_before) < until:
             self.capture()
             if self.close_reward():
                 reward_seen = True
