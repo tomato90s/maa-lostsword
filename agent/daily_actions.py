@@ -15,6 +15,7 @@ from agent.local_actions import action_param
 class ScreenAction(CustomAction):
     label = "日常"
     timeout = 120
+    connection_wait_used = 0.
 
     def run(self, context, argv):
         try:
@@ -26,6 +27,7 @@ class ScreenAction(CustomAction):
             if not isinstance(self.param, dict):
                 raise RuntimeError("任务参数必须为对象")
             self.deadline = time.monotonic() + self.timeout
+            self.connection_wait_used = 0.
             self.capture()
             return self.execute()
         except Exception as exc:
@@ -47,11 +49,45 @@ class ScreenAction(CustomAction):
     def capture(self):
         self.check()
         controller = self.context.tasker.controller
-        if not controller.post_screencap().wait().succeeded:
-            raise RuntimeError("截图失败")
-        self.image = controller.cached_image
-        if self.image.shape[:2] != (720, 1280):
-            raise RuntimeError("游戏截图须为1280x720")
+        started = time.monotonic()
+        budget = max(0., 180. - self.connection_wait_used)
+        recovering = False
+        try:
+            while True:
+                if self.context.tasker.stopping:
+                    raise RuntimeError("任务已停止")
+                try:
+                    if not controller.post_screencap().wait().succeeded:
+                        raise RuntimeError("截图操作返回失败")
+                    image = controller.cached_image
+                except RuntimeError as exc:
+                    # Only retry observation. A failed input may already have
+                    # reached the game and must never be replayed here.
+                    self.image = None
+                    if not recovering:
+                        self.log(f"截图连接异常，暂停输入，最多等待{budget:.0f}秒，每5秒重新截图：{exc}")
+                        recovering = True
+                    remaining = budget - (time.monotonic() - started)
+                    if remaining <= 0:
+                        raise RuntimeError(f"连接恢复等待累计达到180秒，仍无法截图：{exc}") from exc
+                    until = time.monotonic() + min(5., remaining)
+                    while time.monotonic() < until:
+                        if self.context.tasker.stopping:
+                            raise RuntimeError("任务已停止")
+                        time.sleep(min(.1, max(0., until - time.monotonic())))
+                    continue
+                if image.shape[:2] != (720, 1280):
+                    raise RuntimeError("游戏截图须为1280x720")
+                break
+        finally:
+            if recovering:
+                waited = time.monotonic() - started
+                self.connection_wait_used += waited
+                self.deadline += waited
+        self.check()
+        self.image = image
+        if recovering:
+            self.log("已重新取得游戏截图，继续核对当前页面；未重发断线前的点击")
         return self.image
 
     def ocr(self, pattern=r".+", roi=(0, 0, 1280, 720), only_rec=False):

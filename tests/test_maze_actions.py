@@ -3,6 +3,7 @@ import sys
 import unittest
 from pathlib import Path
 from types import SimpleNamespace as NS
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -81,6 +82,60 @@ class MazePreferenceTests(unittest.TestCase):
                 action.click_row = action.click = lambda *args: self.fail("Incomplete choices must remain untouched")
                 with self.assertRaisesRegex(RuntimeError, "水井剧情选项未识别完整"):
                     action.advance_story()
+
+    def test_well_introduction_advances_before_the_choices_appear(self):
+        action = MazeDaily()
+        action.allow_other = True
+        phase, clicked, selected, records = ["introduction"], [], [], []
+        body = NS(text="迷宫探索中发现了水井。")
+        choices = [NS(text="喝井水。"), NS(text="不喝。")]
+        def find(pattern, roi):
+            rows = [body] if roi == (30,595,1170,55) else (choices if phase[0] == "choices" else [])
+            return next((row for row in rows if re.search(pattern, row.text)), None)
+        def click(*args):
+            clicked.append(args)
+            phase[0] = "choices"
+        action.find = find
+        action.ocr = lambda *args: []
+        action.dialogue_continue = lambda: True
+        action.click, action.click_row = click, lambda row, delay: selected.append(row.text)
+        action.journal = lambda **record: records.append(record)
+        action.log = lambda *args: None
+        action.advance_story()
+        self.assertEqual(clicked, [(640,625,1.2)])
+        self.assertEqual((selected, records), ([], []))
+        action.advance_story()
+        self.assertEqual(selected, ["不喝。"])
+        self.assertEqual(records[-1]["event"], "well")
+
+    def test_well_text_without_choices_or_continue_marker_stops(self):
+        action = MazeDaily()
+        body = NS(text="迷宫探索中发现了水井。")
+        action.find = lambda pattern, roi: body if re.search(pattern, body.text) else None
+        action.ocr = lambda *args: []
+        action.dialogue_continue = lambda: False
+        action.click = action.click_row = lambda *args: self.fail("Unverified page must not receive input")
+        with self.assertRaisesRegex(RuntimeError, "水井剧情选项未识别完整"):
+            action.advance_story()
+
+    def test_connection_wait_inside_dialogue_does_not_count_as_a_frozen_maze(self):
+        action = MazeDaily()
+        action.param, action.clock, action.connection_wait_used = {}, 0., 0.
+        finished = [False]
+        action.completed = lambda: finished[0]
+        action.page = action.cards = action.final_team = action.in_battle = lambda: False
+        action.story = lambda: not finished[0]
+        action.find = lambda *args: None
+        action.ocr = lambda *args: [NS(text="迷宫剧情")]
+        action.capture = lambda: setattr(action, "clock", action.clock + 1)
+        def advance():
+            action.clock += 180
+            action.connection_wait_used += 180
+            finished[0] = True
+        action.advance_story = advance
+        action.journal = action.log = lambda *args, **kwargs: None
+        with patch("agent.maze_actions.time.monotonic", lambda: action.clock):
+            self.assertTrue(action.execute())
 
     def test_well_decline_reply_without_speaker_continues_dialogue(self):
         action = MazeDaily()

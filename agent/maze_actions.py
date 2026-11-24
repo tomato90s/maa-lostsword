@@ -115,6 +115,12 @@ class MazeDaily(SeasonalScreen):
         if self.find(r"迷宫探索中发现了水井", (30,595,1170,55)):
             drink = self.find(r"^喝井水[。.!！]?$", (400,190,500,285))
             decline = self.find(r"^不喝[。.!！]?$", (400,190,500,285))
+            if not (drink or decline) and self.dialogue_continue() and not self.story_options():
+                # The event first shows narration with a continue marker. Its
+                # choices appear only after advancing that line.
+                self.log("发现水井介绍，先推进对话，等待喝水／不喝选项")
+                self.click(640,625,1.2)
+                return
             if not (drink and decline):
                 raise RuntimeError("水井剧情选项未识别完整，保留画面")
             self.journal(status="story_selected", event="well", choice=decline.text)
@@ -267,8 +273,14 @@ class MazeDaily(SeasonalScreen):
         last_signature, last_change = None, time.monotonic()
         unknown_since = None
         started = not bool(self.page())
+        connection_wait_accounted = self.connection_wait_used
         while True:
             self.capture()
+            waited = self.connection_wait_used - connection_wait_accounted
+            connection_wait_accounted = self.connection_wait_used
+            last_change += waited
+            if unknown_since is not None:
+                unknown_since += waited
             rows = self.ocr()
             text = " ".join(r.text for r in rows)
             signature = tuple(re.sub(r"[\s。.!！,，]", "", r.text) for r in rows)

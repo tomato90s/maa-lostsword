@@ -90,7 +90,7 @@ class ShopReceiptTests(unittest.TestCase):
     def test_thousands_and_quantity_do_not_accept_compacted_or_joined_text(self):
         self.assertEqual(amount("3.400.000"), 3400000)
         self.assertEqual(quantity("1000/1000"), (1000, 1000))
-        for text in ("1亿", "US$3.79", "1/1", "20金币"):
+        for text in ("1亿", "US$3.79", "1/1", "20金币", "1,637+"):
             self.assertIsNone(amount(text))
         for text in ("3/2", "10", "1/-1"):
             self.assertIsNone(quantity(text))
@@ -121,6 +121,19 @@ class ShopReceiptTests(unittest.TestCase):
         self.assertEqual([record["status"] for record in model.records], ["unknown", "confirmed"])
         self.assertTrue(self.run_model(model))
         self.assertEqual(model.commits, 1)
+
+    def test_connection_wait_during_reward_observation_does_not_replay_purchase(self):
+        class ReconnectedReplay(Replay):
+            reconnected = False
+            def capture(self):
+                if self.commits and not self.reconnected:
+                    self.reconnected = True
+                    self.clock += 120
+                    self.connection_wait_used += 120
+        model = ReconnectedReplay()
+        self.assertTrue(self.run_model(model))
+        self.assertEqual(model.commits, 1)
+        self.assertEqual([record["status"] for record in model.records], ["unknown", "confirmed"])
 
     def test_uncertain_purchase_is_not_submitted_again(self):
         for model in (Replay(receipt=False), Replay(wrong_balance=True)):
