@@ -87,13 +87,13 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    130,
-                    341,
-                    78,
-                    46
+                    90,
+                    140,
+                    180,
+                    500
                 ],
                 "expected": [
-                    "公会"
+                    "^公会$"
                 ]
             }
         },
@@ -124,13 +124,13 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    125,
-                    615,
-                    87,
-                    25
+                    90,
+                    140,
+                    180,
+                    500
                 ],
                 "expected": [
-                    "夏日币"
+                    "^夏日币$"
                 ]
             }
         },
@@ -161,13 +161,13 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    134,
-                    156,
-                    70,
-                    48
+                    90,
+                    140,
+                    180,
+                    500
                 ],
                 "expected": [
-                    "消耗品"
+                    "^消耗品$"
                 ]
             }
         },
@@ -198,13 +198,13 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    138,
-                    251,
-                    68,
-                    43
+                    90,
+                    140,
+                    180,
+                    500
                 ],
                 "expected": [
-                    "突袭"
+                    "^突袭$"
                 ]
             }
         },
@@ -235,13 +235,13 @@
             "type": "OCR",
             "param": {
                 "roi": [
-                    121,
-                    435,
-                    97,
-                    49
+                    90,
+                    140,
+                    180,
+                    500
                 ],
                 "expected": [
-                    "竞技场"
+                    "^竞技场$"
                 ]
             }
         },
@@ -3636,7 +3636,7 @@
     "商品-交易所-南瓜币": {
         "enabled": false,
         "max_hit": 1,
-        "recognition": {"type": "OCR", "param": {"expected": ["^南瓜币$"], "roi": [90, 585, 170, 65]}},
+        "recognition": {"type": "OCR", "param": {"expected": ["^南瓜币$"], "roi": [90, 140, 180, 500]}},
         "action": {"type": "Custom", "param": {"custom_action": "LocalShopCategoryClick"}},
         "next": ["Local_ShopPumpkinBatch"],
         "on_error": ["LocalTaskFailed"]

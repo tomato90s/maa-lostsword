@@ -43,7 +43,8 @@
         },
         "timeout": 20000,
         "next": [
-            "LocalSquad_Menu"
+            "LocalSquad_Menu",
+            "LocalSquad_Scroll"
         ],
         "on_error": [
             "LocalCrashRecovery",
@@ -62,13 +63,13 @@
             "type": "OCR",
             "param": {
                 "expected": [
-                    "小队副本"
+                    "^小队副本$"
                 ],
                 "roi": [
-                    775,
-                    540,
-                    190,
-                    65
+                    40,
+                    530,
+                    1200,
+                    75
                 ]
             }
         },
@@ -87,6 +88,32 @@
             }
         },
         "post_delay": 1000
+    },
+    "LocalSquad_Scroll": {
+        "desc": "普通战斗卡片新增时，向右翻找小队副本入口",
+        "max_hit": 3,
+        "recognition": {
+            "type": "And",
+            "param": {
+                "all_of": [
+                    {"recognition": "TemplateMatch", "template": ["template_1777301855439.png"], "roi": [6, 1, 81, 75]},
+                    {"recognition": "OCR", "expected": ["^普通$"], "roi": [120, 75, 110, 50]}
+                ]
+            }
+        },
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [1100, 380, 1, 1],
+                "end": [[350, 380, 1, 1]],
+                "duration": [600]
+            }
+        },
+        "post_delay": 1000,
+        "timeout": 6000,
+        "focus": {"Node.Action.Starting": "向右查找小队副本入口"},
+        "next": ["LocalSquad_Menu", "LocalSquad_Scroll"],
+        "on_error": ["LocalCrashRecovery", "LocalTaskFailed"]
     },
     "LocalSquad_Ready": {
         "recognition": {
