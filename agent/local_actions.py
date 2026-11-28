@@ -257,7 +257,9 @@ class DailySweep(CustomAction):
             elif self.dialog():
                 settled = 0
                 self.click(1151, 71)
-            elif self.find(r"冒险区域", [170, 18, 180, 70]):
+            elif (self.find(r"冒险区域", [170, 18, 180, 70])
+                  or (self.find(r"一键扫荡", [690, 635, 145, 55])
+                      and self.find(r"^队伍编排$", [65, 635, 160, 55]))):
                 settled = 0
                 self.click(1235, 36)
             elif (self.find(r"^战斗$", [70, 8, 110, 60])

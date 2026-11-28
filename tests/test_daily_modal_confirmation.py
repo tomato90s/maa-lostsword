@@ -69,6 +69,7 @@ class DungeonExitReplay(DailySweep):
 
     def find(self, pattern, roi=None):
         visible = {"reward": ["已获得道具。"], "dialog": ["副本一键扫荡"],
+                   "preparation": ["队伍编排", "一键扫荡"],
                    "stage": ["冒险区域"], "list": ["战斗", "副本", "巨石阵"]}[self.state]
         return next((row(text) for text in visible if re.search(pattern, text)), None)
 
@@ -80,6 +81,9 @@ class DungeonExitReplay(DailySweep):
                 self.state = "dialog"
         elif self.state == "dialog":
             assert (x, y) == (1151, 71)
+            self.state = "preparation"
+        elif self.state == "preparation":
+            assert (x, y) in ((1235, 36), (1235, 35))
             self.state = "stage"
         elif self.state == "stage":
             assert (x, y) in ((1235, 36), (1235, 35))
@@ -118,7 +122,14 @@ class ModalConfirmationTests(unittest.TestCase):
         model = DungeonExitReplay()
         model.leave_dialog()
         self.assertEqual(model.state, "list")
-        self.assertEqual(model.clicks, [(640, 680), (640, 680), (1151, 71), (1235, 36)])
+        self.assertEqual(model.clicks, [(640, 680), (640, 680), (1151, 71), (1235, 36), (1235, 36)])
+
+    def test_dungeon_leaves_preparation_when_free_attempts_are_exhausted(self):
+        model = DungeonExitReplay()
+        model.state = "preparation"
+        model.leave_dialog()
+        self.assertEqual(model.state, "list")
+        self.assertEqual(model.clicks, [(1235, 36), (1235, 36)])
 
     def test_dungeon_does_not_report_success_when_reward_cannot_close(self):
         model = DungeonExitReplay(stuck=True)
