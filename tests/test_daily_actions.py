@@ -259,7 +259,8 @@ class NewDailyTests(unittest.TestCase):
             action = StonehengeGate()
             action.context, action.argv = context, NS(node_name='Local_DungeonAfter')
             action.capture, action.log = lambda: None, lambda *args: None
-            action.find = lambda pattern, roi=None: row('巨石阵')
+            import re
+            action.find = lambda pattern, roi=None: row('巨石阵') if re.search(pattern, '巨石阵') else None
             self.assertTrue(action.execute())
             context.override_next.assert_called_once_with('Local_DungeonAfter', expected)
 

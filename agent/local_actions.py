@@ -120,9 +120,8 @@ class DailySweep(CustomAction):
             # Never press confirm twice: a missing result is an error, not a retry.
             for _ in range(24):
                 if self.find(r"已获得道具|扫荡奖励|扫荡完成", [180, 80, 920, 500]):
-                    print("[副本] 免费一键扫荡已完成", flush=True)
-                    self.click(640, 680)
                     self.leave_dialog()
+                    print("[副本] 免费一键扫荡已完成，并已确认关闭奖励返回副本列表", flush=True)
                     return True
                 if self.find(r"资源不足|次数不足|没有可扫荡|未选择", [250, 230, 800, 310]):
                     print("[副本] 当前没有可用的免费扫荡次数", flush=True)
@@ -239,11 +238,39 @@ class DailySweep(CustomAction):
         return sorted(labels, key=lambda r: (r.box.y, r.box.x)), sorted(ratios, key=lambda r: r.box.y)
 
     def leave_dialog(self):
-        self.capture()
-        if self.dialog():
-            self.click(1151, 71)
-        if self.find(r"冒险区域", [170, 18, 180, 70]):
-            self.click(1235, 36)
+        settled = 0
+        reward_clicks = 0
+        for _ in range(24):
+            self.capture()
+            if self.find(r"已获得道具|扫荡奖励|扫荡完成", [180, 80, 920, 500]):
+                settled = 0
+                # Allow the opening animation to settle, then recheck. Only
+                # retry dismissing the reward; never repeat the sweep.
+                self.pause(1)
+                self.capture()
+                if not self.find(r"已获得道具|扫荡奖励|扫荡完成", [180, 80, 920, 500]):
+                    continue
+                if reward_clicks >= 3:
+                    raise RuntimeError("扫荡奖励弹窗仍未关闭，停止后续副本导航")
+                self.click(640, 680)
+                reward_clicks += 1
+            elif self.dialog():
+                settled = 0
+                self.click(1151, 71)
+            elif (self.find(r"冒险区域", [170, 18, 180, 70])
+                  or (self.find(r"一键扫荡", [690, 635, 145, 55])
+                      and self.find(r"^队伍编排$", [65, 635, 160, 55]))):
+                settled = 0
+                self.click(1235, 36)
+            elif (self.find(r"^战斗$", [70, 8, 110, 60])
+                  and self.find(r"^副本$", [345, 70, 150, 60])):
+                settled += 1
+                if settled >= 2:
+                    return
+            else:
+                settled = 0
+            self.pause(.5)
+        raise RuntimeError("关闭扫荡页面后未确认返回副本列表，停止后续操作")
 
 
 class GuildDonation(DailySweep):

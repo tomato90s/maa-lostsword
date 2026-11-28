@@ -154,6 +154,19 @@ class ScreenAction(CustomAction):
             return True
         return False
 
+    def close_retry_notice(self):
+        pattern, roi = r"^请稍后再试[。.!！]?$", (450, 300, 380, 110)
+        if not self.find(pattern, roi):
+            return False
+        # This is a notice's centered button, not a purchase confirmation.
+        confirm = self.find(r"^确认$|^确定$", (470, 435, 340, 75))
+        if not confirm:
+            raise RuntimeError("游戏提示请稍后再试，但未找到提示框的确认按钮")
+        self.click_row(confirm, .8)
+        if not self.wait_for(lambda: not self.find(pattern, roi), attempts=12, stable=2):
+            raise RuntimeError("游戏提示请稍后再试，关闭提示后仍未消失")
+        return True
+
 
 class VillageReturnLobby(ScreenAction):
     label = "村庄返回大厅"
@@ -701,10 +714,23 @@ class ArenaDaily(ScreenAction):
         entered = False
         free_submitted = False
         refresh_at = None
+        refresh_errors = 0
+        refresh_after = 0.
         last_state = None
         progress_at = time.monotonic()
         while True:
             self.capture()
+            if self.close_retry_notice():
+                if refresh_at is None:
+                    raise RuntimeError("竞技场提示请稍后再试，已关闭提示；挑战结果未确认，不重复提交")
+                refresh_errors += 1
+                if refresh_errors >= 3:
+                    raise RuntimeError("竞技场刷新列表连续3次提示请稍后再试，已关闭提示，停止本项")
+                refresh_at = None
+                refresh_after = time.monotonic() + 5 * refresh_errors
+                last_state = None
+                self.log(f"刷新列表提示请稍后再试，等待{5 * refresh_errors}秒后重新核对对手；未重发挑战")
+                continue
             quote_rows = self.ocr(r".+", (380, 285, 530, 145))
             quote = arena_cost(" ".join(row.text for row in quote_rows))
             cancel = self.find(r"取消", (380, 450, 260, 100))
@@ -757,19 +783,23 @@ class ArenaDaily(ScreenAction):
                 challenge = self.find(r"^挑战$", (1110, 140, 170, 550))
                 if challenge:
                     refresh_at = None
+                    refresh_errors = 0
+                    refresh_after = 0.
                     self.click_row(challenge)
                 elif self.find(r"赛季.*结束|无法挑战|暂无对手", (300, 170, 930, 450)):
                     self.log("当前没有可挑战对手，正常结束")
                     return True
                 elif len(self.ocr(r"^WIN$", (1120, 140, 160, 550))) >= 3:
                     refresh = self.find(r"刷新列表", (1050, 80, 225, 50))
-                    if refresh and refresh_at is None:
+                    if refresh and refresh_at is None and time.monotonic() >= refresh_after:
                         refresh_at = time.monotonic()
                         self.click_row(refresh, 1.2)
                         self.log("本批三名对手已完成，刷新下一批对手")
                     elif refresh_at is not None and time.monotonic() - refresh_at > 15:
                         self.log("刷新后没有新的可挑战对手，本轮正常结束")
                         return True
+                    else:
+                        self.pause(.5)
             elif (ready := self.find(r"^进入$", (1030, 620, 220, 85))):
                 state = "ready"
                 if started >= limit:
@@ -808,9 +838,14 @@ class StonehengeGate(ScreenAction):
             return bool(self.context.override_next(self.argv.node_name, []))
         for _ in range(10):
             self.capture()
+            if self.close_reward():
+                continue
             if self.find(r"^巨石阵$", (125, 535, 130, 70)):
                 self.log("已返回副本列表，继续已开启的巨石阵")
                 return bool(self.context.override_next(self.argv.node_name, ["副本_点击巨石阵"]))
+            if self.find(r"副本.*一键扫荡", (460, 40, 360, 65)):
+                self.click(1151, 71, .9)
+                continue
             # Keep the neighboring paid Sweep button out of OCR. The wider
             # crop split 一键扫荡 into '-' and 键扫荡 on the peer's saved frames.
             if (self.find(r"一键扫荡", (690, 635, 145, 55))
