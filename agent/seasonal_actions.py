@@ -334,7 +334,7 @@ class BingoCraft(SeasonalScreen):
 
 class RaidSweep(SeasonalScreen):
     label = "个人突袭扫荡"
-    timeout = 180
+    timeout = 300
 
     def ticket_balance(self):
         # Extra vertical padding made detection drop the leading 1 from 15.
@@ -387,6 +387,73 @@ class RaidSweep(SeasonalScreen):
         with path.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps({"time": datetime.now().astimezone().isoformat(), **record}, ensure_ascii=False) + "\n")
 
+    def wait_ready(self):
+        previous = None
+        stable_since = None
+        for _ in range(16):
+            self.capture()
+            if self.close_retry_notice():
+                raise RuntimeError("个人突袭提示请稍后再试，已关闭提示，本次未提交扫荡")
+            if not self.dialog() and self.find(r"队伍编排", (65, 635, 160, 55)):
+                remaining = self.free_remaining()
+                if remaining is not None:
+                    current = (self.ticket_balance(), remaining)
+                    if current != previous:
+                        previous, stable_since = current, time.monotonic()
+                    if time.monotonic() - stable_since >= 2:
+                        return current
+                else:
+                    previous, stable_since = None, None
+            else:
+                previous, stable_since = None, None
+            self.pause(.6)
+        raise RuntimeError("未确认个人突袭页面、门票和免费次数持续稳定，本次未提交扫荡")
+
+    def wait_result(self, before, before_free, reward=False, recovering=False):
+        until = time.monotonic() + 60
+        stable = 0
+        last_tickets = last_free = None
+        while time.monotonic() < until:
+            self.capture()
+            if self.close_retry_notice():
+                raise RuntimeError("个人突袭提示请稍后再试，已关闭提示；扫荡结果未确认，不重复提交")
+            if self.close_reward():
+                reward = True
+                stable = 0
+                self.ledger({"status": "reward_observed", "before_tickets": before, "before_free": before_free})
+                continue
+            if self.dialog():
+                cancel = self.find(r"^取消$", (300, 550, 650, 110))
+                if cancel:
+                    self.click_row(cancel, .8)
+                raise RuntimeError("免费扫荡出现门票确认框，停止且不确认扣票")
+            if self.find(r"队伍编排", (65, 635, 160, 55)):
+                last_tickets, last_free = self.ticket_balance(), self.free_remaining()
+                if last_tickets != before:
+                    raise RuntimeError("免费扫荡后门票变化，停止后续操作")
+                decreased = last_free == before_free - 1
+                # A pending write is observed, never resubmitted. Preserve the
+                # existing last-free-entry recovery when the reward was missed.
+                proven = decreased and (reward or (recovering and last_free == 0))
+                stable = stable + 1 if proven else 0
+                if stable >= 2:
+                    record = {"status": "counter_confirmed" if recovering else "confirmed",
+                              "before_tickets": before, "after_tickets": last_tickets,
+                              "before_free": before_free, "after_free": last_free}
+                    if recovering:
+                        record["reward_verified"] = reward
+                    self.ledger(record)
+                    self.log(f"已核对免费次数{before_free}->{last_free}，门票保持{last_tickets}，奖励已确认={reward}")
+                    return
+                if last_free not in (None, before_free, before_free - 1):
+                    raise RuntimeError("免费次数变化异常，停止后续操作")
+            else:
+                stable = 0
+            self.pause(.4)
+        prefix = "今日突袭已经提交过" if recovering else "已提交一次扫荡"
+        raise RuntimeError(f"{prefix}，结果未确认：已观察60秒，门票{before}->{last_tickets}，"
+                           f"免费次数{before_free}/3->{last_free}/3，奖励已确认={reward}；不重复扫荡")
+
     def execute(self):
         limit = int(self.param.get("limit", 3))
         if not 0 <= limit <= 3:
@@ -396,18 +463,11 @@ class RaidSweep(SeasonalScreen):
             return True
         previous = self.ledger()
         if previous and previous["status"] not in ("confirmed", "counter_confirmed", "cancelled"):
-            remaining = self.free_remaining()
-            same_tickets = ("before_tickets" in previous
-                            and self.ticket_balance() == previous["before_tickets"])
-            decreased = (previous.get("before_free") in (1, 2, 3)
-                         and remaining == previous["before_free"] - 1)
-            if same_tickets and decreased and (previous["status"] == "reward_observed" or remaining == 0):
-                self.ledger({**previous, "status": "counter_confirmed", "after_free": remaining,
-                             "after_tickets": previous["before_tickets"],
-                             "reward_verified": previous["status"] == "reward_observed"})
-                self.log("已核对上次免费次数减少且门票未变；不会补点已用掉的次数")
-            else:
+            if "before_tickets" not in previous or previous.get("before_free") not in (1, 2, 3):
                 raise RuntimeError("今日突袭已经提交过，结果需要核对，不重复扫荡")
+            self.log("今日突袭已有待核对记录，先观察奖励和次数，不重发上次扫荡")
+            self.wait_result(previous["before_tickets"], previous["before_free"],
+                             reward=previous["status"] == "reward_observed", recovering=True)
         completed = 0
         while completed < 3:
             if self.dialog():
@@ -417,50 +477,18 @@ class RaidSweep(SeasonalScreen):
                 self.click_row(cancel, .8)
                 self.log("已取消门票扫荡，只执行每日免费次数")
                 return True
-            if not self.find(r"队伍编排", (65, 635, 160, 55)):
-                raise RuntimeError("未确认个人突袭扫荡页")
-            before_free = self.free_remaining()
-            if before_free is None:
-                raise RuntimeError("无法确认个人突袭免费次数，不扫荡")
+            before, before_free = self.wait_ready()
             if before_free == 0 or 3 - before_free >= limit:
                 self.log(f"今日已用{3 - before_free}/3次免费扫荡，达到设置上限{limit}次")
                 return True
-            before = self.ticket_balance()
             button = self.sweep_button()
             if not button:
                 raise RuntimeError("未找到个人突袭扫荡入口")
             self.ledger({"status": "unknown", "before_tickets": before, "before_free": before_free})
             self.log(f"免费次数剩余{before_free}/3、门票{before}，提交一次免费扫荡")
             self.click_row(button, .8)
-            reward = False
-            until = time.monotonic() + 30
-            while time.monotonic() < until:
-                self.capture()
-                if self.close_reward():
-                    reward = True
-                    self.ledger({"status": "reward_observed", "before_tickets": before, "before_free": before_free})
-                    continue
-                if self.dialog():
-                    cancel = self.find(r"^取消$", (300, 550, 650, 110))
-                    if cancel:
-                        self.click_row(cancel, .8)
-                    raise RuntimeError("免费扫荡出现门票确认框，停止且不确认扣票")
-                if self.find(r"队伍编排", (65, 635, 160, 55)):
-                    after = self.ticket_balance()
-                    after_free = self.free_remaining()
-                    if after != before:
-                        raise RuntimeError("免费扫荡后门票变化，停止后续操作")
-                    if reward and after_free == before_free - 1:
-                        self.ledger({"status": "confirmed", "before_tickets": before, "after_tickets": after,
-                                     "before_free": before_free, "after_free": after_free})
-                        self.log(f"已确认奖励，免费次数{before_free}->{after_free}，门票保持{after}")
-                        completed += 1
-                        break
-                    if after_free not in (None, before_free, before_free - 1):
-                        raise RuntimeError("免费次数变化异常，停止后续操作")
-                self.pause(.4)
-            else:
-                raise RuntimeError("已提交一次扫荡，结果未确认，不再次消耗门票")
+            self.wait_result(before, before_free)
+            completed += 1
         return True
 
 
